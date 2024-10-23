@@ -1,0 +1,88 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\shaoj\\source\\repos\\Gun N Hook\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{8209299D-A498-46C8-B5D1-EED628B1079F}|Gun N Hook\\Gun N Hook.vcxproj|C:\\Users\\shaoj\\source\\repos\\Gun N Hook\\Gun N Hook\\game.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8209299D-A498-46C8-B5D1-EED628B1079F}|Gun N Hook\\Gun N Hook.vcxproj|solutionrelative:Gun N Hook\\game.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8209299D-A498-46C8-B5D1-EED628B1079F}|Gun N Hook\\Gun N Hook.vcxproj|C:\\Users\\shaoj\\source\\repos\\Gun N Hook\\Gun N Hook\\utils.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8209299D-A498-46C8-B5D1-EED628B1079F}|Gun N Hook\\Gun N Hook.vcxproj|solutionrelative:Gun N Hook\\utils.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8209299D-A498-46C8-B5D1-EED628B1079F}|Gun N Hook\\Gun N Hook.vcxproj|C:\\Users\\shaoj\\source\\repos\\Gun N Hook\\Gun N Hook\\mainmenu.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8209299D-A498-46C8-B5D1-EED628B1079F}|Gun N Hook\\Gun N Hook.vcxproj|solutionrelative:Gun N Hook\\mainmenu.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8209299D-A498-46C8-B5D1-EED628B1079F}|Gun N Hook\\Gun N Hook.vcxproj|C:\\Users\\shaoj\\source\\repos\\Gun N Hook\\Gun N Hook\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8209299D-A498-46C8-B5D1-EED628B1079F}|Gun N Hook\\Gun N Hook.vcxproj|solutionrelative:Gun N Hook\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "game.c",
+              "DocumentMoniker": "C:\\Users\\shaoj\\source\\repos\\Gun N Hook\\Gun N Hook\\game.c",
+              "RelativeDocumentMoniker": "Gun N Hook\\game.c",
+              "ToolTip": "C:\\Users\\shaoj\\source\\repos\\Gun N Hook\\Gun N Hook\\game.c",
+              "RelativeToolTip": "Gun N Hook\\game.c",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2024-10-22T03:43:19.236Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "utils.c",
+              "DocumentMoniker": "C:\\Users\\shaoj\\source\\repos\\Gun N Hook\\Gun N Hook\\utils.c",
+              "RelativeDocumentMoniker": "Gun N Hook\\utils.c",
+              "ToolTip": "C:\\Users\\shaoj\\source\\repos\\Gun N Hook\\Gun N Hook\\utils.c",
+              "RelativeToolTip": "Gun N Hook\\utils.c",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABQAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2024-10-22T03:43:12.008Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "mainmenu.c",
+              "DocumentMoniker": "C:\\Users\\shaoj\\source\\repos\\Gun N Hook\\Gun N Hook\\mainmenu.c",
+              "RelativeDocumentMoniker": "Gun N Hook\\mainmenu.c",
+              "ToolTip": "C:\\Users\\shaoj\\source\\repos\\Gun N Hook\\Gun N Hook\\mainmenu.c",
+              "RelativeToolTip": "Gun N Hook\\mainmenu.c",
+              "ViewState": "AgIAABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2024-10-22T03:43:05.48Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "main.c",
+              "DocumentMoniker": "C:\\Users\\shaoj\\source\\repos\\Gun N Hook\\Gun N Hook\\main.c",
+              "RelativeDocumentMoniker": "Gun N Hook\\main.c",
+              "ToolTip": "C:\\Users\\shaoj\\source\\repos\\Gun N Hook\\Gun N Hook\\main.c",
+              "RelativeToolTip": "Gun N Hook\\main.c",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2024-10-22T03:39:43.137Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
