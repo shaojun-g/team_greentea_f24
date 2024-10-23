@@ -1,8 +1,0 @@
-﻿  game.c
-C:\Users\shaoj\source\repos\Gun N Hook\Gun N Hook\game.c(2,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Users\shaoj\source\repos\Gun N Hook\Gun N Hook\game.c(3,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Users\shaoj\source\repos\Gun N Hook\Gun N Hook\game.c(4,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-  Gun N Hook.vcxproj -> C:\Users\shaoj\source\repos\Gun N Hook\bin\Debug-x64\Gun N Hook.exe
-  1 File(s) copied
-  1 File(s) copied
-  1 File(s) copied
