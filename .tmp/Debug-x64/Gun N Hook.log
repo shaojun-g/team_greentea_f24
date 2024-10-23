@@ -1,32 +1,8 @@
 ﻿  game.c
-  main.c
-C:\Users\shaoj\Documents\GitHub\team_greentea_f24\Gun N Hook\game.c(2,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Users\shaoj\Documents\GitHub\team_greentea_f24\Gun N Hook\game.c(3,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Users\shaoj\Documents\GitHub\team_greentea_f24\Gun N Hook\game.c(4,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-  mainmenu.c
-C:\Users\shaoj\Documents\GitHub\team_greentea_f24\Gun N Hook\mainmenu.c(2,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Users\shaoj\Documents\GitHub\team_greentea_f24\Gun N Hook\mainmenu.c(3,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Users\shaoj\Documents\GitHub\team_greentea_f24\Gun N Hook\mainmenu.c(14,26): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
-C:\Users\shaoj\Documents\GitHub\team_greentea_f24\Gun N Hook\mainmenu.c(34,26): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
-C:\Users\shaoj\Documents\GitHub\team_greentea_f24\Gun N Hook\mainmenu.c(34,33): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
-C:\Users\shaoj\Documents\GitHub\team_greentea_f24\Gun N Hook\mainmenu.c(35,9): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
-C:\Users\shaoj\Documents\GitHub\team_greentea_f24\Gun N Hook\mainmenu.c(35,16): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
-C:\Users\shaoj\Documents\GitHub\team_greentea_f24\Gun N Hook\mainmenu.c(40,27): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
-C:\Users\shaoj\Documents\GitHub\team_greentea_f24\Gun N Hook\mainmenu.c(40,34): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
-C:\Users\shaoj\Documents\GitHub\team_greentea_f24\Gun N Hook\mainmenu.c(40,42): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
-C:\Users\shaoj\Documents\GitHub\team_greentea_f24\Gun N Hook\mainmenu.c(40,49): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
-C:\Users\shaoj\Documents\GitHub\team_greentea_f24\Gun N Hook\mainmenu.c(47,26): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
-C:\Users\shaoj\Documents\GitHub\team_greentea_f24\Gun N Hook\mainmenu.c(47,33): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
-C:\Users\shaoj\Documents\GitHub\team_greentea_f24\Gun N Hook\mainmenu.c(48,9): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
-C:\Users\shaoj\Documents\GitHub\team_greentea_f24\Gun N Hook\mainmenu.c(48,16): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
-C:\Users\shaoj\Documents\GitHub\team_greentea_f24\Gun N Hook\mainmenu.c(53,27): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
-C:\Users\shaoj\Documents\GitHub\team_greentea_f24\Gun N Hook\mainmenu.c(53,34): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
-C:\Users\shaoj\Documents\GitHub\team_greentea_f24\Gun N Hook\mainmenu.c(53,42): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
-C:\Users\shaoj\Documents\GitHub\team_greentea_f24\Gun N Hook\mainmenu.c(53,49): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
-  utils.c
-C:\Users\shaoj\Documents\GitHub\team_greentea_f24\Gun N Hook\utils.c(33,40): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
-  Gun N Hook.vcxproj -> C:\Users\shaoj\Documents\GitHub\team_greentea_f24\bin\Debug-x64\Gun N Hook.exe
+D:\GitHub\team_greentea_f24\team_greentea_f24\Gun N Hook\game.c(2,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+D:\GitHub\team_greentea_f24\team_greentea_f24\Gun N Hook\game.c(3,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+D:\GitHub\team_greentea_f24\team_greentea_f24\Gun N Hook\game.c(4,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  Gun N Hook.vcxproj -> D:\GitHub\team_greentea_f24\team_greentea_f24\bin\Debug-x64\Gun N Hook.exe
   1 File(s) copied
   1 File(s) copied
   1 File(s) copied
