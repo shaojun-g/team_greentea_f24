@@ -30,6 +30,12 @@
     <ClCompile Include="levelone.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="collision_utils.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="collisionlib.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
@@ -42,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="levelone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="collision_utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
