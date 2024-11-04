@@ -30,6 +30,7 @@
     <ClCompile Include="levelone.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="movement.c">
     <ClCompile Include="collision_utils.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -57,6 +58,7 @@
     <ClInclude Include="levelone.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="movement.h">
     <ClInclude Include="collision_utils.h">
     <ClInclude Include="leveltwo.h">
       <Filter>Header Files</Filter>
