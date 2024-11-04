@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include "utils.h"
 #include "mainmenu.h"
+#include "movement.h"
+#include "collision_utils.h"
 
 typedef struct {
 	double x, y;  // x and y components of the velocity
