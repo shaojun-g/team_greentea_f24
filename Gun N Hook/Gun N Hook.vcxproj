@@ -104,7 +104,6 @@ xcopy "$(SolutionDir)Extern\CProcessing\lib\x64\fmod.dll" "$(OutDir)" /s /r /y /
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="collisionlib.c" />
     <ClCompile Include="collision_utils.c" />
     <ClCompile Include="game.c" />
     <ClCompile Include="levelone.c" />

@@ -3,6 +3,7 @@
 #include "utils.h";
 #include "mainmenu.h"
 #include "movement.h"
+#include "collision_utils.h"
 
 typedef struct {
 	double x, y;  // x and y components of the velocity
@@ -11,16 +12,20 @@ typedef struct {
 // Define a struct for Player
 typedef struct {
 	double x, y;  // x and y coordinates of the player position
-	Velocity velocity;  // Nested struct for velocity
 	int on_ground;
+	Velocity velocity;  // Nested struct for velocity
 } Player;
 
-Player player = { 100, 200,{300, 300} };
+typedef struct {
+	double x, y;  // x and y components of the velocity
+	double on_wall;
+} Grapple;
 
+Player player = { 100, 700, 1,{0, 0} };
+Grapple grapple = { 0, 0, 0 };
 
 void Game_Init(void)
 {
-
 }
 
 void Game_Update(void)
@@ -35,7 +40,21 @@ void Game_Update(void)
 
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 	CP_Graphics_DrawCircle(player.x, player.y, 100);
-	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, dt);
+	CP_Settings_RectMode(CP_POSITION_CENTER);
+	CP_Settings_NoStroke();
+	CP_Graphics_DrawRect(CP_System_GetWindowWidth() / 2 , 800.00, CP_System_GetWindowWidth(), 10.00);
+	CP_Graphics_DrawRect(CP_System_GetWindowWidth() / 2, 400.00, CP_System_GetWindowWidth(), 10.00);
+
+	if (c_rect_rect(player.x, player.y, 100, 100, (CP_System_GetWindowWidth() / 2), 800.00, (CP_System_GetWindowWidth()), 10.00 )) {
+		player.velocity.y = 0;
+		player.on_ground = 1;
+	}
+	if (player.on_ground != 1) {
+		gravity(&player.y, &player.velocity.y, dt);
+	}
+	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground, dt);
+	drawGrapple(&player.x, &player.y, &grapple.x, &grapple.y, dt);
+
 }
 
 void Game_Exit(void)
