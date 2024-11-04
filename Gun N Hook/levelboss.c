@@ -13,6 +13,7 @@ boss boss1;
 
 void Levelboss_Init(void)
 {
+	int current_level = 4;
 	//game window size is (1600, 900)
 	//set all platform color as the same(dark red)
 	platform_base.platform_color = CP_Color_Create(255, 128, 128, 255);

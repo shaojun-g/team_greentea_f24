@@ -1,3 +1,4 @@
+//written by stanley
 #include "stdio.h"
 #include "mainmenu.h"
 #include "cprocessing.h"

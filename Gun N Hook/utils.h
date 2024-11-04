@@ -46,3 +46,4 @@ int AreCirclesIntersecting(float c1_x, float c1_y, float r1, float c2_x, float c
 void draw_platform(platform platform);
 void draw_goal(goal goal);
 void draw_boss(boss* boss);
+void Restart_Level();

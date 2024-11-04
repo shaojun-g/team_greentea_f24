@@ -2,6 +2,13 @@
 #include <stdio.h>
 #include "cprocessing.h"
 #include "utils.h"
+#include "levelone.h"
+#include "leveltwo.h"
+#include "levelthree.h"
+#include "levelboss.h"
+#include "mainmenu.h"
+
+int current_level = 0;
 
 int IsAreaClicked(float area_center_x, float area_center_y, float area_width, float area_height, float click_x, float click_y)
 {
@@ -71,13 +78,30 @@ void draw_goal(goal goal) {
 void draw_healthbar(healthbar healthbar){
 	//draw a rectangle at the point
 	CP_Settings_Fill(healthbar.rect_color);
-	//CP_Settings_RectMode(CP_POSITION_CORNER);
 	CP_Graphics_DrawRect(healthbar.x, healthbar.y, healthbar.width, healthbar.height);
 }
 
 void draw_boss(boss* boss) {
 	for (int i = 0; i < boss->num_parts; i++) {
-		// Assuming draw_platform() can draw a platform-like structure
+		// draw_platform() draws a platform-like structure for parts of boss
 		draw_platform(boss->parts[i]);
+	}
+}
+
+void Restart_Level() {
+	switch (current_level) {
+	case 1:
+		CP_Engine_SetNextGameState(Levelone_Init, Levelone_Update, Levelone_Exit);
+		break;
+	case 2:
+		CP_Engine_SetNextGameState(Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit);
+		break;
+	case 3:
+		CP_Engine_SetNextGameState(Levelthree_Init, Levelthree_Update, Levelthree_Exit);
+		break;
+		// Add more cases if you have additional levels
+	default:
+		CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
+		break;
 	}
 }
