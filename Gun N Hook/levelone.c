@@ -3,6 +3,8 @@
 #include "cprocessing.h"
 #include "utils.h"
 #include "leveltwo.h"
+#include "collision_utils.h"
+#include "movement.h"
 
 
 
@@ -10,6 +12,8 @@
 platform platform_base, platform1, platform2, platform_goal;
 goal goal_start, goal_end;
 healthbar player_health, player_health_background;
+Player player = { 100, 700, 1,{0, 0} };
+Grapple grapple = { 0, 0, 0 };
 
 
 
@@ -75,7 +79,7 @@ void Levelone_Init(void)
 
 void Levelone_Update(void)
 {
-
+	double dt = CP_System_GetDt();
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255)); // clear background to gray
 	//draw goals
 	draw_goal(goal_start);
@@ -88,6 +92,8 @@ void Levelone_Update(void)
 	//draw healthbar (with background)
 	draw_healthbar(player_health_background);
 	draw_healthbar(player_health);
+	//draw player
+	CP_Graphics_DrawCircle(player.x, player.y, 30);
 	
 	if (CP_Input_KeyTriggered(KEY_Q))
 	{
@@ -98,7 +104,15 @@ void Levelone_Update(void)
 	{
 		CP_Engine_SetNextGameState(Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit); // next level using N
 	}
-
+	if (c_rect_rect(player.x, player.y, 30, 30, (CP_System_GetWindowWidth() / 2), 800.00, (CP_System_GetWindowWidth()), 10.00)) {
+		player.velocity.y = 0;
+		player.on_ground = 1;
+	}
+	if (player.on_ground != 1) {
+		gravity(&player.y, &player.velocity.y, dt);
+	}
+	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground, dt);
+	drawGrapple(&player.x, &player.y, &grapple.x, &grapple.y, dt);
 }
 
 void Levelone_Exit(void)

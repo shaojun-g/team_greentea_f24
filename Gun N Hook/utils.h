@@ -40,6 +40,22 @@ typedef struct boss {
 
 }boss;
 
+typedef struct {
+	double x, y;  // x and y components of the velocity
+} Velocity;
+
+// Define a struct for Player
+typedef struct {
+	double x, y;  // x and y coordinates of the player position
+	int on_ground;
+	Velocity velocity;  // Nested struct for velocity
+} Player;
+
+typedef struct {
+	double x, y;  // x and y components of the velocity
+	double on_wall;
+} Grapple;
+
 int IsAreaClicked(float area_center_x, float area_center_y, float area_width, float area_height, float click_x, float click_y);
 int IsCircleClicked(float circle_center_x, float circle_center_y, float diameter, float click_x, float click_y);
 int AreCirclesIntersecting(float c1_x, float c1_y, float r1, float c2_x, float c2_y, float r2);
