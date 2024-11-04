@@ -11,6 +11,7 @@
     <ClCompile Include="mainmenu.c" />
     <ClCompile Include="movement.c" />
     <ClCompile Include="utils.c" />
+    <ClCompile Include="enemy.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="collision_utils.h" />
@@ -21,5 +22,6 @@
     <ClInclude Include="levelthree.h" />
     <ClInclude Include="mainmenu.h" />
     <ClInclude Include="utils.h" />
+    <ClInclude Include="enemy.h" />
   </ItemGroup>
 </Project>
