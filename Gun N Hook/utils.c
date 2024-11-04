@@ -50,3 +50,33 @@ int AreCirclesIntersecting(float c1_x, float c1_y, float r1, float c2_x, float c
 		return 0;
 	}
 }
+
+void levelselecthover(float area_center_x, float area_center_y, float area_width, float area_height, CP_Color color)
+{//determines if the cursor is over the button
+	if (IsAreaClicked(area_center_x, area_center_y, area_width, area_height, CP_Input_GetMouseX(), CP_Input_GetMouseY()))
+	{//layers a translucent box over the button(giving that selection feel)
+		CP_Color White = CP_Color_Create(255, 255, 255, 80);
+		CP_Settings_Fill(White);
+		CP_Graphics_DrawRect(area_center_x, area_center_y, area_width, area_height);
+	}
+	else {
+		CP_Settings_Fill(color);
+		CP_Graphics_DrawRect(area_center_x, area_center_y, area_width, area_height);
+	}
+}
+
+void buttoncreate(float area_center_x, float area_center_y, float area_width, float area_height, CP_Color color) 
+{
+	//CP_Color Blue = CP_Color_Create(0, 200, 255, 255);
+	CP_Settings_Fill(color);
+	CP_Graphics_DrawRect(area_center_x, area_center_y, area_width, area_height);
+	levelselecthover(area_center_x, area_center_y, area_width, area_height, color);
+}
+
+void textwrite(const char* text, float x_position, float y_position, CP_Color color)
+{
+	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
+	CP_Settings_Fill(color);
+	CP_Font_DrawText(text, x_position, y_position);
+
+}

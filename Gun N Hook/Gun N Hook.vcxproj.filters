@@ -30,6 +30,12 @@
     <ClCompile Include="levelone.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="levelselect.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="credit.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
@@ -42,6 +48,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="levelone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="levelselect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="credit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
