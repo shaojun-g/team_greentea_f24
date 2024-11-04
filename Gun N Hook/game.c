@@ -1,7 +1,7 @@
 #include "cprocessing.h"
-#include <stdio.h>;
-#include "utils.h";
-#include "mainmenu.h";
+#include <stdio.h>
+#include "utils.h"
+#include "mainmenu.h"
 
 
 void Game_Init(void)

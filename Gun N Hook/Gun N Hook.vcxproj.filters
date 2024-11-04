@@ -34,6 +34,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="collisionlib.c">
+    <ClCompile Include="leveltwo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="levelthree.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="levelboss.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -51,6 +58,13 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="collision_utils.h">
+    <ClInclude Include="leveltwo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="levelthree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="levelboss.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

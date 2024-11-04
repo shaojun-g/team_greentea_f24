@@ -2,30 +2,29 @@
 #include "mainmenu.h"
 #include "cprocessing.h"
 #include "utils.h"
-#include "leveltwo.h"
+#include "levelthree.h"
 
 
-
-
-platform platform_base, platform1, platform2, platform_goal;
+platform platform_base, platform1, platform2, platform3, platform_goal;
 goal goal_start, goal_end;
 healthbar player_health, player_health_background;
 
 
 
-void Levelone_Init(void)
+void Leveltwo_Init(void)
 {
 	//game window size is (1600, 900)
 	//set all platform color as the same(dark red)
 	platform_base.platform_color = CP_Color_Create(255, 128, 128, 255);
 	platform1.platform_color = CP_Color_Create(255, 128, 128, 255);
 	platform2.platform_color = CP_Color_Create(255, 128, 128, 255);
+	platform3.platform_color = CP_Color_Create(255, 128, 128, 255);
 	platform_goal.platform_color = CP_Color_Create(255, 128, 128, 255);
 	//set healthbar color 
 	player_health.rect_color = CP_Color_Create(255, 0, 0, 255);
 	player_health_background.rect_color = CP_Color_Create(255, 0, 0, 100);
 	//platform_base is the ground 
-	platform_base.x = CP_System_GetWindowWidth()/2;
+	platform_base.x = CP_System_GetWindowWidth() / 2;
 	platform_base.y = 800.00;
 	platform_base.width = CP_System_GetWindowWidth();
 	platform_base.height = 10.00;
@@ -33,19 +32,24 @@ void Levelone_Init(void)
 	//all platforms increment at y coordinates by 150.00f
 	//all platforms increment at x coordinates by minimum 200.00f
 	//default platforms will have 150.00f as width and 15.00f as height
-	platform1.x = 1000.00;
+	platform1.x = 600.00;
 	platform1.y = 650.00;
-	platform1.width = 150.00;
+	platform1.width = 250.00;
 	platform1.height = 15.00;
 	//platform2 is second platform
-	platform2.x = 1200.00;
+	platform2.x = 800.00;
 	platform2.y = 500.00;
-	platform2.width = 150.00;
+	platform2.width = 250.00;
 	platform2.height = 15.00;
+	//platform3 is third platform
+	platform3.x = 1000.00;
+	platform3.y = 350.00;
+	platform3.width = 250.00;
+	platform3.height = 15.00;
 	//platform goal will be where user gets to head to next level
 	//default platform goal width will be 250.00f
 	platform_goal.x = 1475.00;
-	platform_goal.y = 350.00;
+	platform_goal.y = 200.00;
 	platform_goal.width = 250.00;
 	platform_goal.height = 15.00;
 	//start goal will be where user spawns
@@ -56,7 +60,7 @@ void Levelone_Init(void)
 	goal_start.corner_radius = 10;
 	//end goal will be where user goes to next map
 	goal_end.x = 1550.00;
-	goal_end.y = 315.00;
+	goal_end.y = 165.00;
 	goal_end.width = 40.00;
 	goal_end.height = 70.00;
 	goal_end.corner_radius = 10;
@@ -73,7 +77,7 @@ void Levelone_Init(void)
 }
 
 
-void Levelone_Update(void)
+void Leveltwo_Update(void)
 {
 
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255)); // clear background to gray
@@ -84,11 +88,13 @@ void Levelone_Update(void)
 	draw_platform(platform_base);
 	draw_platform(platform1);
 	draw_platform(platform2);
+	draw_platform(platform3);
 	draw_platform(platform_goal);
 	//draw healthbar (with background)
+	//draw_healthbar(player_health_background);
 	draw_healthbar(player_health_background);
 	draw_healthbar(player_health);
-	
+
 	if (CP_Input_KeyTriggered(KEY_Q))
 	{
 		CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit); // exit using Q
@@ -96,12 +102,12 @@ void Levelone_Update(void)
 	//test for next level (this will be for goal function)
 	if (CP_Input_KeyTriggered(KEY_N))
 	{
-		CP_Engine_SetNextGameState(Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit); // next level using N
+		CP_Engine_SetNextGameState(Levelthree_Init, Levelthree_Update, Levelthree_Exit); // next level using N
 	}
 
 }
 
-void Levelone_Exit(void)
+void Leveltwo_Exit(void)
 {
 
 }
