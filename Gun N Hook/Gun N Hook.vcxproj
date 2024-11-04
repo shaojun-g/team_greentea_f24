@@ -122,7 +122,6 @@ xcopy "$(SolutionDir)Extern\CProcessing\lib\x64\fmod.dll" "$(OutDir)" /s /r /y /
     <ClInclude Include="movement.h" />
     <ClInclude Include="levelone.h" />
     <ClInclude Include="levelthree.h" />
-    <ClInclude Include="leveltwo.h" />
     <ClInclude Include="mainmenu.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
