@@ -3,33 +3,45 @@
 //initialize all platform structs
 typedef struct platform {
 
-	double x;
-	double y;
-	double width;
-	double height;
+	float x;
+	float y;
+	float width;
+	float height;
 	CP_Color platform_color;
+	float left_limit, right_limit;
+
 
 } platform;
+
+
+//int checkgrappleplat() {
+//	if () {
+//		return 1;
+//	}
+//	else {
+//		return 0;
+//	}
+//}
 
 //initialize all goal structs
 typedef struct goal {
 
-	double x;
-	double y;
-	double width;
-	double height;
-	double degrees;
-	double corner_radius;
+	float x;
+	float y;
+	float width;
+	float height;
+	float degrees;
+	float corner_radius;
 	CP_Color goal_color;
 
 }goal;
 
 //initialize healthbar
 typedef struct healthbar {
-	double x;
-	double y;
-	double width;
-	double height;
+	float x;
+	float y;
+	float width;
+	float height;
 	CP_Color rect_color;
 }healthbar;
 

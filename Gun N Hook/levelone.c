@@ -10,11 +10,14 @@
 platform platform_base, platform1, platform2, platform_goal;
 goal goal_start, goal_end;
 healthbar player_health, player_health_background;
-
-
+float circleX;
+float circleY;
+float circleDiameter;
+CP_Color red;
 
 void Levelone_Init(void)
 {
+	red = CP_Color_Create(255, 0, 0, 255);
 	//game window size is (1600, 900)
 	//set all platform color as the same(dark red)
 	platform_base.platform_color = CP_Color_Create(255, 128, 128, 255);
@@ -70,6 +73,10 @@ void Levelone_Init(void)
 	player_health_background.y = 50.00;
 	player_health_background.width = 300.00;
 	player_health_background.height = 20.00;
+	//
+	 circleX = goal_start.x;
+	 circleY = goal_start.y;
+	 circleDiameter = 30;
 }
 
 
@@ -98,6 +105,26 @@ void Levelone_Update(void)
 	{
 		CP_Engine_SetNextGameState(Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit); // next level using N
 	}
+	CP_Settings_Fill(red);
+	CP_Graphics_DrawCircle(circleX, circleY, circleDiameter);
+
+	if (CP_Input_KeyDown(KEY_W)) { //move up, when move up y--
+		//movement
+		circleY -= 5;
+	}// end of check key W
+	else if (CP_Input_KeyDown(KEY_A)) { //move left when move left x--
+		//movement
+		circleX -= 5;
+	} // end of check key A
+	else if (CP_Input_KeyDown(KEY_S)) { //move down when move down y++
+		//movement
+		circleY += 5;
+	} // end of check key S
+	else if (CP_Input_KeyDown(KEY_D)) { //move right when move right x++
+		//movement
+		circleX += 5;
+	} // end of check key D
+
 
 }
 

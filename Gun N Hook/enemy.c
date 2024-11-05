@@ -19,25 +19,28 @@
 // 
 // Copyright ? 2020 DigiPen, All rights reserved.
 //---------------------------------------------------------
-
 #include "enemy.h"
 #include "cprocessing.h"
 #include <stdio.h>
-
+#include "utils.h"
+#include "game.h"
+#include "movement.h"
 CP_Color black;
 CP_Color red;
 CP_Color green;
 struct MELEE_Enemy enemy1;
 struct RANGE_Enemy enemy2;
-struct Platform platform1;
-struct Player player1;
+//struct Platform platform1;
+//struct Player player1;
+Player player1;
+platform platform1;
 struct Projectile projectile1;
 float speed;
 float elapsedTime;
 float dt;
 //enemy state
 void EnemyState(struct MELEE_Enemy* e) {
-	switch (e->state) {
+	switch (e->state) { // e->state same as (*e).state
 	case IDLE:break;
 	case PATROL:
 		//printf("patrol state");
@@ -55,11 +58,11 @@ void EnemyState(struct MELEE_Enemy* e) {
 		}
 		break;
 	case ATTACK:
-		if (enemy1.x_pos < player1.x_pos &&enemy1.x_pos < platform1.right_limit) {
+		if (enemy1.x_pos < player1.x &&enemy1.x_pos < platform1.right_limit) {
 			//if enemy is left of player move right
 			enemy1.x_pos += speed+dt;
 		}
-		if (enemy1.x_pos > player1.x_pos && enemy1.x_pos > platform1.left_limit) {
+		if (enemy1.x_pos > player1.x && enemy1.x_pos > platform1.left_limit) {
 			//if enemy is right of player move left
 			enemy1.x_pos -= speed+dt;
 		}
@@ -78,13 +81,20 @@ int playerOnPlat(float playerx, float plat_left_lim, float plat_right_lim) {
 	//player1.x_pos >= platform1.left_limit && player1.x_pos <= platform1.right_limit
 }
 
-void enemy_init(void)
+void Enemy_Init(void)
 {
-	printf("hello world ");
+	printf("enemy.c called ");
 	red = CP_Color_Create(255, 0, 0, 255);
 	black = CP_Color_Create(0, 0, 0, 255);
 	green = CP_Color_Create(0, 255, 0, 255);
-	//melee enemy
+	//platform
+	platform1.x = 100;
+	platform1.y = 600;
+	platform1.width = 600;
+	platform1.height = 200;
+	platform1.left_limit = platform1.x; //100
+	platform1.right_limit = platform1.x + platform1.width - enemy1.width; //660
+	//melee enemy, melee xposition should be bounded to platform values
 	enemy1.x_pos = 150;
 	enemy1.y_pos = 560;
 	enemy1.width = 40;
@@ -100,29 +110,21 @@ void enemy_init(void)
 	enemy2.shoot_posX = enemy2.x_pos;
 	enemy2.shoot_posY = enemy2.y_pos + (enemy2.height)/2;
 	//player
-	player1.x_pos = 860;
-	player1.y_pos = 560;
+	player1.x = 860;
+	player1.y = 560;
+	//player1.diameter = 30;
 	player1.width = 40;
 	player1.height = player1.width;
-	//platform
-	platform1.x_pos = 100;
-	platform1.y_pos = 600;
-	platform1.width = 600;
-	platform1.height = 200;
-	platform1.left_limit = platform1.x_pos; //100
-	platform1.right_limit = platform1.x_pos + platform1.width - enemy1.width; //660
 	//game stats
 	speed = 5;
 	elapsedTime = 0.0f;
-
 	//projectile
 	projectile1.x_pos = enemy2.shoot_posX;
 	projectile1.y_pos = enemy2.shoot_posY;
 	projectile1.diameter = 15;
 }
 
-void enemy_update(void) {
-
+void Enemy_Update(void) {
 	// get dt and then print total elapsed time
 	 dt = CP_System_GetDt();
 	elapsedTime += dt;
@@ -144,17 +146,14 @@ void enemy_update(void) {
 		enemy1.state = PATROL;
 		elapsedTime = 0;
 	}
-
-
 	if (CP_Input_KeyDown(KEY_A)) { //move left when move left x--
 		//movement
-		player1.x_pos -= speed+dt;
+		player1.x -= speed+dt;
 	} // end of check key A
 	else if (CP_Input_KeyDown(KEY_D)) { //move right when move right x++
 		//movement
-		player1.x_pos += speed+dt;
+		player1.x += speed+dt;
 	} // end of check key D
-
 	//background
 	CP_Graphics_ClearBackground(CP_Color_Create(122, 122, 122, 255));
 	//fake ground
@@ -167,28 +166,26 @@ void enemy_update(void) {
 	CP_Settings_Fill(red);
 	CP_Graphics_DrawRect(enemy2.x_pos, enemy2.y_pos, enemy2.width, enemy2.height);
 	//player
+	CP_Settings_EllipseMode(CP_POSITION_CORNER);
 	CP_Settings_Fill(black);
-	CP_Graphics_DrawRect(player1.x_pos, player1.y_pos, player1.width, player1.height);
-
+	//CP_Graphics_DrawCircle(player1.x, player1.y, player1.diameter);
+	CP_Graphics_DrawRect(player1.x, player1.y, player1.width, player1.height);
 	EnemyState(&enemy1);
-	if (playerOnPlat(player1.x_pos,platform1.left_limit,platform1.right_limit) == 1) {
+	if (playerOnPlat(player1.x,platform1.left_limit,platform1.right_limit) == 1) {
 		elapsedTime = 0;
 		enemy1.state = ATTACK;
 	}
-
+	CP_Settings_EllipseMode(CP_POSITION_CENTER);
 		CP_Settings_Fill(black);
-		CP_Graphics_DrawCircle(projectile1.x_pos, projectile1.y_pos, projectile1.diameter);
+	CP_Graphics_DrawCircle(projectile1.x_pos, projectile1.y_pos, projectile1.diameter);
 		projectile1.x_pos -= 1 * speed + dt;
 		if (projectile1.x_pos < 0) {
 			projectile1.x_pos = enemy2.shoot_posX;
 		}
-	
 	//collision
 	//if (enemy.hit == 1) {
 	//	enemy1.health -= 1;
 	//}
 }
 
-void enemy_exit(void) {
-
-}
+void Enemy_Exit(void) {}
