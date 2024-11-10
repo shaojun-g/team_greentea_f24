@@ -257,17 +257,13 @@ void Levelboss_Update(void)
 		if (turret_projectile1_1.travelling == 1 && turret_projectile1_1.x_pos< 1600/2) {
 			//printf("PROJECTILE 1_2 FIRE\n");
 			turret_projectile1_2.travelling = 1;
-		
 		}
-	
 	}
 	if (player1.on_ground == 1 && (player1.y >= platform_base.y - (player1.width * 2) && player1.y <= platform_base.y - (player1.width / 2))) {
 		if (turret_projectile1_2.travelling == 1 && turret_projectile1_2.x_pos < 1600 / 2) {
 			//printf("PROJECTILE 1_3 FIRE\n");
 			turret_projectile1_3.travelling = 1;
-	
 		}
-
 	}
 	//
 	if (player1.on_ground == 1 && (player1.y >= platform1.y - (player1.width * 2) && player1.y <= platform1.y - (player1.width / 2))) {
