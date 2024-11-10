@@ -59,7 +59,7 @@ int AreCirclesIntersecting(float c1_x, float c1_y, float r1, float c2_x, float c
 	}
 }
 
-void draw_platform(platform platform) {
+void draw_platform(Platform platform) {
 	//draw platforms
 	CP_Settings_RectMode(CP_POSITION_CENTER);
 	CP_Settings_Fill(platform.platform_color);

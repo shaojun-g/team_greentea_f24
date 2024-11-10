@@ -7,7 +7,7 @@
 
 
 
-platform platform_base, platform1, platform2, platform_goal;
+Platform platform_base, platform1, platform2, platform_goal;
 goal goal_start, goal_end;
 healthbar player_health, player_health_background;
 float circleX;

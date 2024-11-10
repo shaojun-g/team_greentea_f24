@@ -33,7 +33,7 @@ struct RANGE_Enemy enemy2;
 //struct Platform platform1;
 //struct Player player1;
 Player player1;
-platform platform1;
+Platform platform1;
 struct Projectile projectile1;
 float speed;
 float elapsedTime;
@@ -70,6 +70,10 @@ void EnemyState(struct MELEE_Enemy* e) {
 	}
 }
 
+float midpoint(float p1,float p2) {
+	return (p1 + p2) / 2;
+}
+
 //checks if player on platform returns 1 if true, returns 0 if false
 int playerOnPlat(float playerx, float plat_left_lim, float plat_right_lim) {
 	if (playerx >= plat_left_lim && playerx <= plat_right_lim) {
@@ -87,6 +91,8 @@ void Enemy_Init(void)
 	red = CP_Color_Create(255, 0, 0, 255);
 	black = CP_Color_Create(0, 0, 0, 255);
 	green = CP_Color_Create(0, 255, 0, 255);
+	//midpoint
+	float mid_plat = midpoint(100, 700);
 	//platform
 	platform1.x = 100;
 	platform1.y = 600;
@@ -94,10 +100,11 @@ void Enemy_Init(void)
 	platform1.height = 200;
 	platform1.left_limit = platform1.x; //100
 	platform1.right_limit = platform1.x + platform1.width - enemy1.width; //660
-	//melee enemy, melee xposition should be bounded to platform values
-	enemy1.x_pos = 150;
-	enemy1.y_pos = 560;
+	//width
 	enemy1.width = 40;
+	//melee enemy, melee xposition should be bounded to platform values
+	enemy1.x_pos = mid_plat;
+	enemy1.y_pos = platform1.y-enemy1.width;
 	enemy1.height = enemy1.width;
 	enemy1.state = IDLE;
 	enemy1.dir = LEFT;
@@ -122,37 +129,77 @@ void Enemy_Init(void)
 	projectile1.x_pos = enemy2.shoot_posX;
 	projectile1.y_pos = enemy2.shoot_posY;
 	projectile1.diameter = 15;
+	projectile1.travelling = 1;
 }
 
-void Enemy_Update(void) {
-	// get dt and then print total elapsed time
-	 dt = CP_System_GetDt();
+void state_change(struct MELEE_Enemy* enemy,float idletoattack_sec, float attactopatrol_sec) {
+	dt = CP_System_GetDt();
 	elapsedTime += dt;
 	//alternate patrol and idle
-	if (elapsedTime >= 3.0f && enemy1.state == IDLE) {
-		if (enemy1.state != ATTACK) {
-			enemy1.state = PATROL;
+	if (elapsedTime >= idletoattack_sec && enemy1.state == IDLE) {
+		if (enemy->state != ATTACK) {
+			enemy->state = PATROL;
 			elapsedTime = 0;
 		}
 	}
-	else if (elapsedTime >= 3.0f && enemy1.state == PATROL) {
-		if (enemy1.state != ATTACK) {
-			enemy1.state = IDLE;
+	else if (elapsedTime >= idletoattack_sec && enemy1.state == PATROL) {
+		if (enemy->state != ATTACK) {
+			enemy->state = IDLE;
 			elapsedTime = 0;
 		}
 	}
 	//prevent enemy from stuck at attack state
-	if (elapsedTime >= 8.0f && enemy1.state == ATTACK) { 
-		enemy1.state = PATROL;
+	if (elapsedTime >= attactopatrol_sec && enemy1.state == ATTACK) {
+		enemy->state = PATROL;
 		elapsedTime = 0;
 	}
+
+	if (playerOnPlat(player1.x, platform1.left_limit, platform1.right_limit) == 1) {
+		elapsedTime = 0;
+		enemy1.state = ATTACK;
+	}
+}
+
+void enemy_shoot_projectile(struct Projectile* projectile,struct RANGE_Enemy* enemy , float speed) {
+	dt = CP_System_GetDt();
+	projectile->x_pos -= 1 * speed + dt;
+	if (projectile->x_pos < 0) {
+		projectile->x_pos = enemy->shoot_posX;
+		projectile->travelling = 0;
+	}
+}
+
+void Enemy_Update(void) {
+	state_change(&enemy1, 3, 8);
+	// get dt and then print total elapsed time
+	//dt = CP_System_GetDt();
+	//elapsedTime += dt;
+	////alternate patrol and idle
+	//if (elapsedTime >= 3.0f && enemy1.state == IDLE) {
+	//	if (enemy1.state != ATTACK) {
+	//		enemy1.state = PATROL;
+	//		elapsedTime = 0;
+	//	}
+	//}
+	//else if (elapsedTime >= 3.0f && enemy1.state == PATROL) {
+	//	if (enemy1.state != ATTACK) {
+	//		enemy1.state = IDLE;
+	//		elapsedTime = 0;
+	//	}
+	//}
+	////prevent enemy from stuck at attack state
+	//if (elapsedTime >= 8.0f && enemy1.state == ATTACK) { 
+	//	enemy1.state = PATROL;
+	//	elapsedTime = 0;
+	//}
+
 	if (CP_Input_KeyDown(KEY_A)) { //move left when move left x--
 		//movement
-		player1.x -= speed+dt;
+		player1.x -= speed+ CP_System_GetDt();
 	} // end of check key A
 	else if (CP_Input_KeyDown(KEY_D)) { //move right when move right x++
 		//movement
-		player1.x += speed+dt;
+		player1.x += speed+ CP_System_GetDt();
 	} // end of check key D
 	//background
 	CP_Graphics_ClearBackground(CP_Color_Create(122, 122, 122, 255));
@@ -171,17 +218,11 @@ void Enemy_Update(void) {
 	//CP_Graphics_DrawCircle(player1.x, player1.y, player1.diameter);
 	CP_Graphics_DrawRect(player1.x, player1.y, player1.width, player1.height);
 	EnemyState(&enemy1);
-	if (playerOnPlat(player1.x,platform1.left_limit,platform1.right_limit) == 1) {
-		elapsedTime = 0;
-		enemy1.state = ATTACK;
-	}
+
 	CP_Settings_EllipseMode(CP_POSITION_CENTER);
 		CP_Settings_Fill(black);
 	CP_Graphics_DrawCircle(projectile1.x_pos, projectile1.y_pos, projectile1.diameter);
-		projectile1.x_pos -= 1 * speed + dt;
-		if (projectile1.x_pos < 0) {
-			projectile1.x_pos = enemy2.shoot_posX;
-		}
+	enemy_shoot_projectile(&projectile1, &enemy2, 5);
 	//collision
 	//if (enemy.hit == 1) {
 	//	enemy1.health -= 1;
