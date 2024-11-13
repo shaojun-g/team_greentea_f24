@@ -4,6 +4,7 @@
 #include "levelselect.h"
 #include "mainmenu.h"
 #include "utils.h"
+#include "levelone.h"
 
 CP_Font MenuFont;
 CP_TEXT_ALIGN_HORIZONTAL horizontal = CP_TEXT_ALIGN_H_CENTER;
@@ -77,13 +78,46 @@ void Level_Select_Update(void) {
 	textwrite("Level 5", xRect5, yRect2, Black);
 	
 		
+	//level select
+	//level 1
+	if (CP_Input_MouseClicked()) {
+		if (IsAreaClicked(xRect1, yRect1, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+			CP_Engine_SetNextGameState(Level_1_Init, Level_1_Update, Level_1_Exit);
+		};
+	};
+	//level 2
+	if (CP_Input_MouseClicked()) {
+		if (IsAreaClicked(xRect2, yRect1, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+			//CP_Engine_SetNextGameState(Level_Select_Init, Level_Select_Update, Level_Select_Exit);
+		};
+	};
+	//level 3
+	if (CP_Input_MouseClicked()) {
+		if (IsAreaClicked(xRect3, yRect1, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+			//CP_Engine_SetNextGameState(Level_Select_Init, Level_Select_Update, Level_Select_Exit);
+		};
+	};
+	//level 4
+	if (CP_Input_MouseClicked()) {
+		if (IsAreaClicked(xRect4, yRect2, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+			//CP_Engine_SetNextGameState(Level_Select_Init, Level_Select_Update, Level_Select_Exit);
+		};
+	};
+	//level 5
+	if (CP_Input_MouseClicked()) {
+		if (IsAreaClicked(xRect5, yRect2, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+			//CP_Engine_SetNextGameState(Level_Select_Init, Level_Select_Update, Level_Select_Exit);
+		};
+	};
 
 
 
+	//return to main menu
 	if (CP_Input_KeyTriggered(KEY_Q))
 	{
 		CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
 	}
+	//end program
 	if (CP_Input_KeyTriggered(KEY_R))
 	{
 		CP_Engine_Terminate();

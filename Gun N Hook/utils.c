@@ -1,6 +1,8 @@
 #include <math.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include "cprocessing.h"
+#include "utils.h"
 
 int IsAreaClicked(float area_center_x, float area_center_y, float area_width, float area_height, float click_x, float click_y)
 {
@@ -78,5 +80,27 @@ void textwrite(const char* text, float x_position, float y_position, CP_Color co
 	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
 	CP_Settings_Fill(color);
 	CP_Font_DrawText(text, x_position, y_position);
+
+}
+
+void draw_platform(platform platform) {
+	//draw platforms
+	CP_Settings_RectMode(CP_POSITION_CENTER);
+	CP_Settings_Fill(platform.platform_color);
+	CP_Settings_NoStroke();
+	CP_Graphics_DrawRect(platform.x, platform.y, platform.width, platform.height);
+
+}
+
+void draw_goal(goal goal) {
+	//draw goals
+	goal.goal_color = CP_Color_Create(0, 0, 0, 255);
+	CP_Settings_Fill(goal.goal_color);
+	CP_Graphics_DrawRectAdvanced(goal.x, goal.y, goal.width, goal.height, goal.degrees, goal.corner_radius);
+}
+
+
+int pause_menu(int game_state) {
+	game_state = !game_state;
 
 }

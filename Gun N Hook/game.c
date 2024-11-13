@@ -1,5 +1,6 @@
 #include "cprocessing.h"
 #include <stdio.h>;
+#include <stdbool.h>;
 #include "utils.h";
 #include "mainmenu.h";
 
@@ -11,8 +12,11 @@ void Game_Init(void)
 
 void Game_Update(void)
 {
+	
 
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255));
+
+	
 
 	if (CP_Input_KeyTriggered(KEY_Q))
 	{
