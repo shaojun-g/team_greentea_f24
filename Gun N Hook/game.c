@@ -7,7 +7,7 @@
 
 
 
-Player player1 = { 100, 700, 1,{0, 0} };
+Player player1;
 Grapple grapple1 = { 0, 0, 0 };
 
 void Game_Init(void)
