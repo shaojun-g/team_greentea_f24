@@ -1,3 +1,13 @@
+// file:	enemy.c
+// author:	Stanley
+// email:	
+// co-author: Benjamin Ban
+// email: k.ban@digipen.edu
+// brief:	
+// 
+// Copyright ? 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #include "stdio.h"
 #include "mainmenu.h"
 #include "cprocessing.h"
@@ -35,10 +45,24 @@ void Levelboss_Init(void)
 	boss1.parts[5] = (platform){ .x = 1375, .y = 472.5, .width = 50, .height = 30, .platform_color = CP_Color_Create(140, 0, 0, 255) };
 	boss1.parts[6] = (platform){ .x = 1312.5, .y = 472.5, .width = 75, .height = 15, .platform_color = CP_Color_Create(0, 0, 0, 255) };
 	//parts 7-8 is third platform canon
-	boss1.parts[7] = (platform){ .x = 1375, .y = 322.5, .width = 50, .height = 30, .platform_color = CP_Color_Create(140, 0, 0, 255) };
-	boss1.parts[8] = (platform){ .x = 1312.5, .y = 322.5, .width = 75, .height = 15, .platform_color = CP_Color_Create(0, 0, 0, 255) };
-
-
+	boss1.parts[7] = (Platform){ .x = 1375, .y = 322.5, .width = 50, .height = 30, .platform_color = CP_Color_Create(140, 0, 0, 255) };
+	boss1.parts[8] = (Platform){ .x = 1312.5, .y = 322.5, .width = 75, .height = 15, .platform_color = CP_Color_Create(0, 0, 0, 255) };
+	//init boss turret variables turret0=part2,1=4,2=6,3=8
+	for (int i = 0; i < NUM_BOSS_TURRETS; i++) {
+		boss_turrets[i].x = boss1.parts[(i + 1) * 2].x;
+		boss_turrets[i].y = boss1.parts[(i + 1) * 2].y;
+		boss_turrets[i].width = boss1.parts[(i + 1) * 2].width;
+		boss_turrets[i].height = boss1.parts[(i + 1) * 2].height;
+		boss_turrets[i].shoot_posX = boss_turrets[i].x;
+		boss_turrets[i].shoot_posY = boss_turrets[i].y;
+	}// end of for-loop
+	//init projectiles variables
+	for (int i = 0; i < MAX_TURRET_PROJECTILE; i++) {
+		turret_projectiles[i].x = boss_turrets[i].shoot_posX;
+		turret_projectiles[i].y = boss_turrets[i].shoot_posY;
+		turret_projectiles[i].diameter = 15;
+		turret_projectiles[i].travelling = 0;
+	}// end of for-loop
 	//set healthbar color 
 	player_health.rect_color = CP_Color_Create(255, 0, 0, 255);
 	player_health_background.rect_color = CP_Color_Create(255, 0, 0, 100);
@@ -109,6 +133,43 @@ void Levelboss_Init(void)
 	
 }
 
+void test_debug(void){
+
+	//test debugging turret
+	//player
+	CP_Settings_EllipseMode(CP_POSITION_CENTER);
+	CP_Settings_Fill(CP_Color_Create(140, 0, 0, 255));
+	CP_Graphics_DrawRect(player1.x, player1.y, player1.width, player1.height);
+	//movement
+	if (CP_Input_KeyDown(KEY_A)) { //move left when move left x--
+		//movement
+		player1.x -= 5 + CP_System_GetDt();
+	} // end of check key A
+	else if (CP_Input_KeyDown(KEY_D)) { //move right when move right x++
+		//movement
+		player1.x += 5 + CP_System_GetDt();
+	} // end of check key D
+	//updown
+	if (CP_Input_KeyDown(KEY_W)) { //move up when move left y--
+		//movement
+		player1.y -= 5 + CP_System_GetDt();
+	} // end of check key A
+	else if (CP_Input_KeyDown(KEY_S)) { //move down when move right y++
+		//movement
+		player1.y += 5 + CP_System_GetDt();
+	} // end of check key D
+
+	// Create an array of characters (aka a string) that can store up to 256 characters.
+	char buffer[256];
+	// Fill the buffer with the text we want.
+	// Notice that it uses a similar syntax as printf()!
+	sprintf_s(buffer, sizeof(buffer), "Player X: %.2f, Player: %.2f", player1.x, player1.y);
+	// Tells CProcessing to use the white color for anything we are drawing on the screen
+	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+	// Draw the text using the string stored in the buffer in the center of the screen.
+	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
+	CP_Font_DrawText(buffer, (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 - 300);
+}
 
 void Levelboss_Update(void)
 {
@@ -125,6 +186,18 @@ void Levelboss_Update(void)
 	//draw_platform(platform_goal);
 	//draw boss
 	draw_boss(&boss1);
+	//draw projectile
+	for (int i = 0; i < MAX_TURRET_PROJECTILE; i++) {
+		CP_Settings_EllipseMode(CP_POSITION_CENTER);
+		CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
+		CP_Graphics_DrawCircle(turret_projectiles[i].x, turret_projectiles[i].y, turret_projectiles[i].diameter);
+	}
+	////
+	//CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
+	//CP_Graphics_DrawCircle(turret_projectiles[0].x_pos, turret_projectiles[0].y_pos, turret_projectiles[0].diameter);
+	//CP_Graphics_DrawCircle(turret_projectiles[1].x_pos, turret_projectiles[1].y_pos, turret_projectiles[1].diameter);
+	//CP_Graphics_DrawCircle(turret_projectiles[2].x_pos, turret_projectiles[2].y_pos, turret_projectiles[2].diameter);
+	//CP_Graphics_DrawCircle(turret_projectiles[3].x_pos, turret_projectiles[3].y_pos, turret_projectiles[3].diameter);
 	//draw healthbar (with background)
 	//draw in update and update values of health during combat
 	draw_healthbar(player_health_background);
@@ -134,6 +207,11 @@ void Levelboss_Update(void)
 	
 	
 
+	for (int i = 0; i < MAX_TURRET_PROJECTILE; i++) {
+		if (turret_projectiles[i].travelling == 1) {
+			enemy_shoot_projectile(&turret_projectiles[i], &boss_turrets[i], 300);
+		}
+	}
 	if (CP_Input_KeyTriggered(KEY_Q))
 	{
 		CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit); // exit using Q
