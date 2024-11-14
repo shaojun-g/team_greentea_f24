@@ -15,7 +15,7 @@ Platform platform_base, platform1, platform2, platform_goal, hazard;
 Goal goal_start, goal_end;
 Healthbar player_health, player_health_background;
 Player player;
-Grapple grapple = { 0, 0, 0 };
+Grapple grapple1 = { 0, 0, 0 };
 float collisionCooldown = 0.0f;  // Cooldown timer for on_ground reset
 float collisionCooldownDuration = 0.3f;  // Duration in seconds for cooldown
 int health = 3;
@@ -102,7 +102,7 @@ void Levelone_Update(void)
 {
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255)); // clear background to gray
 	dt = CP_System_GetDt();//date time function
-	drawGrapple(&player.x, &player.y, &grapple.x, &grapple.y, dt); //draw grapple
+	//drawGrapple(&player.x, &player.y, &grapple.x, &grapple.y, dt); //draw grapple
 	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
 	//draw goals
 	draw_goal(goal_start);

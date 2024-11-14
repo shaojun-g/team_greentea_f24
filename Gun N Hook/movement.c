@@ -48,7 +48,7 @@ float grapple_max_distance = 500.00;
 float grapple_speed = 1000.0;
 CP_Vector grapple_target;
 
-void drawGrapple(float* player_x, float* player_y, float* grapple_x, float* grapple_y, platform* platforms, int num_of_platforms, float dt) {
+void drawGrapple(float* player_x, float* player_y, float* grapple_x, float* grapple_y, Platform* platforms, int num_of_platforms, float dt) {
 	float end_x = 0;
 	float end_y = 0;
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_RIGHT)) {

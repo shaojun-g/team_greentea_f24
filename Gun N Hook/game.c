@@ -4,18 +4,20 @@
 #include "mainmenu.h"
 #include "movement.h"
 #include "collision_utils.h"
+#include "structs.h"
 
 
 #define PLATFORM_SIZE 2
-Player player1;
-Grapple grapple1 = { 0, 0, 0 };
+Player player;
+Grapple grapple = { 0, 0, 0 };
+Platform platforms[PLATFORM_SIZE];
 
 void Game_Init(void)
 {
-	player = (Player){ 500, 200, 1,{0, 0} };
+	player = (Player){ 500, 200, 100, 100,3, 1,{0, 0} };
 	grapple = (Grapple){ 0, 0, 0 };
-	platforms[0] = (platform){ CP_System_GetWindowWidth() / 2 , 800.00, CP_System_GetWindowWidth(), 100.00,CP_Color_Create(255, 128, 128, 255)};
-	platforms[1] = (platform){ CP_System_GetWindowWidth() / 2, 400.00, CP_System_GetWindowWidth()/4, 100.00, CP_Color_Create(255, 128, 128, 255)};
+	platforms[0] = (Platform){ CP_System_GetWindowWidth() / 2 , 800.00, CP_System_GetWindowWidth(), 100.00,CP_Color_Create(255, 128, 128, 255)};
+	platforms[1] = (Platform){ CP_System_GetWindowWidth() / 2, 400.00, CP_System_GetWindowWidth()/4, 100.00, CP_Color_Create(255, 128, 128, 255)};
 }
 
 void Game_Update(void)
@@ -29,7 +31,7 @@ void Game_Update(void)
 	}
 
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
-	CP_Graphics_DrawCircle(player1.x, player1.y, 10);
+	CP_Graphics_DrawCircle(player.x, player.y, player.width);
 	CP_Settings_RectMode(CP_POSITION_CENTER);
 	CP_Settings_NoStroke();
 	//CP_Graphics_DrawRect(CP_System_GetWindowWidth() / 2 , 800.00, CP_System_GetWindowWidth(), 10.00);
