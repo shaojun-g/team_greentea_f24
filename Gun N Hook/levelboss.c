@@ -182,6 +182,7 @@ void test_debug(void){
 void Levelboss_Update(void)
 {
 
+	test_debug();
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255)); // clear background to gray
 	//draw goals
 	draw_goal(goal_start);
