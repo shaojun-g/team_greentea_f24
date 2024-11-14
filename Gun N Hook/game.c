@@ -1,6 +1,6 @@
 #include "cprocessing.h"
-#include <stdio.h>;
-#include "utils.h";
+#include <stdio.h>
+#include "utils.h"
 #include "mainmenu.h"
 #include "movement.h"
 #include "collision_utils.h"
