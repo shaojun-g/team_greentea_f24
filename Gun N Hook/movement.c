@@ -14,12 +14,15 @@ void basic_movement(float*player_x, float*player_y, float*speed_x, float*speed_y
 		*speed_x = -300;
 		*player_x += *speed_x * dt;
 	}
+	else {
+		*speed_x = 0;
+	}
 
 	if (*on_ground == 1) {
 		float starting_x = *player_x;
 		float max_jump = 200;
 		if (CP_Input_KeyDown(KEY_W) || CP_Input_KeyDown(KEY_SPACE)) {
-			if (*speed_y < 1500) {
+			if (*speed_y < 1500)  { // change this to change max height original is 1000
 				*speed_y += 100;
 				*player_y -= *speed_y * dt;
 			}

@@ -3,13 +3,11 @@
 #include "cprocessing.h"
 #include "utils.h"
 #include "levelthree.h"
+#include "structs.h"
 
-
-platform platform_base, platform1, platform2, platform3, platform_goal;
-goal goal_start, goal_end;
-healthbar player_health, player_health_background;
-
-
+Platform platform_base, platform1, platform2, platform3, platform_goal;
+Goal goal_start, goal_end;
+Healthbar player_health, player_health_background;
 
 void Leveltwo_Init(void)
 {

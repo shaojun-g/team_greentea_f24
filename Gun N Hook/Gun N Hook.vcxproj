@@ -125,6 +125,7 @@ xcopy "$(SolutionDir)Extern\CProcessing\lib\x64\fmod.dll" "$(OutDir)" /s /r /y /
     <ClInclude Include="levelone.h" />
     <ClInclude Include="levelthree.h" />
     <ClInclude Include="mainmenu.h" />
+    <ClInclude Include="structs.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

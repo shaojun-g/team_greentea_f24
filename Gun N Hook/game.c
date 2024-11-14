@@ -5,27 +5,10 @@
 #include "movement.h"
 #include "collision_utils.h"
 
-typedef struct {
-	float x, y;  // x and y components of the velocity
-} Velocity;
-
-// Define a struct for Player
-typedef struct {
-	float x, y;  // x and y coordinates of the player position
-	int on_ground;
-	Velocity velocity;  // Nested struct for velocity
-} Player;
-
-typedef struct {
-	float x, y;  // x and y components of the velocity
-	float on_wall;
-} Grapple;
-
 
 #define PLATFORM_SIZE 2
-Player player;
-Grapple grapple;
-platform platforms[PLATFORM_SIZE];
+Player player1;
+Grapple grapple1 = { 0, 0, 0 };
 
 void Game_Init(void)
 {
@@ -46,7 +29,7 @@ void Game_Update(void)
 	}
 
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
-	CP_Graphics_DrawCircle(player.x, player.y, 100);
+	CP_Graphics_DrawCircle(player1.x, player1.y, 10);
 	CP_Settings_RectMode(CP_POSITION_CENTER);
 	CP_Settings_NoStroke();
 	//CP_Graphics_DrawRect(CP_System_GetWindowWidth() / 2 , 800.00, CP_System_GetWindowWidth(), 10.00);
