@@ -141,8 +141,8 @@ void Levelone_Update(void)
 		health -= 1;
 		if (health == 0) {
 			health = 3;
-			
-
+			CP_Engine_SetNextGameStateForced(Levelone_Init, Levelone_Update, Levelone_Exit);
+			printf("next state updated");
 		}
 	}
 
@@ -185,8 +185,7 @@ void Levelone_Update(void)
 	}
 	
 	if (CP_Input_KeyTriggered(KEY_P)) {
-		CP_Engine_SetNextGameStateForced(Levelone_Init, Levelone_Update, Levelone_Exit);
-		printf("next state updated");
+		
 	}
 	
 }
