@@ -1,3 +1,13 @@
+// file:	enemy.c
+// author:	Stanley
+// email:	
+// co-author: Benjamin Ban
+// email: k.ban@digipen.edu
+// brief:	
+// 
+// Copyright ? 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #include "stdio.h"
 #include "mainmenu.h"
 #include "cprocessing.h"

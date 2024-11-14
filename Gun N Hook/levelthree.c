@@ -11,8 +11,6 @@ Platform platform_enemy1, platform_enemy2, platform_enemy3;
 goal goal_start, goal_end;
 healthbar player_health, player_health_background;
 
-
-
 void Levelthree_Init(void)
 {
 	//game window size is (1600, 900)

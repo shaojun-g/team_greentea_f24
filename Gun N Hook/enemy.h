@@ -1,3 +1,16 @@
+// file:	enemy.h
+// author:	Benjamin Ban
+// email:	k.ban@digipen.edu
+//
+// brief:	declare functions
+// Melee Enemy States : IDLE,PATROL,ATTACK
+// -constraint to Platform it spawns at, hence need left right limit
+// -chases Player if Player is on platform
+// -stop chasing player after x Seconds if not on platform
+// Range Enemy States - no states only shoot
+// -have a shooting point where projectile spawn
+// Copyright ? 2020 DigiPen, All rights reserved
+//---------------------------------------------------------
 #pragma once
 //MELEE enemy
 enum MELEE_EnemyDir { //enemy only face left or right
