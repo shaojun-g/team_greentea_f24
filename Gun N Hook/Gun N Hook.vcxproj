@@ -105,6 +105,7 @@ xcopy "$(SolutionDir)Extern\CProcessing\lib\x64\fmod.dll" "$(OutDir)" /s /r /y /
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="collision_utils.c" />
+    <ClCompile Include="enemy.c" />
     <ClCompile Include="game.c" />
     <ClCompile Include="levelboss.c" />
     <ClCompile Include="levelone.c" />
@@ -117,6 +118,7 @@ xcopy "$(SolutionDir)Extern\CProcessing\lib\x64\fmod.dll" "$(OutDir)" /s /r /y /
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="collision_utils.h" />
+    <ClInclude Include="enemy.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="levelboss.h" />
     <ClInclude Include="movement.h" />
