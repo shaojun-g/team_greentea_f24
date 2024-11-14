@@ -27,6 +27,7 @@ Projectile turret_projectiles[MAX_TURRET_PROJECTILE];
 Player player1;
 CP_Font my_awesome_font;
 float elaspedTime;
+
 void Levelboss_Init(void)
 {
 	int current_level = 4;
