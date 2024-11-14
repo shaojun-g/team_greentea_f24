@@ -47,17 +47,17 @@ void Levelboss_Init(void)
 	boss1.parts[8] = (Platform){ .x = 1312.5, .y = 322.5, .width = 75, .height = 15, .platform_color = CP_Color_Create(0, 0, 0, 255) };
 	//init boss turret variables turret0=part2,1=4,2=6,3=8
 	for (int i = 0; i < NUM_BOSS_TURRETS; i++) {
-		boss_turrets[i].x_pos = boss1.parts[(i + 1) * 2].x;
-		boss_turrets[i].y_pos = boss1.parts[(i + 1) * 2].y;
+		boss_turrets[i].x = boss1.parts[(i + 1) * 2].x;
+		boss_turrets[i].y = boss1.parts[(i + 1) * 2].y;
 		boss_turrets[i].width = boss1.parts[(i + 1) * 2].width;
 		boss_turrets[i].height = boss1.parts[(i + 1) * 2].height;
-		boss_turrets[i].shoot_posX = boss_turrets[i].x_pos;
-		boss_turrets[i].shoot_posY = boss_turrets[i].y_pos;
+		boss_turrets[i].shoot_posX = boss_turrets[i].x;
+		boss_turrets[i].shoot_posY = boss_turrets[i].y;
 	}// end of for-loop
 	//init projectiles variables
 	for (int i = 0; i < MAX_TURRET_PROJECTILE; i++) {
-		turret_projectiles[i].x_pos = boss_turrets[i].shoot_posX;
-		turret_projectiles[i].y_pos = boss_turrets[i].shoot_posY;
+		turret_projectiles[i].x = boss_turrets[i].shoot_posX;
+		turret_projectiles[i].y = boss_turrets[i].shoot_posY;
 		turret_projectiles[i].diameter = 15;
 		turret_projectiles[i].travelling = 0;
 	}// end of for-loop
@@ -173,9 +173,7 @@ void test_debug(void){
 		//movement
 		player1.y += 5 + CP_System_GetDt();
 	} // end of check key D
-	// Retrieve the X and Y position of the mouse
-	float mouse_x = CP_Input_GetMouseX();
-	float mouse_y = CP_Input_GetMouseY();
+
 	// Create an array of characters (aka a string) that can store up to 256 characters.
 	char buffer[256];
 	// Fill the buffer with the text we want.
@@ -206,7 +204,7 @@ void Levelboss_Update(void)
 	for (int i = 0; i < MAX_TURRET_PROJECTILE; i++) {
 		CP_Settings_EllipseMode(CP_POSITION_CENTER);
 		CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-		CP_Graphics_DrawCircle(turret_projectiles[i].x_pos, turret_projectiles[i].y_pos, turret_projectiles[i].diameter);
+		CP_Graphics_DrawCircle(turret_projectiles[i].x, turret_projectiles[i].y, turret_projectiles[i].diameter);
 	}
 	////
 	//CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
