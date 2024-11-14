@@ -13,14 +13,14 @@ int current_level = 0;
 int IsAreaClicked(float area_center_x, float area_center_y, float area_width, float area_height, float click_x, float click_y)
 {
 	//Calculate the half width and height of rectangle
-	double HW = area_width / 2;
-	double HH = area_height / 2;
+	float HW = area_width / 2;
+	float HH = area_height / 2;
 
 	//Determine the boundary of the rectangle
-	double left = area_center_x - HW;
-	double right = area_center_x + HW;
-	double top = area_center_y - HH;
-	double bottom = area_center_y + HH;
+	float left = area_center_x - HW;
+	float right = area_center_x + HW;
+	float top = area_center_y - HH;
+	float bottom = area_center_y + HH;
 
 	if (click_x >= left && click_x <= right && click_y >= top && click_y <= bottom) {
 		return 1;
@@ -33,10 +33,10 @@ int IsAreaClicked(float area_center_x, float area_center_y, float area_width, fl
 int IsCircleClicked(float circle_center_x, float circle_center_y, float diameter, float click_x, float click_y)
 {
 	//Calculate the radius
-	double radius = diameter / 2;
+	float radius = diameter / 2;
 
 	//Calculate the distance between the click point and the circle's center
-	double distance_squared = CP_Math_Square(click_x - circle_center_x) + CP_Math_Square(click_y - circle_center_y);
+	float distance_squared = CP_Math_Square(click_x - circle_center_x) + CP_Math_Square(click_y - circle_center_y);
 
 	if (distance_squared < CP_Math_Square(radius)) {
 		return 1;
@@ -48,11 +48,11 @@ int IsCircleClicked(float circle_center_x, float circle_center_y, float diameter
 
 int AreCircles_GoalIntersecting(float circle_x, float circle_y, float radius, float rect_x, float rect_y, float rect_width, float rect_height)
 {
-	// Find the closest point on the rectangle to the circle’s center
+	// Find the closest point on the rectangle to the circleï¿½s center
 	float closest_x = fmax(rect_x, fmin(circle_x, rect_x + rect_width));
 	float closest_y = fmax(rect_y, fmin(circle_y, rect_y + rect_height));
 
-	// Calculate the distance between the circle’s center and this closest point
+	// Calculate the distance between the circleï¿½s center and this closest point
 	double distance = CP_Math_Distance(circle_x, circle_y, closest_x, closest_y);
 
 	// If the distance is less than or equal to the circle's radius, they intersect

@@ -162,6 +162,26 @@ void Levelone_Update(void)
 			CP_Engine_SetNextGameState(Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit); // next level using N
 		}
 	}
+	CP_Settings_Fill(red);
+	CP_Graphics_DrawCircle(circleX, circleY, circleDiameter);
+
+	if (CP_Input_KeyDown(KEY_W)) { //move up, when move up y--
+		//movement
+		circleY -= 5;
+	}// end of check key W
+	else if (CP_Input_KeyDown(KEY_A)) { //move left when move left x--
+		//movement
+		circleX -= 5;
+	} // end of check key A
+	else if (CP_Input_KeyDown(KEY_S)) { //move down when move down y++
+		//movement
+		circleY += 5;
+	} // end of check key S
+	else if (CP_Input_KeyDown(KEY_D)) { //move right when move right x++
+		//movement
+		circleX += 5;
+	} // end of check key D
+
 
 	if ((c_rect_rect(player.x, player.y, 30, 30, (CP_System_GetWindowWidth() / 2), 800.00, (CP_System_GetWindowWidth()), 10.00)) != FALSE) {
 		player.velocity.y = 0;
