@@ -13,9 +13,10 @@ typedef struct MELEE_Enemy { //square enemy
 	int health;
 	float x_pos;
 	float y_pos;
-	float diameter;
+	//float diameter;
 	float width;
 	float height;
+	float speed;
 	enum MELEE_EnemyState state;
 	enum MELEE_EnemyDir dir;
 	//enum EnemyDir dir;
