@@ -25,18 +25,14 @@
 //struct Player player1;
 Player player1;
 Platform platform1;
- Projectile projectile1;
+Projectile projectile1;
 float elapsedTime;
 CP_Font my_awesome_font;
 //enemy state
-
-
 void Enemy_Init(void)
-{
-	my_awesome_font = CP_Font_Load("Assets/Exo2-Regular.ttf");
+{	my_awesome_font = CP_Font_Load("Assets/Exo2-Regular.ttf");
 	printf("enemy.c called ");
 	//midpoint
-	float mid_plat = midpoint(100, 700);
 	//width
 	enemy1.width = 40;
 	//platform
@@ -46,6 +42,7 @@ void Enemy_Init(void)
 	platform1.height = 200;
 	platform1.left_limit = platform1.x; // 100
 	platform1.right_limit = platform1.x + platform1.width - enemy1.width; //660
+	float mid_plat = midpoint(platform1.x, platform1.x+platform1.width);
 	//melee enemy, melee xposition should be bounded to platform values
 	enemy1.x = mid_plat;
 	enemy1.y = platform1.y-enemy1.width;
@@ -60,7 +57,7 @@ void Enemy_Init(void)
 	enemy2.width = 100;
 	enemy2.height = 40;
 	enemy2.shoot_posX = enemy2.x;
-	enemy2.shoot_posY = enemy2.y + (enemy2.height)/2;
+	enemy2.shoot_posY = enemy2.y+(enemy2.height/2);
 	//player
 	player1.x = 860;
 	player1.y = 560;
@@ -70,45 +67,31 @@ void Enemy_Init(void)
 	//game stats
 	elapsedTime = 0.0f;
 	//projectile
-	projectile1.x = enemy2.x;
-	projectile1.y = enemy2.y;
+	projectile1.x = enemy2.shoot_posX;
+	projectile1.y = enemy2.shoot_posY;
 	projectile1.diameter = 15;
 	projectile1.travelling = 1;
 }
-
-void EnemyState(MELEE_Enemy* e, Platform* plat, Player* player) {
+void EnemyState( MELEE_Enemy* e,  Platform* plat,  Player* player) {
 	switch (e->state) { // e->state same as (*e).state
 	case IDLE:break;
 	case PATROL:
-		if (e->dir == LEFT) {
-			e->x -= 5;
+
+		//printf("patrol state");
+		if (e->dir == LEFT ) {
+			e->x -= e->speed * CP_System_GetDt();
 			if (e->x <= plat->left_limit) {
+				e->x = plat->left_limit;// constraint to limit
 				e->dir = RIGHT;
 			}
 		}
-		if (e->dir == RIGHT) {
-			e->x += 5;
+		if (e->dir == RIGHT ) {
+			e->x += e->speed* CP_System_GetDt();
 			if (e->x >= plat->right_limit) {
+				e->x = plat->right_limit;// constraint to limit
 				e->dir = LEFT;
 			}
-			
 		}
-	
-		////printf("patrol state");
-		//if (e->dir == LEFT ) {
-		//	e->x -= 5;// e->speed * CP_System_GetDt();
-		//	if (e->x <= plat->left_limit) {
-		//		e->x = plat->left_limit;// constraint to limit
-		//		e->dir = RIGHT;
-		//	}
-		//}
-		//if (e->dir == RIGHT ) {
-		//	e->x += 5;// e->speed* CP_System_GetDt();
-		//	if (e->x >= plat->right_limit) {
-		//		e->x = plat->right_limit;// constraint to limit
-		//		e->dir = LEFT;
-		//	}
-		//}
 		break;
 	case ATTACK:
 		if (e->x < player->x && e->x < plat->right_limit) {
@@ -136,6 +119,7 @@ int playerOnPlat(float playerx, float plat_left_lim, float plat_right_lim) {
 	//player1.x_pos >= platform1.left_limit && player1.x_pos <= platform1.right_limit
 }
 void state_change(MELEE_Enemy* enemy, Platform* platform, Player* player, float idletoattack_sec, float attactopatrol_sec) {
+	EnemyState(enemy, platform, player);
 	elapsedTime += CP_System_GetDt();
 	//alternate patrol and idle
 	if (elapsedTime >= idletoattack_sec && enemy->state == IDLE) {
@@ -162,7 +146,7 @@ void state_change(MELEE_Enemy* enemy, Platform* platform, Player* player, float 
 		enemy->state = ATTACK;
 	}
 }
-void enemy_shoot_projectile(struct Projectile* projectile, struct RANGE_Enemy* enemy, float speed) {
+void enemy_shoot_projectile(Projectile* projectile,RANGE_Enemy* enemy, float speed) {
 	projectile->x -= speed * CP_System_GetDt();
 	if (projectile->x < 0) {
 		projectile->x = enemy->shoot_posX;
@@ -171,8 +155,7 @@ void enemy_shoot_projectile(struct Projectile* projectile, struct RANGE_Enemy* e
 }
 
 void Enemy_Update(void) {
-	state_change(&enemy1, &player1,&platform1,3, 8);
-	EnemyState(&enemy1, &player1, &platform1);
+	state_change(&enemy1, &platform1,&player1,3, 8);
 	if (CP_Input_KeyDown(KEY_A)) { //move left when move left x--
 		//movement
 		player1.x -= 200* CP_System_GetDt();
@@ -185,7 +168,7 @@ void Enemy_Update(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(122, 122, 122, 255));
 	//fake ground
 	CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-	CP_Graphics_DrawRect(100, 600, 600, 200);
+	CP_Graphics_DrawRect(platform1.x, platform1.y, platform1.width, platform1.height);
 	//melee_enemy
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
 	CP_Graphics_DrawRect(enemy1.x, enemy1.y, enemy1.width, enemy1.height);

@@ -267,7 +267,7 @@ void Levelboss_Update(void)
 
 	for (int i = 0; i < MAX_TURRET_PROJECTILE; i++) {
 		if (turret_projectiles[i].travelling == 1) {
-			enemy_shoot_projectile(&turret_projectiles[i], &boss_turrets[i], 200);
+			enemy_shoot_projectile(&turret_projectiles[i], &boss_turrets[i], 300);
 		}
 	}
 	if (CP_Input_KeyTriggered(KEY_Q))

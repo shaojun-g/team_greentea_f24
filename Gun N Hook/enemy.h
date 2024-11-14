@@ -9,7 +9,7 @@ enum MELEE_EnemyState { // only 3 states , do nothing , patrolling , attacking/c
 	PATROL,
 	ATTACK
 };
-typedef struct MELEE_Enemy { //square enemy
+typedef struct{ //square enemy
 	int health;
 	float x;
 	float y;
@@ -22,7 +22,7 @@ typedef struct MELEE_Enemy { //square enemy
 	//enum EnemyDir dir;
 }MELEE_Enemy; // end of structs
 //RANGE ENEMY
-typedef struct RANGE_Enemy {
+typedef struct{
 	float x;
 	float y;
 	float width;
@@ -30,7 +30,7 @@ typedef struct RANGE_Enemy {
 	float shoot_posX;
 	float shoot_posY;
 }RANGE_Enemy;
-typedef struct Projectile {
+typedef struct{
 	float x;
 	float y;
 	float diameter;
@@ -40,8 +40,8 @@ typedef struct Projectile {
 
 float midpoint(float p1,float p2);
 void enemy_shoot_projectile(struct Projectile* projectile, struct RANGE_Enemy* enemy, float speed);
-void state_change(struct MELEE_Enemy* enemy,  struct Platform* platform, struct Player* player, float idletoattack_sec,float attactopatrol_sec);
-void EnemyState(struct MELEE_Enemy* e, struct Platform* platform, struct Player* player);
+void state_change(struct MELEE_Enemy* enemy, struct Platform* platform, struct Player* player, float idletoattack_sec,float attactopatrol_sec);
+void EnemyState(struct MELEE_Enemy* e, struct Platform* plat, struct Player* player);
 int playerOnPlat(float playerx, float plat_left_lim, float plat_right_lim);
 
 void Enemy_Init(void);
