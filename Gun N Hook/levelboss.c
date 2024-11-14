@@ -14,15 +14,16 @@
 #include "utils.h"
 #include "levelthree.h"
 #include "enemy.h"
-#include "game.h"
+
 
 Platform platform_base, platform1, platform2, platform3, platform_goal;
 goal goal_start, goal_end;
 healthbar player_health, player_health_background, boss_health, boss_health_background;
 boss boss1;
-enum{NUM_BOSS_TURRETS = 4};
+
+enum { NUM_BOSS_TURRETS = 4 };
 RANGE_Enemy boss_turrets[NUM_BOSS_TURRETS];
-enum{MAX_TURRET_PROJECTILE = 4};
+enum { MAX_TURRET_PROJECTILE = 4 };
 Projectile turret_projectiles[MAX_TURRET_PROJECTILE];
 Player player1;
 CP_Font my_awesome_font;
@@ -31,7 +32,6 @@ float elaspedTime;
 void Levelboss_Init(void)
 {
 	int current_level = 4;
-	elaspedTime = 0;
 	//game window size is (1600, 900)
 	//set all platform color as the same(dark red)
 	platform_base.platform_color = CP_Color_Create(255, 128, 128, 255);
@@ -42,7 +42,6 @@ void Levelboss_Init(void)
 	//set boss color
 	boss1.num_parts = NUM_BOSS_PARTS;
 	//parts 0 is body of the boss
-	//barrel positions are 2 4 6 8
 	boss1.parts[0] = (Platform){ .x = 1500, .y = 397.5, .width = 200, .height = 795, .platform_color = CP_Color_Create(140, 0, 0, 255) };
 	//parts 1-2 is base platform canon
 	boss1.parts[1] = (Platform){ .x = 1375, .y = 770, .width = 50, .height = 30, .platform_color = CP_Color_Create(140, 0, 0, 255) };
@@ -138,25 +137,8 @@ void Levelboss_Init(void)
 	boss_health.y = 850;
 	boss_health.width = 1400.00;
 	boss_health.height = 75.00;
+
 	
-	//debugging
-	//player
-	player1.x = platform_base.x;
-	player1.y = platform_base.y-20;
-	//player1.diameter = 30;
-	player1.width = 30;
-	player1.height = player1.width;
-	player1.on_ground = 1;
-	my_awesome_font = CP_Font_Load("Assets/Exo2-Regular.ttf");
-	// Tells CProcessing to use my_awesome_font for it's future
-	// text drawing operations.
-	CP_Font_Set(my_awesome_font);
-	// Tells CProcessing that when drawing text in the future (via CP_Font_DrawText),
-	// the position given to it is the center of the text horizontally and vertically.
-	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
-	// Tells CProcessing that when drawing text in the future (via CP_Font_DrawText),
-	// We use size 72 font height.
-	CP_Settings_TextSize(72.0f);
 }
 
 void test_debug(void){
@@ -199,6 +181,7 @@ void test_debug(void){
 
 void Levelboss_Update(void)
 {
+
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255)); // clear background to gray
 	//draw goals
 	draw_goal(goal_start);
@@ -208,7 +191,7 @@ void Levelboss_Update(void)
 	draw_platform(platform1);
 	draw_platform(platform2);
 	draw_platform(platform3);
-	//draw_platform(platform_goal); 
+	//draw_platform(platform_goal);
 	//draw boss
 	draw_boss(&boss1);
 	//draw projectile
@@ -230,51 +213,7 @@ void Levelboss_Update(void)
 	draw_healthbar(boss_health);
 	draw_healthbar(boss_health_background);
 	
-	//shoot projectilef
-	//projectile1s
-	//if (player1.on_ground == 1 && (player1.y>= platform_base.y - (player1.width*2) &&  player1.y <= platform_base.y-(player1.width/2))) {
-	//	//printf("PROJECTILE 1_1 FIRE\n");
-	//	turret_projectile1_1.travelling = 1;	
-	//}
-	//if (player1.on_ground == 1 && (player1.y >= platform_base.y - (player1.width * 2) && player1.y <= platform_base.y - (player1.width / 2))) {
-	//	if (turret_projectile1_1.travelling == 1 && turret_projectile1_1.x_pos< 1600/2) {
-	//		//printf("PROJECTILE 1_2 FIRE\n");
-	//		turret_projectile1_2.travelling = 1;
-	//	}
-	//}
-	//if (player1.on_ground == 1 && (player1.y >= platform_base.y - (player1.width * 2) && player1.y <= platform_base.y - (player1.width / 2))) {
-	//	if (turret_projectile1_2.travelling == 1 && turret_projectile1_2.x_pos < 1600 / 2) {
-	//		//printf("PROJECTILE 1_3 FIRE\n");
-	//		turret_projectile1_3.travelling = 1;
-	//	}
-	//}
-	//
-
-	if (player1.on_ground == 1 && (player1.y >= platform_base.y - (player1.width * 2) && player1.y <= platform_base.y - (player1.width / 2))) {
-		turret_projectiles[0].travelling = 1;
-	}
-	if (player1.on_ground == 1 && (player1.y >= platform1.y - (player1.width * 2) && player1.y <= platform1.y - (player1.width / 2))) {
-		turret_projectiles[1].travelling = 1;
-	}
-	if (player1.on_ground == 1 && (player1.y >= platform2.y - (player1.width * 2) && player1.y <= platform2.y - (player1.width / 2))) {
-		turret_projectiles[2].travelling = 1;
-	}
-	if (player1.on_ground == 1 && (player1.y >= platform3.y - (player1.width * 2) && player1.y <= platform3.y - (player1.width / 2))) {
-		turret_projectiles[3].travelling = 1;
-	}
-
 	
-	//turret_projectile1s
-	//if (turret_projectile1_1.travelling == 1) {
-	//	enemy_shoot_projectile(&turret_projectile1_1, &boss_turret1, 5);
-	//}
-	//if (turret_projectile1_2.travelling == 1) {
-	//	enemy_shoot_projectile(&turret_projectile1_2, &boss_turret1, 5);
-	//}
-	//if (turret_projectile1_3.travelling == 1) {
-	//	enemy_shoot_projectile(&turret_projectile1_3, &boss_turret1, 5);
-	//}
-	//
 
 	for (int i = 0; i < MAX_TURRET_PROJECTILE; i++) {
 		if (turret_projectiles[i].travelling == 1) {
@@ -292,9 +231,7 @@ void Levelboss_Update(void)
 	}
 	//when boss is defeated, set a game over and credit scene
 
-	test_debug();
 }
-
 
 void Levelboss_Exit(void)
 {

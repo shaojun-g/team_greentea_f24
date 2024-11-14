@@ -23,5 +23,6 @@
     <ClInclude Include="mainmenu.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="enemy.h" />
+    <ClInclude Include="structs.h" />
   </ItemGroup>
 </Project>

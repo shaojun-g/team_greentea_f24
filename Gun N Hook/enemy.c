@@ -13,6 +13,7 @@
 // -have a shooting point where projectile spawn
 // Copyright ? 2020 DigiPen, All rights reserved.
 //---------------------------------------------------------
+
 #include "enemy.h"
 #include "cprocessing.h"
 #include <stdio.h>
@@ -122,21 +123,21 @@ void state_change(MELEE_Enemy* enemy, Platform* platform, Player* player, float 
 	EnemyState(enemy, platform, player);
 	elapsedTime += CP_System_GetDt();
 	//alternate patrol and idle
-	if (elapsedTime >= idletoattack_sec && enemy->state == IDLE) {
-		if (enemy->state != ATTACK) {
-			enemy->state = PATROL;
+	if (elapsedTime >= 3.0f && enemy1.state == IDLE) {
+		if (enemy1.state != ATTACK) {
+			enemy1.state = PATROL;
 			elapsedTime = 0;
 		}
 	}
-	else if (elapsedTime >= idletoattack_sec && enemy->state == PATROL) {
-		if (enemy->state != ATTACK) {
-			enemy->state = IDLE;
+	else if (elapsedTime >= 3.0f && enemy1.state == PATROL) {
+		if (enemy1.state != ATTACK) {
+			enemy1.state = IDLE;
 			elapsedTime = 0;
 		}
 	}
 	//prevent enemy from stuck at attack state
-	if (elapsedTime >= attactopatrol_sec && enemy->state == ATTACK) {
-		enemy->state = PATROL;
+	if (elapsedTime >= 8.0f && enemy1.state == ATTACK) { 
+		enemy1.state = PATROL;
 		elapsedTime = 0;
 	}
 	//change attack state if player within x(on plat) and y range(not too high or low from plat)
@@ -164,6 +165,7 @@ void Enemy_Update(void) {
 		//movement
 		player1.x += 200* CP_System_GetDt();
 	} // end of check key D
+
 	//background
 	CP_Graphics_ClearBackground(CP_Color_Create(122, 122, 122, 255));
 	//fake ground
@@ -201,4 +203,6 @@ void Enemy_Update(void) {
 	CP_Font_DrawText(buffer, (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 - 300);
 }
 
-void Enemy_Exit(void) {}
+void enemy_exit(void) {
+
+}
