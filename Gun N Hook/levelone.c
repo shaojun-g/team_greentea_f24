@@ -1,11 +1,13 @@
 #include "stdio.h"
+#include "stdbool.h"
 #include "mainmenu.h"
 #include "cprocessing.h"
 #include "utils.h"
 #include "leveltwo.h"
+#include "levelone.h"
 #include "collision_utils.h"
 #include "movement.h"
-#include "stdbool.h"
+
 
 
 
@@ -14,14 +16,18 @@ CP_TEXT_ALIGN_VERTICAL v = CP_TEXT_ALIGN_V_MIDDLE;
 platform platform_base, platform1, platform2, platform_goal, hazard;
 goal goal_start, goal_end;
 healthbar player_health, player_health_background;
-Player player = { 100, 785, 30, 30, 1,{0, 0} };
+Player player;
 Grapple grapple = { 0, 0, 0 };
 
 float collisionCooldown = 0.0f;  // Cooldown timer for on_ground reset
 float collisionCooldownDuration = 0.3f;  // Duration in seconds for cooldown
+int health = 3;
+double dt;
 
 void Levelone_Init(void)
 {
+	
+	
 	//Set font size for all goal texts
 	CP_Settings_TextSize(25.00f);
 	CP_Settings_TextAlignment(h, v);
@@ -88,14 +94,22 @@ void Levelone_Init(void)
 	hazard.y = 750.00;
 	hazard.width = 40.00;
 	hazard.height = 100.00;
+
+	//player values
+	player = (Player){ 100, 785, 30, 30, 1, {0, 0} };
+	health = 3;
+	
+	
 	
 }
 
 
 void Levelone_Update(void)
 {
-	double dt = CP_System_GetDt();
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255)); // clear background to gray
+	dt = CP_System_GetDt();//date time function
+	drawGrapple(&player.x, &player.y, &grapple.x, &grapple.y, dt); //draw grapple
+	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
 	//draw goals
 	draw_goal(goal_start);
 	draw_goal(goal_end);
@@ -107,10 +121,9 @@ void Levelone_Update(void)
 	//draw healthbar (with background)
 	draw_healthbar(player_health_background);
 	draw_healthbar(player_health);
-	//draw player
-	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);
 	//draw hazard 
 	draw_platform(hazard);
+	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground, dt);//start basic movement 
 
 	// Decrease cooldown time
 	if (collisionCooldown > 0.0f) {
@@ -125,6 +138,12 @@ void Levelone_Update(void)
 		// Reset on_ground and start cooldown
 		player.on_ground = 0;
 		collisionCooldown = collisionCooldownDuration;  // Set cooldown timer
+		health -= 1;
+		if (health == 0) {
+			health = 3;
+			
+
+		}
 	}
 
 	if (CP_Input_KeyTriggered(KEY_Q))
@@ -165,11 +184,14 @@ void Levelone_Update(void)
 		gravity(&player.y, &player.velocity.y, dt);
 	}
 	
-	//start basic movement as well as draw grapple
-	drawGrapple(&player.x, &player.y, &grapple.x, &grapple.y, dt);
-	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground, dt);
+	if (CP_Input_KeyTriggered(KEY_P)) {
+		CP_Engine_SetNextGameStateForced(Levelone_Init, Levelone_Update, Levelone_Exit);
+		printf("next state updated");
+	}
 	
 }
+
+
 
 void Levelone_Exit(void)
 {
