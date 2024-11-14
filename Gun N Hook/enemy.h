@@ -1,18 +1,4 @@
 #pragma once
-//struct Platform {
-//	float left_limit;
-//	float right_limit;
-//	float x_pos;
-//	float y_pos;
-//	float width;
-//	float height;
-//};
-//struct Player {
-//	float x_pos;
-//	float y_pos;
-//	float width;
-//	float height;
-//};
 //MELEE enemy
 enum MELEE_EnemyDir { //enemy only face left or right
 	LEFT,
@@ -53,8 +39,8 @@ typedef struct Projectile {
 
 float midpoint(float p1,float p2);
 void enemy_shoot_projectile(struct Projectile* projectile, struct RANGE_Enemy* enemy, float speed);
-void state_change(struct MELEE_Enemy* enemy,float idletoattack_sec,float attactopatrol_sec);
-void EnemyState(struct MELEE_Enemy* e);
+void state_change(struct MELEE_Enemy* enemy,  struct Platform* platform, struct Player* player, float idletoattack_sec,float attactopatrol_sec);
+void EnemyState(struct MELEE_Enemy* e, struct Platform* platform, struct Player* player);
 int playerOnPlat(float playerx, float plat_left_lim, float plat_right_lim);
 
 void Enemy_Init(void);

@@ -132,7 +132,7 @@ void Enemy_Init(void)
 	projectile1.travelling = 1;
 }
 
-void state_change(MELEE_Enemy *enemy,Player *player,Platform *platform,float idletoattack_sec, float attactopatrol_sec) {
+void state_change(MELEE_Enemy *enemy,Platform *platform, Player* player,float idletoattack_sec, float attactopatrol_sec) {
 	EnemyState(enemy, platform, player);
 	dt = CP_System_GetDt();
 	elapsedTime += dt;
@@ -164,7 +164,7 @@ void state_change(MELEE_Enemy *enemy,Player *player,Platform *platform,float idl
 
 void enemy_shoot_projectile(struct Projectile* projectile,struct RANGE_Enemy* enemy , float speed) {
 	dt = CP_System_GetDt();
-	projectile->x_pos -= 1 * speed + dt;
+	projectile->x_pos -= speed * dt;
 	if (projectile->x_pos < 0) {
 		projectile->x_pos = enemy->shoot_posX;
 		projectile->travelling = 0;
