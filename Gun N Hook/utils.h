@@ -5,51 +5,41 @@
 //define dt as time
 
 //initialize all platform structs
-typedef struct Platform {
+typedef struct platform {
 
-	float x;
-	float y;
-	float width;
-	float height;
+	double x;
+	double y;
+	double width;
+	double height;
 	CP_Color platform_color;
-	float left_limit, right_limit;
-} Platform;
 
-
-//int checkgrappleplat() {
-//	if () {
-//		return 1;
-//	}
-//	else {
-//		return 0;
-//	}
-//}
+} platform;
 
 //initialize all goal structs
 typedef struct goal {
 
-	float x;
-	float y;
-	float width;
-	float height;
-	float degrees;
-	float corner_radius;
+	double x;
+	double y;
+	double width;
+	double height;
+	double degrees;
+	double corner_radius;
 	CP_Color goal_color;
 
 }goal;
 
 //initialize healthbar
 typedef struct healthbar {
-	float x;
-	float y;
-	float width;
-	float height;
+	double x;
+	double y;
+	double width;
+	double height;
 	CP_Color rect_color;
 }healthbar;
 
 //initialize boss
 typedef struct boss {
-	Platform parts[NUM_BOSS_PARTS];
+	platform parts[NUM_BOSS_PARTS];
 	int num_parts;
 
 }boss;

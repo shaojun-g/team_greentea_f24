@@ -3,24 +3,17 @@
 #include "cprocessing.h"
 #include "utils.h"
 #include "levelthree.h"
-#include "enemy.h"
-#include "game.h"
 
-Platform platform_base, platform1, platform2, platform3, platform_goal;
+platform platform_base, platform1, platform2, platform3, platform_goal;
 goal goal_start, goal_end;
 healthbar player_health, player_health_background, boss_health, boss_health_background;
 boss boss1;
-enum{NUM_BOSS_TURRETS = 4};
-RANGE_Enemy boss_turrets[NUM_BOSS_TURRETS];
-enum{MAX_TURRET_PROJECTILE = 4};
-Projectile turret_projectiles[MAX_TURRET_PROJECTILE];
-Player player1;
-CP_Font my_awesome_font;
-float elaspedTime;
+
+
+
 void Levelboss_Init(void)
 {
 	int current_level = 4;
-	elaspedTime = 0;
 	//game window size is (1600, 900)
 	//set all platform color as the same(dark red)
 	platform_base.platform_color = CP_Color_Create(255, 128, 128, 255);
@@ -31,36 +24,21 @@ void Levelboss_Init(void)
 	//set boss color
 	boss1.num_parts = NUM_BOSS_PARTS;
 	//parts 0 is body of the boss
-	//barrel positions are 2 4 6 8
-	boss1.parts[0] = (Platform){ .x = 1500, .y = 397.5, .width = 200, .height = 795, .platform_color = CP_Color_Create(140, 0, 0, 255) };
+	boss1.parts[0] = (platform){ .x = 1500, .y = 397.5, .width = 200, .height = 795, .platform_color = CP_Color_Create(140, 0, 0, 255) };
 	//parts 1-2 is base platform canon
-	boss1.parts[1] = (Platform){ .x = 1375, .y = 770, .width = 50, .height = 30, .platform_color = CP_Color_Create(140, 0, 0, 255) };
-	boss1.parts[2] = (Platform){ .x = 1312.5, .y = 770, .width = 75, .height = 15, .platform_color = CP_Color_Create(0, 0, 0, 255) };
+	boss1.parts[1] = (platform){ .x = 1375, .y = 770, .width = 50, .height = 30, .platform_color = CP_Color_Create(140, 0, 0, 255) };
+	boss1.parts[2] = (platform){ .x = 1312.5, .y = 770, .width = 75, .height = 15, .platform_color = CP_Color_Create(0, 0, 0, 255) };
 	//parts 3-4 is first platform canon
-	boss1.parts[3] = (Platform){ .x = 1375, .y = 622.5, .width = 50, .height = 30, .platform_color = CP_Color_Create(140, 0, 0, 255) };
-	boss1.parts[4] = (Platform){ .x = 1312.5, .y = 622.5, .width = 75, .height = 15, .platform_color = CP_Color_Create(0, 0, 0, 255) };
+	boss1.parts[3] = (platform){ .x = 1375, .y = 622.5, .width = 50, .height = 30, .platform_color = CP_Color_Create(140, 0, 0, 255) };
+	boss1.parts[4] = (platform){ .x = 1312.5, .y = 622.5, .width = 75, .height = 15, .platform_color = CP_Color_Create(0, 0, 0, 255) };
 	//parts 5-6 is second platform canon
-	boss1.parts[5] = (Platform){ .x = 1375, .y = 472.5, .width = 50, .height = 30, .platform_color = CP_Color_Create(140, 0, 0, 255) };
-	boss1.parts[6] = (Platform){ .x = 1312.5, .y = 472.5, .width = 75, .height = 15, .platform_color = CP_Color_Create(0, 0, 0, 255) };
+	boss1.parts[5] = (platform){ .x = 1375, .y = 472.5, .width = 50, .height = 30, .platform_color = CP_Color_Create(140, 0, 0, 255) };
+	boss1.parts[6] = (platform){ .x = 1312.5, .y = 472.5, .width = 75, .height = 15, .platform_color = CP_Color_Create(0, 0, 0, 255) };
 	//parts 7-8 is third platform canon
-	boss1.parts[7] = (Platform){ .x = 1375, .y = 322.5, .width = 50, .height = 30, .platform_color = CP_Color_Create(140, 0, 0, 255) };
-	boss1.parts[8] = (Platform){ .x = 1312.5, .y = 322.5, .width = 75, .height = 15, .platform_color = CP_Color_Create(0, 0, 0, 255) };
-	//init boss turret variables turret0=part2,1=4,2=6,3=8
-	for (int i = 0; i < NUM_BOSS_TURRETS; i++) {
-		boss_turrets[i].x_pos = boss1.parts[(i + 1) * 2].x;
-		boss_turrets[i].y_pos = boss1.parts[(i + 1) * 2].y;
-		boss_turrets[i].width = boss1.parts[(i + 1) * 2].width;
-		boss_turrets[i].height = boss1.parts[(i + 1) * 2].height;
-		boss_turrets[i].shoot_posX = boss_turrets[i].x_pos;
-		boss_turrets[i].shoot_posY = boss_turrets[i].y_pos;
-	}// end of for-loop
-	//init projectiles variables
-	for (int i = 0; i < MAX_TURRET_PROJECTILE; i++) {
-		turret_projectiles[i].x_pos = boss_turrets[i].shoot_posX;
-		turret_projectiles[i].y_pos = boss_turrets[i].shoot_posY;
-		turret_projectiles[i].diameter = 15;
-		turret_projectiles[i].travelling = 0;
-	}// end of for-loop
+	boss1.parts[7] = (platform){ .x = 1375, .y = 322.5, .width = 50, .height = 30, .platform_color = CP_Color_Create(140, 0, 0, 255) };
+	boss1.parts[8] = (platform){ .x = 1312.5, .y = 322.5, .width = 75, .height = 15, .platform_color = CP_Color_Create(0, 0, 0, 255) };
+
+
 	//set healthbar color 
 	player_health.rect_color = CP_Color_Create(255, 0, 0, 255);
 	player_health_background.rect_color = CP_Color_Create(255, 0, 0, 100);
@@ -127,69 +105,14 @@ void Levelboss_Init(void)
 	boss_health.y = 850;
 	boss_health.width = 1400.00;
 	boss_health.height = 75.00;
+
 	
-	//debugging
-	//player
-	player1.x = platform_base.x;
-	player1.y = platform_base.y-20;
-	//player1.diameter = 30;
-	player1.width = 30;
-	player1.height = player1.width;
-	player1.on_ground = 1;
-	my_awesome_font = CP_Font_Load("Assets/Exo2-Regular.ttf");
-	// Tells CProcessing to use my_awesome_font for it's future
-	// text drawing operations.
-	CP_Font_Set(my_awesome_font);
-	// Tells CProcessing that when drawing text in the future (via CP_Font_DrawText),
-	// the position given to it is the center of the text horizontally and vertically.
-	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
-	// Tells CProcessing that when drawing text in the future (via CP_Font_DrawText),
-	// We use size 72 font height.
-	CP_Settings_TextSize(72.0f);
 }
 
-void test_debug(void){
-
-	//test debugging turret
-	//player
-	CP_Settings_EllipseMode(CP_POSITION_CENTER);
-	CP_Settings_Fill(CP_Color_Create(140, 0, 0, 255));
-	CP_Graphics_DrawRect(player1.x, player1.y, player1.width, player1.height);
-	//movement
-	if (CP_Input_KeyDown(KEY_A)) { //move left when move left x--
-		//movement
-		player1.x -= 5 + CP_System_GetDt();
-	} // end of check key A
-	else if (CP_Input_KeyDown(KEY_D)) { //move right when move right x++
-		//movement
-		player1.x += 5 + CP_System_GetDt();
-	} // end of check key D
-	//updown
-	if (CP_Input_KeyDown(KEY_W)) { //move up when move left y--
-		//movement
-		player1.y -= 5 + CP_System_GetDt();
-	} // end of check key A
-	else if (CP_Input_KeyDown(KEY_S)) { //move down when move right y++
-		//movement
-		player1.y += 5 + CP_System_GetDt();
-	} // end of check key D
-	// Retrieve the X and Y position of the mouse
-	float mouse_x = CP_Input_GetMouseX();
-	float mouse_y = CP_Input_GetMouseY();
-	// Create an array of characters (aka a string) that can store up to 256 characters.
-	char buffer[256];
-	// Fill the buffer with the text we want.
-	// Notice that it uses a similar syntax as printf()!
-	sprintf_s(buffer, sizeof(buffer), "Player X: %.2f, Player: %.2f", player1.x, player1.y);
-	// Tells CProcessing to use the white color for anything we are drawing on the screen
-	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
-	// Draw the text using the string stored in the buffer in the center of the screen.
-	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
-	CP_Font_DrawText(buffer, (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 - 300);
-}
 
 void Levelboss_Update(void)
 {
+
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255)); // clear background to gray
 	//draw goals
 	draw_goal(goal_start);
@@ -199,21 +122,9 @@ void Levelboss_Update(void)
 	draw_platform(platform1);
 	draw_platform(platform2);
 	draw_platform(platform3);
-	//draw_platform(platform_goal); 
+	//draw_platform(platform_goal);
 	//draw boss
 	draw_boss(&boss1);
-	//draw projectile
-	for (int i = 0; i < MAX_TURRET_PROJECTILE; i++) {
-		CP_Settings_EllipseMode(CP_POSITION_CENTER);
-		CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-		CP_Graphics_DrawCircle(turret_projectiles[i].x_pos, turret_projectiles[i].y_pos, turret_projectiles[i].diameter);
-	}
-	////
-	//CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-	//CP_Graphics_DrawCircle(turret_projectiles[0].x_pos, turret_projectiles[0].y_pos, turret_projectiles[0].diameter);
-	//CP_Graphics_DrawCircle(turret_projectiles[1].x_pos, turret_projectiles[1].y_pos, turret_projectiles[1].diameter);
-	//CP_Graphics_DrawCircle(turret_projectiles[2].x_pos, turret_projectiles[2].y_pos, turret_projectiles[2].diameter);
-	//CP_Graphics_DrawCircle(turret_projectiles[3].x_pos, turret_projectiles[3].y_pos, turret_projectiles[3].diameter);
 	//draw healthbar (with background)
 	//draw in update and update values of health during combat
 	draw_healthbar(player_health_background);
@@ -221,57 +132,8 @@ void Levelboss_Update(void)
 	draw_healthbar(boss_health);
 	draw_healthbar(boss_health_background);
 	
-	//shoot projectilef
-	//projectile1s
-	//if (player1.on_ground == 1 && (player1.y>= platform_base.y - (player1.width*2) &&  player1.y <= platform_base.y-(player1.width/2))) {
-	//	//printf("PROJECTILE 1_1 FIRE\n");
-	//	turret_projectile1_1.travelling = 1;	
-	//}
-	//if (player1.on_ground == 1 && (player1.y >= platform_base.y - (player1.width * 2) && player1.y <= platform_base.y - (player1.width / 2))) {
-	//	if (turret_projectile1_1.travelling == 1 && turret_projectile1_1.x_pos< 1600/2) {
-	//		//printf("PROJECTILE 1_2 FIRE\n");
-	//		turret_projectile1_2.travelling = 1;
-	//	}
-	//}
-	//if (player1.on_ground == 1 && (player1.y >= platform_base.y - (player1.width * 2) && player1.y <= platform_base.y - (player1.width / 2))) {
-	//	if (turret_projectile1_2.travelling == 1 && turret_projectile1_2.x_pos < 1600 / 2) {
-	//		//printf("PROJECTILE 1_3 FIRE\n");
-	//		turret_projectile1_3.travelling = 1;
-	//	}
-	//}
-	//
-
-	if (player1.on_ground == 1 && (player1.y >= platform_base.y - (player1.width * 2) && player1.y <= platform_base.y - (player1.width / 2))) {
-		turret_projectiles[0].travelling = 1;
-	}
-	if (player1.on_ground == 1 && (player1.y >= platform1.y - (player1.width * 2) && player1.y <= platform1.y - (player1.width / 2))) {
-		turret_projectiles[1].travelling = 1;
-	}
-	if (player1.on_ground == 1 && (player1.y >= platform2.y - (player1.width * 2) && player1.y <= platform2.y - (player1.width / 2))) {
-		turret_projectiles[2].travelling = 1;
-	}
-	if (player1.on_ground == 1 && (player1.y >= platform3.y - (player1.width * 2) && player1.y <= platform3.y - (player1.width / 2))) {
-		turret_projectiles[3].travelling = 1;
-	}
-
 	
-	//turret_projectile1s
-	//if (turret_projectile1_1.travelling == 1) {
-	//	enemy_shoot_projectile(&turret_projectile1_1, &boss_turret1, 5);
-	//}
-	//if (turret_projectile1_2.travelling == 1) {
-	//	enemy_shoot_projectile(&turret_projectile1_2, &boss_turret1, 5);
-	//}
-	//if (turret_projectile1_3.travelling == 1) {
-	//	enemy_shoot_projectile(&turret_projectile1_3, &boss_turret1, 5);
-	//}
-	//
 
-	for (int i = 0; i < MAX_TURRET_PROJECTILE; i++) {
-		if (turret_projectiles[i].travelling == 1) {
-			enemy_shoot_projectile(&turret_projectiles[i], &boss_turrets[i], 200);
-		}
-	}
 	if (CP_Input_KeyTriggered(KEY_Q))
 	{
 		CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit); // exit using Q
@@ -283,9 +145,7 @@ void Levelboss_Update(void)
 	}
 	//when boss is defeated, set a game over and credit scene
 
-	test_debug();
 }
-
 
 void Levelboss_Exit(void)
 {

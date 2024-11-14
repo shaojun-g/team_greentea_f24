@@ -4,7 +4,6 @@
 #include "mainmenu.h"
 #include "movement.h"
 #include "collision_utils.h"
-#include "game.h"
 
 
 
@@ -17,7 +16,7 @@ void Game_Init(void)
 
 void Game_Update(void)
 {
-	float dt = CP_System_GetDt();
+	double dt = CP_System_GetDt();
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255));
 
 	if (CP_Input_KeyTriggered(KEY_Q))
