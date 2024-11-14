@@ -41,47 +41,83 @@ struct Bullet bullets[50];
 /*--------------------------------------------------------------------------------------------------------------------------------*/
 
 //	include enemy structs here
-
+//MELEE enemy
+enum MELEE_EnemyDir { //enemy only face left or right
+	LEFT,
+	RIGHT
+};
+enum MELEE_EnemyState { // only 3 states , do nothing , patrolling , attacking/chasing same thing
+	IDLE,
+	PATROL,
+	ATTACK
+};
+typedef struct { //square enemy
+	int health;
+	float x;
+	float y;
+	float width;
+	float height;
+	float speed;
+	enum MELEE_EnemyState state;
+	enum MELEE_EnemyDir dir;
+	//enum EnemyDir dir;
+}MELEE_Enemy; // end of struct
+//RANGE ENEMY
+typedef struct {
+	float x;
+	float y;
+	float width;
+	float height;
+	float shoot_posX;
+	float shoot_posY;
+}RANGE_Enemy;
+typedef struct {
+	float x;
+	float y;
+	float diameter;
+	float speed;
+	int travelling;
+}Projectile;
 /*--------------------------------------------------------------------------------------------------------------------------------*/
 //	LEVEL & UI STRUCTS
 /*--------------------------------------------------------------------------------------------------------------------------------*/
 
 //initialize all platform structs
 typedef struct Platform {
-
-	double x;
-	double y;
-	double width;
-	double height;
+	float x;
+	float y;
+	float width;
+	float height;
 	CP_Color platform_color;
-
+	float left_limit;
+	float right_limit;
 } Platform;
 
 //initialize all goal structs
-typedef struct goal {
+typedef struct Goal {
 
-	double x;
-	double y;
-	double width;
-	double height;
-	double degrees;
-	double corner_radius;
+	float x;
+	float y;
+	float width;
+	float height;
+	float degrees;
+	float corner_radius;
 	CP_Color goal_color;
 
-}goal;
+}Goal;
 
 //initialize healthbar
-typedef struct healthbar {
-	double x;
-	double y;
-	double width;
-	double height;
+typedef struct Healthbar {
+	float x;
+	float y;
+	float width;
+	float height;
 	CP_Color rect_color;
-}healthbar;
+}Healthbar;
 
 //initialize boss
-typedef struct boss {
+typedef struct Boss {
 	Platform parts[9];
 	int num_parts;
 
-}boss;
+}Boss;

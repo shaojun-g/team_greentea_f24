@@ -7,27 +7,21 @@
 #include "levelone.h"
 #include "collision_utils.h"
 #include "movement.h"
-
-
-
+#include "structs.h"
 
 CP_TEXT_ALIGN_HORIZONTAL h = CP_TEXT_ALIGN_H_CENTER;
 CP_TEXT_ALIGN_VERTICAL v = CP_TEXT_ALIGN_V_MIDDLE;
-platform platform_base, platform1, platform2, platform_goal, hazard;
-goal goal_start, goal_end;
-healthbar player_health, player_health_background;
+Platform platform_base, platform1, platform2, platform_goal, hazard;
+Goal goal_start, goal_end;
+Healthbar player_health, player_health_background;
 Player player;
 Grapple grapple = { 0, 0, 0 };
-
 float collisionCooldown = 0.0f;  // Cooldown timer for on_ground reset
 float collisionCooldownDuration = 0.3f;  // Duration in seconds for cooldown
 int health = 3;
-double dt;
-
+float dt;
 void Levelone_Init(void)
 {
-	
-	
 	//Set font size for all goal texts
 	CP_Settings_TextSize(25.00f);
 	CP_Settings_TextAlignment(h, v);
@@ -96,7 +90,7 @@ void Levelone_Init(void)
 	hazard.height = 100.00;
 
 	//player values
-	player = (Player){ 100, 785, 30, 30, 1, {0, 0} };
+	player = (Player){ 100, 785, 30, 30, 3, 1, {0, 0} };
 	health = 3;
 	
 	

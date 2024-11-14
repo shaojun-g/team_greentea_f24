@@ -20,8 +20,9 @@
 #include "utils.h"
 #include "game.h"
 #include "movement.h"
- MELEE_Enemy enemy1;
- RANGE_Enemy enemy2;
+#include "structs.h"
+MELEE_Enemy enemy1;
+RANGE_Enemy enemy2;
 //struct Platform platform1;
 //struct Player player1;
 Player player1;
@@ -203,6 +204,6 @@ void Enemy_Update(void) {
 	CP_Font_DrawText(buffer, (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 - 300);
 }
 
-void enemy_exit(void) {
+void Enemy_Exit(void) {
 
 }

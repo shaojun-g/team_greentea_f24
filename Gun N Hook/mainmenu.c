@@ -2,9 +2,10 @@
 #include <stdio.h>
 #include "utils.h"
 #include "levelone.h"
+#include "structs.h"
 
 CP_Font myFont;
-double textSize;
+float textSize;
 
 
 void Main_Menu_Init(void)
@@ -17,11 +18,11 @@ void Main_Menu_Init(void)
 void Main_Menu_Update(void)
 {
     // set rectangle x & y position 
-    double xRect = CP_System_GetWindowWidth() / 2.0f;
-    double yRect1 = CP_System_GetWindowHeight() / 4.0f;
-    double yRect2 = CP_System_GetWindowHeight() / 1.4f;
-    double rectW = CP_System_GetWindowWidth() / 5.0f;
-    double rectH = CP_System_GetWindowHeight() / 5.0f;
+    float xRect = CP_System_GetWindowWidth() / 2.0f;
+    float yRect1 = CP_System_GetWindowHeight() / 4.0f;
+    float yRect2 = CP_System_GetWindowHeight() / 1.4f;
+    float rectW = CP_System_GetWindowWidth() / 5.0f;
+    float rectH = CP_System_GetWindowHeight() / 5.0f;
 
     // set the background color to gray
     CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255));

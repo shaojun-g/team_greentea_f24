@@ -4,12 +4,12 @@
 #include "cprocessing.h"
 #include "utils.h"
 #include "levelboss.h"
+#include "structs.h"
 
-
-platform platform_base, platform1, platform2, platform3, platform4, platform_goal;
-platform platform_enemy1, platform_enemy2, platform_enemy3;
-goal goal_start, goal_end;
-healthbar player_health, player_health_background;
+Platform platform_base, platform1, platform2, platform3, platform4, platform_goal;
+Platform platform_enemy1, platform_enemy2, platform_enemy3;
+Goal goal_start, goal_end;
+Healthbar player_health, player_health_background;
 
 void Levelthree_Init(void)
 {

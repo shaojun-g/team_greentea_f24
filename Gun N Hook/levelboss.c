@@ -14,12 +14,12 @@
 #include "utils.h"
 #include "levelthree.h"
 #include "enemy.h"
-
+#include "structs.h"
 
 Platform platform_base, platform1, platform2, platform3, platform_goal;
-goal goal_start, goal_end;
-healthbar player_health, player_health_background, boss_health, boss_health_background;
-boss boss1;
+Goal goal_start, goal_end;
+Healthbar player_health, player_health_background, boss_health, boss_health_background;
+Boss boss1;
 
 enum { NUM_BOSS_TURRETS = 4 };
 RANGE_Enemy boss_turrets[NUM_BOSS_TURRETS];
