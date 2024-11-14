@@ -13,12 +13,21 @@
 #include "cprocessing.h"
 #include "utils.h"
 #include "levelthree.h"
+#include "enemy.h"
 
-platform platform_base, platform1, platform2, platform3, platform_goal;
+
+Platform platform_base, platform1, platform2, platform3, platform_goal;
 goal goal_start, goal_end;
 healthbar player_health, player_health_background, boss_health, boss_health_background;
 boss boss1;
 
+enum { NUM_BOSS_TURRETS = 4 };
+RANGE_Enemy boss_turrets[NUM_BOSS_TURRETS];
+enum { MAX_TURRET_PROJECTILE = 4 };
+Projectile turret_projectiles[MAX_TURRET_PROJECTILE];
+Player player1;
+CP_Font my_awesome_font;
+float elaspedTime;
 
 
 void Levelboss_Init(void)
@@ -34,16 +43,16 @@ void Levelboss_Init(void)
 	//set boss color
 	boss1.num_parts = NUM_BOSS_PARTS;
 	//parts 0 is body of the boss
-	boss1.parts[0] = (platform){ .x = 1500, .y = 397.5, .width = 200, .height = 795, .platform_color = CP_Color_Create(140, 0, 0, 255) };
+	boss1.parts[0] = (Platform){ .x = 1500, .y = 397.5, .width = 200, .height = 795, .platform_color = CP_Color_Create(140, 0, 0, 255) };
 	//parts 1-2 is base platform canon
-	boss1.parts[1] = (platform){ .x = 1375, .y = 770, .width = 50, .height = 30, .platform_color = CP_Color_Create(140, 0, 0, 255) };
-	boss1.parts[2] = (platform){ .x = 1312.5, .y = 770, .width = 75, .height = 15, .platform_color = CP_Color_Create(0, 0, 0, 255) };
+	boss1.parts[1] = (Platform){ .x = 1375, .y = 770, .width = 50, .height = 30, .platform_color = CP_Color_Create(140, 0, 0, 255) };
+	boss1.parts[2] = (Platform){ .x = 1312.5, .y = 770, .width = 75, .height = 15, .platform_color = CP_Color_Create(0, 0, 0, 255) };
 	//parts 3-4 is first platform canon
-	boss1.parts[3] = (platform){ .x = 1375, .y = 622.5, .width = 50, .height = 30, .platform_color = CP_Color_Create(140, 0, 0, 255) };
-	boss1.parts[4] = (platform){ .x = 1312.5, .y = 622.5, .width = 75, .height = 15, .platform_color = CP_Color_Create(0, 0, 0, 255) };
+	boss1.parts[3] = (Platform){ .x = 1375, .y = 622.5, .width = 50, .height = 30, .platform_color = CP_Color_Create(140, 0, 0, 255) };
+	boss1.parts[4] = (Platform){ .x = 1312.5, .y = 622.5, .width = 75, .height = 15, .platform_color = CP_Color_Create(0, 0, 0, 255) };
 	//parts 5-6 is second platform canon
-	boss1.parts[5] = (platform){ .x = 1375, .y = 472.5, .width = 50, .height = 30, .platform_color = CP_Color_Create(140, 0, 0, 255) };
-	boss1.parts[6] = (platform){ .x = 1312.5, .y = 472.5, .width = 75, .height = 15, .platform_color = CP_Color_Create(0, 0, 0, 255) };
+	boss1.parts[5] = (Platform){ .x = 1375, .y = 472.5, .width = 50, .height = 30, .platform_color = CP_Color_Create(140, 0, 0, 255) };
+	boss1.parts[6] = (Platform){ .x = 1312.5, .y = 472.5, .width = 75, .height = 15, .platform_color = CP_Color_Create(0, 0, 0, 255) };
 	//parts 7-8 is third platform canon
 	boss1.parts[7] = (Platform){ .x = 1375, .y = 322.5, .width = 50, .height = 30, .platform_color = CP_Color_Create(140, 0, 0, 255) };
 	boss1.parts[8] = (Platform){ .x = 1312.5, .y = 322.5, .width = 75, .height = 15, .platform_color = CP_Color_Create(0, 0, 0, 255) };

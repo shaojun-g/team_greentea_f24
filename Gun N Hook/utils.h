@@ -5,7 +5,7 @@
 //define dt as time
 
 //initialize all platform structs
-typedef struct platform {
+typedef struct Platform {
 
 	double x;
 	double y;
@@ -13,7 +13,7 @@ typedef struct platform {
 	double height;
 	CP_Color platform_color;
 
-} platform;
+} Platform;
 
 //initialize all goal structs
 typedef struct goal {
