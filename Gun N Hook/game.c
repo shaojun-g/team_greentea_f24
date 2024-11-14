@@ -6,31 +6,38 @@
 #include "collision_utils.h"
 
 typedef struct {
-	double x, y;  // x and y components of the velocity
+	float x, y;  // x and y components of the velocity
 } Velocity;
 
 // Define a struct for Player
 typedef struct {
-	double x, y;  // x and y coordinates of the player position
+	float x, y;  // x and y coordinates of the player position
 	int on_ground;
 	Velocity velocity;  // Nested struct for velocity
 } Player;
 
 typedef struct {
-	double x, y;  // x and y components of the velocity
-	double on_wall;
+	float x, y;  // x and y components of the velocity
+	float on_wall;
 } Grapple;
 
-Player player = { 100, 700, 1,{0, 0} };
-Grapple grapple = { 0, 0, 0 };
+
+#define PLATFORM_SIZE 2
+Player player;
+Grapple grapple;
+platform platforms[PLATFORM_SIZE];
 
 void Game_Init(void)
 {
+	player = (Player){ 500, 200, 1,{0, 0} };
+	grapple = (Grapple){ 0, 0, 0 };
+	platforms[0] = (platform){ CP_System_GetWindowWidth() / 2 , 800.00, CP_System_GetWindowWidth(), 100.00,CP_Color_Create(255, 128, 128, 255)};
+	platforms[1] = (platform){ CP_System_GetWindowWidth() / 2, 400.00, CP_System_GetWindowWidth()/4, 100.00, CP_Color_Create(255, 128, 128, 255)};
 }
 
 void Game_Update(void)
 {
-	double dt = CP_System_GetDt();
+	float dt = CP_System_GetDt();
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255));
 
 	if (CP_Input_KeyTriggered(KEY_Q))
@@ -42,18 +49,23 @@ void Game_Update(void)
 	CP_Graphics_DrawCircle(player.x, player.y, 100);
 	CP_Settings_RectMode(CP_POSITION_CENTER);
 	CP_Settings_NoStroke();
-	CP_Graphics_DrawRect(CP_System_GetWindowWidth() / 2 , 800.00, CP_System_GetWindowWidth(), 10.00);
-	CP_Graphics_DrawRect(CP_System_GetWindowWidth() / 2, 400.00, CP_System_GetWindowWidth(), 10.00);
+	//CP_Graphics_DrawRect(CP_System_GetWindowWidth() / 2 , 800.00, CP_System_GetWindowWidth(), 10.00);
+	//CP_Graphics_DrawRect(CP_System_GetWindowWidth() / 2, 400.00, CP_System_GetWindowWidth(), 10.00);
+	for (int i = 0; i < PLATFORM_SIZE; i++) {
+		CP_Settings_Fill(platforms[i].platform_color);
+		CP_Graphics_DrawRect(platforms[i].x, platforms[i].y, platforms[i].width, platforms[i].height);
 
-	if (c_rect_rect(player.x, player.y, 100, 100, (CP_System_GetWindowWidth() / 2), 800.00, (CP_System_GetWindowWidth()), 10.00 )) {
-		player.velocity.y = 0;
-		player.on_ground = 1;
+		if (c_rect_rect(player.x, player.y, 100, 100, platforms[i].x, platforms[i].y, platforms[i].width, platforms[i].height)) {
+			player.velocity.y = 0;
+			player.on_ground = 1;
+		};
 	}
+
 	if (player.on_ground != 1) {
 		gravity(&player.y, &player.velocity.y, dt);
 	}
 	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground, dt);
-	drawGrapple(&player.x, &player.y, &grapple.x, &grapple.y, dt);
+	drawGrapple(&player.x, &player.y, &grapple.x, &grapple.y, &platforms, PLATFORM_SIZE, dt);
 
 }
 
