@@ -4,19 +4,25 @@
 #include "mainmenu.h"
 #include "movement.h"
 #include "collision_utils.h"
+#include "structs.h"
 
 
-
-Player player1;
-Grapple grapple1 = { 0, 0, 0 };
+#define PLATFORM_SIZE 2
+Player player;
+Grapple grapple = { 0, 0, 0 };
+Platform platforms[PLATFORM_SIZE];
 
 void Game_Init(void)
 {
+	player = (Player){ 500, 200, 100, 100,3, 1,{0, 0} };
+	grapple = (Grapple){ 0, 0, 0 };
+	platforms[0] = (Platform){ CP_System_GetWindowWidth() / 2 , 800.00, CP_System_GetWindowWidth(), 100.00,CP_Color_Create(255, 128, 128, 255)};
+	platforms[1] = (Platform){ CP_System_GetWindowWidth() / 2, 400.00, CP_System_GetWindowWidth()/4, 100.00, CP_Color_Create(255, 128, 128, 255)};
 }
 
 void Game_Update(void)
 {
-	double dt = CP_System_GetDt();
+	float dt = CP_System_GetDt();
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255));
 
 	if (CP_Input_KeyTriggered(KEY_Q))
@@ -25,21 +31,26 @@ void Game_Update(void)
 	}
 
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
-	CP_Graphics_DrawCircle(player1.x, player1.y, 10);
+	CP_Graphics_DrawCircle(player.x, player.y, player.width);
 	CP_Settings_RectMode(CP_POSITION_CENTER);
 	CP_Settings_NoStroke();
-	CP_Graphics_DrawRect(CP_System_GetWindowWidth() / 2 , 800.00, CP_System_GetWindowWidth(), 10.00);
-	CP_Graphics_DrawRect(CP_System_GetWindowWidth() / 2, 400.00, CP_System_GetWindowWidth(), 10.00);
+	//CP_Graphics_DrawRect(CP_System_GetWindowWidth() / 2 , 800.00, CP_System_GetWindowWidth(), 10.00);
+	//CP_Graphics_DrawRect(CP_System_GetWindowWidth() / 2, 400.00, CP_System_GetWindowWidth(), 10.00);
+	for (int i = 0; i < PLATFORM_SIZE; i++) {
+		CP_Settings_Fill(platforms[i].platform_color);
+		CP_Graphics_DrawRect(platforms[i].x, platforms[i].y, platforms[i].width, platforms[i].height);
 
-	if (c_rect_rect(player1.x, player1.y, 100, 100, (CP_System_GetWindowWidth() / 2), 800.00, (CP_System_GetWindowWidth()), 10.00 )) {
-		player1.velocity.y = 0;
-		player1.on_ground = 1;
+		if (c_rect_rect(player.x, player.y, 100, 100, platforms[i].x, platforms[i].y, platforms[i].width, platforms[i].height)) {
+			player.velocity.y = 0;
+			player.on_ground = 1;
+		};
 	}
-	if (player1.on_ground != 1) {
-		gravity(&player1.y, &player1.velocity.y, dt);
+
+	if (player.on_ground != 1) {
+		gravity(&player.y, &player.velocity.y, dt);
 	}
-	basic_movement(&player1.x, &player1.y, &player1.velocity.x, &player1.velocity.y, &player1.on_ground, dt);
-	drawGrapple(&player1.x, &player1.y, &grapple1.x, &grapple1.y, dt);
+	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground, dt);
+	drawGrapple(&player.x, &player.y, &grapple.x, &grapple.y, &platforms, PLATFORM_SIZE, dt);
 
 }
 
