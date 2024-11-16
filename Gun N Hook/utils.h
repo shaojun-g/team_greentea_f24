@@ -8,8 +8,8 @@ int IsCircleClicked(float circle_center_x, float circle_center_y, float diameter
 //all used funct
 int AreCircles_GoalIntersecting(float circle_x, float circle_y, float radius, float rect_x, float rect_y, float rect_width, float rect_height);
 void draw_platform(Platform platform);
-void draw_goal(goal goal);
-void draw_boss(boss* boss);
+void draw_goal(Goal goal);
+void draw_boss(Boss* boss);
 void Restart_Level();
 void goal_function();
 void ApplyElasticCollision(Player* player, Platform hazard, float restitution);
