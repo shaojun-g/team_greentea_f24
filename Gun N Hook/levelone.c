@@ -14,7 +14,7 @@
 
 CP_TEXT_ALIGN_HORIZONTAL h = CP_TEXT_ALIGN_H_CENTER;
 CP_TEXT_ALIGN_VERTICAL v = CP_TEXT_ALIGN_V_MIDDLE;
-Platform platform_base, platform1, platform2, platform_goal, hazard;
+Platform hazard;
 Platform platform[PLATFORM_SIZE];
 Goal goal_start, goal_end;
 Healthbar player_health, player_health_background;

@@ -1,55 +1,45 @@
 #include "stdio.h"
+#include "stdbool.h"
 #include "mainmenu.h"
 #include "cprocessing.h"
 #include "utils.h"
+#include "leveltwo.h"
+#include "levelone.h"
+#include "collision_utils.h"
+#include "movement.h"
+#include "enemy.h"
 #include "levelthree.h"
-#include "structs.h"
 
+
+#define PLATFORM_SIZE 5
 Platform platform_base, platform1, platform2, platform3, platform_goal;
+Platform platform[PLATFORM_SIZE];
+Player player;
 Goal goal_start, goal_end;
 Healthbar player_health, player_health_background;
+float dt;
 
 void Leveltwo_Init(void)
 {
 	//game window size is (1600, 900)
 	//set all platform color as the same(dark red)
-	platform_base.platform_color = CP_Color_Create(255, 128, 128, 255);
-	platform1.platform_color = CP_Color_Create(255, 128, 128, 255);
-	platform2.platform_color = CP_Color_Create(255, 128, 128, 255);
-	platform3.platform_color = CP_Color_Create(255, 128, 128, 255);
-	platform_goal.platform_color = CP_Color_Create(255, 128, 128, 255);
 	//set healthbar color 
 	player_health.rect_color = CP_Color_Create(255, 0, 0, 255);
 	player_health_background.rect_color = CP_Color_Create(255, 0, 0, 100);
 	//platform_base is the ground 
-	platform_base.x = CP_System_GetWindowWidth() / 2;
-	platform_base.y = 800.00;
-	platform_base.width = CP_System_GetWindowWidth();
-	platform_base.height = 10.00;
+	platform[0] = (Platform){ CP_System_GetWindowWidth() / 2 , 800.00, CP_System_GetWindowWidth(), 15.00,CP_Color_Create(255, 128, 128, 255) };
 	//platform1 is first platform
 	//all platforms increment at y coordinates by 150.00f
 	//all platforms increment at x coordinates by minimum 200.00f
 	//default platforms will have 150.00f as width and 15.00f as height
-	platform1.x = 600.00;
-	platform1.y = 650.00;
-	platform1.width = 250.00;
-	platform1.height = 15.00;
+	platform[1] = (Platform){ 600.00 , 650.00, 250.00, 15.00, CP_Color_Create(255, 128, 128, 255) };
 	//platform2 is second platform
-	platform2.x = 800.00;
-	platform2.y = 500.00;
-	platform2.width = 250.00;
-	platform2.height = 15.00;
+	platform[2] = (Platform){ 800.00 , 500.00, 250.00, 15.00, CP_Color_Create(255, 128, 128, 255) };
 	//platform3 is third platform
-	platform3.x = 1000.00;
-	platform3.y = 350.00;
-	platform3.width = 250.00;
-	platform3.height = 15.00;
+	platform[3] = (Platform){ 1000.00 , 350.00, 250.00, 15.00, CP_Color_Create(255, 128, 128, 255) };
 	//platform goal will be where user gets to head to next level
 	//default platform goal width will be 250.00f
-	platform_goal.x = 1475.00;
-	platform_goal.y = 200.00;
-	platform_goal.width = 250.00;
-	platform_goal.height = 15.00;
+	platform[4] = (Platform){ 1475.00 , 200.00, 250.00, 15.00, CP_Color_Create(255, 128, 128, 255) };
 	//start goal will be where user spawns
 	goal_start.x = 100.00;
 	goal_start.y = 765.00;
@@ -72,22 +62,37 @@ void Leveltwo_Init(void)
 	player_health_background.y = 50.00;
 	player_health_background.width = 300.00;
 	player_health_background.height = 20.00;
+
+	//player values
+	player = (Player){ 100, 785, 30, 30, 3, 1, {0, 0} };
+	
 }
 
 
 void Leveltwo_Update(void)
 {
-
+	dt = CP_System_GetDt();//date time function
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255)); // clear background to gray
 	//draw goals
 	draw_goal(goal_start);
 	draw_goal(goal_end);
 	//draw all platforms
-	draw_platform(platform_base);
-	draw_platform(platform1);
-	draw_platform(platform2);
-	draw_platform(platform3);
-	draw_platform(platform_goal);
+	//draw all platforms
+	for (int i = 0; i < PLATFORM_SIZE; i++) {
+		draw_platform(platform[i]);
+
+		if (c_rect_rect(player.x, player.y, player.width, player.height, platform[i].x, platform[i].y, platform[i].width, platform[i].height)) {
+			player.velocity.y = 0;
+			player.on_ground = 1;
+		}
+	}
+	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
+	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground, dt);//start basic movement 
+
+	if (player.on_ground != 1) {
+		gravity(&player.y, &player.velocity.y, dt);
+	}
+	
 	//draw healthbar (with background)
 	//draw_healthbar(player_health_background);
 	draw_healthbar(player_health_background);
