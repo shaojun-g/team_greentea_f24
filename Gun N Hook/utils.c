@@ -134,7 +134,6 @@ void ApplyElasticCollision(Player* player, Platform hazard, float restitution) {
 
 	// Check which side the collision occurred and adjust player position and velocity
 	if (player_right > hazard_left && player_left < hazard_right) {
-		
 		 // Check if the player is moving right and collides with the left side of the hazard
 		if (player->velocity.x >= 0 && player_right > hazard_left && player_left < hazard_left) {
 			printf("1");
@@ -150,7 +149,7 @@ void ApplyElasticCollision(Player* player, Platform hazard, float restitution) {
 			player->velocity.x *= -restitution;
 		}
 	}
-
+	
 	if (player_bottom > hazard_top && player_top < hazard_bottom) {
 		if (player->velocity.y > 0 && player_bottom - hazard_top < player->height) { 
 			// Collision on the top
