@@ -14,16 +14,17 @@
 
 CP_TEXT_ALIGN_HORIZONTAL h = CP_TEXT_ALIGN_H_CENTER;
 CP_TEXT_ALIGN_VERTICAL v = CP_TEXT_ALIGN_V_MIDDLE;
-Platform hazard;
+MELEE_Enemy hazard;
 Platform platform[PLATFORM_SIZE];
 Goal goal_start, goal_end;
 Healthbar player_health, player_health_background;
 Player player;
 Grapple grapple1 = { 0, 0, 0 };
-float collisionCooldown = 0.0f;  // Cooldown timer for on_ground reset
-float collisionCooldownDuration = 0.3f;  // Duration in seconds for cooldown
-int health = 3;
+collisionCooldown = 0.0f;  // Cooldown timer for on_ground reset
+collisionCooldownDuration = 0.3f;  // Duration in seconds for cooldown
 float dt;
+float elapsed_time; 
+
 void Levelone_Init(void)
 {
 	//ben stuff
@@ -34,7 +35,6 @@ void Levelone_Init(void)
 	CP_Settings_TextAlignment(h, v);
 	//game window size is (1600, 900)
 	//set all platform color as the same(dark red)
-	hazard.platform_color = CP_Color_Create(255, 128, 128, 255);
 	//set healthbar color 
 	player_health.rect_color = CP_Color_Create(255, 0, 0, 255);
 	player_health_background.rect_color = CP_Color_Create(255, 0, 0, 100);
@@ -81,8 +81,8 @@ void Levelone_Init(void)
 	hazard.height = 100.00;
 
 	//player values
-	player = (Player){ 100, 785, 30, 30, 3, 1, {0, 0} };
-	health = 3;
+	player = (Player){ 100, 785, 30, 30, 5, 1, {0, 0} };
+	
 }
 
 
@@ -108,7 +108,8 @@ void Levelone_Update(void)
 	draw_healthbar(player_health_background);
 	draw_healthbar(player_health);
 	//draw hazard 
-	draw_platform(hazard);
+	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255)); // Red color
+	CP_Graphics_DrawRect(hazard.x, hazard.y, hazard.width, hazard.height);
 	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground, dt);//start basic movement 
 	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
 
@@ -120,24 +121,6 @@ void Levelone_Update(void)
 
 	if (player.on_ground != 1) {
 		gravity(&player.y, &player.velocity.y, dt);
-	}
-	
-	// Check for game over (player collision with hazard)
-	if (c_rect_rect(player.x, player.y, player.width, player.height, hazard.x, hazard.y, hazard.width, hazard.height)) {
-		printf("Player-Hazard Collision Detected\n");
-		printf("Player Position: x=%.2f, y=%.2f, Velocity: x=%.2f, y=%.2f\n", player.x, player.y, player.velocity.x, player.velocity.y);
-		// Apply elastic collision
-		ApplyElasticCollision(&player, hazard, 1.f);
-		printf("After Collision: x=%.2f, y=%.2f, Velocity: x=%.2f, y=%.2f\n", player.x, player.y, player.velocity.x, player.velocity.y);
-		// Reset on_ground and start cooldown
-		player.on_ground = 0;
-		collisionCooldown = collisionCooldownDuration;  // Set cooldown timer
-		health -= 1;
-		if (health == 0) {
-			health = 3;
-			CP_Engine_SetNextGameStateForced(Levelone_Init, Levelone_Update, Levelone_Exit);
-			printf("next state updated");
-		}
 	}
 
 	if (CP_Input_KeyTriggered(KEY_Q))
@@ -157,6 +140,26 @@ void Levelone_Update(void)
 		}
 	}
 
+	
+	// Check for game over (player collision with hazard)
+	if (c_rect_rect(player.x, player.y, player.width, player.height, hazard.x, hazard.y, hazard.width, hazard.height)) {
+		printf("Player-Hazard Collision Detected\n");
+		printf("Player Position: x=%.2f, y=%.2f, Velocity: x=%.2f, y=%.2f\n", player.x, player.y, player.velocity.x, player.velocity.y);
+		// Apply elastic collision
+		ApplyElasticCollision(&player, hazard, 1.f);
+		printf("After Collision: x=%.2f, y=%.2f, Velocity: x=%.2f, y=%.2f\n", player.x, player.y, player.velocity.x, player.velocity.y);
+		// Reset on_ground and start cooldown
+		player.on_ground = 0;
+		collisionCooldown = collisionCooldownDuration;  // Set cooldown timer
+		//player.HP -= 1;
+		if (player.HP == 0) {
+			player.HP = 3;
+			CP_Engine_SetNextGameStateForced(Levelone_Init, Levelone_Update, Levelone_Exit);
+			printf("next state updated");
+		}
+	}
+	
+	
 
 	
 	

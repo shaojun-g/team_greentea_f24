@@ -148,13 +148,24 @@ void state_change(MELEE_Enemy* enemy, Platform* platform, Player* player, float 
 		enemy->state = ATTACK;
 	}
 }
-void enemy_shoot_projectile(Projectile* projectile,RANGE_Enemy* enemy, float speed) {
-	projectile->x -= speed * CP_System_GetDt();
-	if (projectile->x < 0) {
-		projectile->x = enemy->shoot_posX;
-		projectile->travelling = 0;
+void enemy_shoot_projectile(Projectile* projectile,RANGE_Enemy* enemy, float speed, int direction) {
+	// Adjust the projectile's x position based on the direction
+	if (direction > 0) {
+		projectile->x += speed * CP_System_GetDt(); // Moving right
+		if (projectile->x > CP_System_GetWindowWidth()) { // If projectile moves off screen
+			projectile->x = enemy->shoot_posX; // Reset position
+			projectile->travelling = 0;
+		}
+	}
+	else {
+		projectile->x -= speed * CP_System_GetDt(); // Moving left
+		if (projectile->x < 0) { // If projectile moves off screen
+			projectile->x = enemy->shoot_posX; // Reset position
+			projectile->travelling = 0;
+		}
 	}
 }
+
 
 void Enemy_Update(void) {
 	state_change(&enemy1, &platform1,&player1,3, 8);
@@ -186,7 +197,7 @@ void Enemy_Update(void) {
 	CP_Settings_EllipseMode(CP_POSITION_CENTER);
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 	CP_Graphics_DrawCircle(projectile1.x, projectile1.y, projectile1.diameter);
-	enemy_shoot_projectile(&projectile1, &enemy2, 200);
+	enemy_shoot_projectile(&projectile1, &enemy2, 200, -1);
 	//collision
 	//if (enemy.hit == 1) {
 	//	enemy1.health -= 1;
