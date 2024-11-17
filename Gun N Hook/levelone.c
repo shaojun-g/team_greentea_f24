@@ -7,21 +7,27 @@
 #include "levelone.h"
 #include "collision_utils.h"
 #include "movement.h"
-#include "structs.h"
+#include "enemy.h"
+
+
+
 
 CP_TEXT_ALIGN_HORIZONTAL h = CP_TEXT_ALIGN_H_CENTER;
 CP_TEXT_ALIGN_VERTICAL v = CP_TEXT_ALIGN_V_MIDDLE;
 Platform platform_base, platform1, platform2, platform_goal, hazard;
-Goal goal_start, goal_end;
-Healthbar player_health, player_health_background;
+goal goal_start, goal_end;
+healthbar player_health, player_health_background;
 Player player;
-Grapple grapple = { 0, 0, 0 };
+Grapple grapple1 = { 0, 0, 0 };
 float collisionCooldown = 0.0f;  // Cooldown timer for on_ground reset
 float collisionCooldownDuration = 0.3f;  // Duration in seconds for cooldown
 int health = 3;
 float dt;
 void Levelone_Init(void)
 {
+	//ben stuff
+	red = CP_Color_Create(255, 0, 0, 255);
+	
 	//Set font size for all goal texts
 	CP_Settings_TextSize(25.00f);
 	CP_Settings_TextAlignment(h, v);
@@ -102,7 +108,7 @@ void Levelone_Update(void)
 {
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255)); // clear background to gray
 	dt = CP_System_GetDt();//date time function
-	drawGrapple(&player.x, &player.y, &grapple.x, &grapple.y, dt); //draw grapple
+	//drawGrapple(&player.x, &player.y, &grapple.x, &grapple.y, dt); //draw grapple
 	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
 	//draw goals
 	draw_goal(goal_start);
