@@ -28,8 +28,8 @@ RANGE_Enemy enemy2;
 Player player1;
 Platform platform1;
 Projectile projectile1;
-float elapsedTime;
 CP_Font my_awesome_font;
+float elapsedTime;
 //enemy state
 void Enemy_Init(void)
 {	my_awesome_font = CP_Font_Load("Assets/Exo2-Regular.ttf");
@@ -66,13 +66,14 @@ void Enemy_Init(void)
 	//player1.diameter = 30;
 	player1.width = 40;
 	player1.height = player1.width;
-	//game stats
-	elapsedTime = 0.0f;
+
 	//projectile
 	projectile1.x = enemy2.shoot_posX;
 	projectile1.y = enemy2.shoot_posY;
 	projectile1.diameter = 15;
 	projectile1.travelling = 1;
+
+	elapsedTime = 0;
 }
 void EnemyState( MELEE_Enemy* e,  Platform* plat,  Player* player) {
 	switch (e->state) { // e->state same as (*e).state
@@ -120,7 +121,7 @@ int playerOnPlat(float playerx, float plat_left_lim, float plat_right_lim) {
 	}
 	//player1.x_pos >= platform1.left_limit && player1.x_pos <= platform1.right_limit
 }
-void state_change(MELEE_Enemy* enemy, Platform* platform, Player* player, float idletoattack_sec, float attactopatrol_sec) {
+void state_change(MELEE_Enemy* enemy, Platform* platform, Player* player, float idletopatrol_sec, float attacktopatrol_sec,float elapsedTime) {
 	EnemyState(enemy, platform, player);
 	elapsedTime += CP_System_GetDt();
 	//alternate patrol and idle
@@ -157,7 +158,13 @@ void enemy_shoot_projectile(Projectile* projectile,RANGE_Enemy* enemy, float spe
 }
 
 void Enemy_Update(void) {
-	state_change(&enemy1, &platform1,&player1,3, 8);
+	//void state_change(struct MELEE_Enemy* enemy, struct Platform* platform, struct Player* player, float idletopatrol_sec, float attacktopatrol_sec, float elapsedTime);
+	//idletopatrol_sec is how many seconds for enemy to  change from idle to patrol(NOT SO RANDOM MOVEMENT)
+	//attacktopatrol_sec is how many seconds for enemy to  change from attack to patrol(STOP CHASING PLAYER)
+	state_change(&enemy1, &platform1,&player1,3, 8, elapsedTime);
+	//void enemy_shoot_projectile(struct Projectile* projectile, struct RANGE_Enemy* enemy, float speed);
+	enemy_shoot_projectile(&projectile1, &enemy2, 200);
+
 	if (CP_Input_KeyDown(KEY_A)) { //move left when move left x--
 		//movement
 		player1.x -= 200* CP_System_GetDt();

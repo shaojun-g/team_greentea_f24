@@ -16,7 +16,7 @@
 
 float midpoint(float p1,float p2);
 void enemy_shoot_projectile(struct Projectile* projectile, struct RANGE_Enemy* enemy, float speed);
-void state_change(struct MELEE_Enemy* enemy, struct Platform* platform, struct Player* player, float idletoattack_sec,float attactopatrol_sec);
+void state_change(struct MELEE_Enemy* enemy, struct Platform* platform, struct Player* player, float idletopatrol_sec,float attacktopatrol_sec,float elapsedTime_sec);
 void EnemyState(struct MELEE_Enemy* e, struct Platform* plat, struct Player* player);
 int playerOnPlat(float playerx, float plat_left_lim, float plat_right_lim);
 
