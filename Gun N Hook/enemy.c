@@ -121,31 +121,31 @@ int playerOnPlat(float playerx, float plat_left_lim, float plat_right_lim) {
 	}
 	//player1.x_pos >= platform1.left_limit && player1.x_pos <= platform1.right_limit
 }
-void state_change(MELEE_Enemy* enemy, Platform* platform, Player* player, float idletopatrol_sec, float attacktopatrol_sec,float elapsedTime) {
+void state_change(MELEE_Enemy* enemy, Platform* platform, Player* player, float idletopatrol_sec, float attacktopatrol_sec,float *elapsedTime) {
 	EnemyState(enemy, platform, player);
-	elapsedTime += CP_System_GetDt();
+	*elapsedTime += CP_System_GetDt();
 	//alternate patrol and idle
-	if (elapsedTime >= 3.0f && enemy1.state == IDLE) {
+	if (*elapsedTime >= 3.0f && enemy1.state == IDLE) {
 		if (enemy1.state != ATTACK) {
 			enemy1.state = PATROL;
-			elapsedTime = 0;
+			*elapsedTime = 0;
 		}
 	}
-	else if (elapsedTime >= 3.0f && enemy1.state == PATROL) {
+	else if (*elapsedTime >= 3.0f && enemy1.state == PATROL) {
 		if (enemy1.state != ATTACK) {
 			enemy1.state = IDLE;
-			elapsedTime = 0;
+			*elapsedTime = 0;
 		}
 	}
 	//prevent enemy from stuck at attack state
-	if (elapsedTime >= 8.0f && enemy1.state == ATTACK) { 
+	if (*elapsedTime >= 8.0f && enemy1.state == ATTACK) { 
 		enemy1.state = PATROL;
-		elapsedTime = 0;
+		*elapsedTime = 0;
 	}
 	//change attack state if player within x(on plat) and y range(not too high or low from plat)
 	if (playerOnPlat(player->x, platform->left_limit, platform->right_limit) == 1 &&
 		(player->y >= platform->y - (player->width * 2) && player->y <= (platform->y - player->width / 2))) {
-		elapsedTime = 0;
+		*elapsedTime = 0;
 		enemy->state = ATTACK;
 	}
 }
@@ -161,10 +161,10 @@ void Enemy_Update(void) {
 	//void state_change(struct MELEE_Enemy* enemy, struct Platform* platform, struct Player* player, float idletopatrol_sec, float attacktopatrol_sec, float elapsedTime);
 	//idletopatrol_sec is how many seconds for enemy to  change from idle to patrol(NOT SO RANDOM MOVEMENT)
 	//attacktopatrol_sec is how many seconds for enemy to  change from attack to patrol(STOP CHASING PLAYER)
-	state_change(&enemy1, &platform1,&player1,3, 8, elapsedTime);
+	state_change(&enemy1, &platform1,&player1,3, 8, &elapsedTime);
 	//void enemy_shoot_projectile(struct Projectile* projectile, struct RANGE_Enemy* enemy, float speed);
 	enemy_shoot_projectile(&projectile1, &enemy2, 200);
-
+	
 	if (CP_Input_KeyDown(KEY_A)) { //move left when move left x--
 		//movement
 		player1.x -= 200* CP_System_GetDt();
@@ -203,7 +203,7 @@ void Enemy_Update(void) {
 	char buffer[256];
 	// Fill the buffer with the text we want.
 	// Notice that it uses a similar syntax as printf()!
-	sprintf_s(buffer, sizeof(buffer), "Player X: %.2f, Player Y: %.2f\nLeft limit:%.2f, Right Limit%.2f", enemy1.x, enemy1.y,platform1.left_limit,platform1.right_limit);
+	sprintf_s(buffer, sizeof(buffer), "Player X: %.2f, Player Y: %.2f\nLeft limit:%.2f, Right Limit%.2f,elapsedTime%.2f", enemy1.x, enemy1.y,platform1.left_limit,platform1.right_limit, elapsedTime);
 	// Tells CProcessing to use the white color for anything we are drawing on the screen
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 	// Draw the text using the string stored in the buffer in the center of the screen.
