@@ -138,7 +138,14 @@ void Levelboss_Init(void)
 	boss_health.width = 1400.00;
 	boss_health.height = 75.00;
 
-	
+
+
+	//debugging player
+	player1.x = platform_base.x;
+	player1.y = platform_base.y-20;
+	player1.width = 30;
+	player1.height = 30;
+	player1.on_ground = 1;
 }
 
 void test_debug(void){
@@ -195,27 +202,35 @@ void Levelboss_Update(void)
 	//draw_platform(platform_goal);
 	//draw boss
 	draw_boss(&boss1);
-	//draw projectile
-	for (int i = 0; i < MAX_TURRET_PROJECTILE; i++) {
-		CP_Settings_EllipseMode(CP_POSITION_CENTER);
-		CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-		CP_Graphics_DrawCircle(turret_projectiles[i].x, turret_projectiles[i].y, turret_projectiles[i].diameter);
-	}
+
 	////
-	//CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-	//CP_Graphics_DrawCircle(turret_projectiles[0].x_pos, turret_projectiles[0].y_pos, turret_projectiles[0].diameter);
-	//CP_Graphics_DrawCircle(turret_projectiles[1].x_pos, turret_projectiles[1].y_pos, turret_projectiles[1].diameter);
-	//CP_Graphics_DrawCircle(turret_projectiles[2].x_pos, turret_projectiles[2].y_pos, turret_projectiles[2].diameter);
-	//CP_Graphics_DrawCircle(turret_projectiles[3].x_pos, turret_projectiles[3].y_pos, turret_projectiles[3].diameter);
 	//draw healthbar (with background)
 	//draw in update and update values of health during combat
 	draw_healthbar(player_health_background);
 	draw_healthbar(player_health);
 	draw_healthbar(boss_health);
 	draw_healthbar(boss_health_background);
-	
-	
+	//draw projectile
+	for (int i = 0; i < MAX_TURRET_PROJECTILE; i++) {
+		CP_Settings_EllipseMode(CP_POSITION_CENTER);
+		CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
+		CP_Graphics_DrawCircle(turret_projectiles[i].x, turret_projectiles[i].y, turret_projectiles[i].diameter);
+	}
 
+	if (player1.on_ground == 1 && (player1.y >= platform_base.y - player1.width * 2) && (player1.y <= platform_base.y - player1.width / 2)) {
+		turret_projectiles[0].travelling = 1;
+	}
+	if (player1.on_ground == 1 && (player1.y >= platform1.y - player1.width * 2) && (player1.y <= platform1.y - player1.width / 2)) {
+		turret_projectiles[1].travelling = 1;
+	}
+	if (player1.on_ground == 1 && (player1.y >= platform2.y - player1.width * 2) && (player1.y <= platform2.y - player1.width / 2)) {
+		turret_projectiles[2].travelling = 1;
+	}
+	if (player1.on_ground == 1 && (player1.y >= platform3.y - player1.width * 2) && (player1.y <= platform3.y - player1.width / 2)) {
+		turret_projectiles[3].travelling = 1;
+	}
+
+	//shoot projectile
 	for (int i = 0; i < MAX_TURRET_PROJECTILE; i++) {
 		if (turret_projectiles[i].travelling == 1) {
 			enemy_shoot_projectile(&turret_projectiles[i], &boss_turrets[i], 300);
