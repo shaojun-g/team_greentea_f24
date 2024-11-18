@@ -50,9 +50,29 @@ int IsCircleClicked(float circle_center_x, float circle_center_y, float diameter
 
 int AreCircles_GoalIntersecting(float circle_x, float circle_y, float radius, float rect_x, float rect_y, float rect_width, float rect_height)
 {
-	// Find the closest point on the rectangle to the circle’s center
-	float closest_x = fmax(rect_x, fmin(circle_x, rect_x + rect_width));
-	float closest_y = fmax(rect_y, fmin(circle_y, rect_y + rect_height));
+	// Find the closest x-coordinate on the rectangle to the circle’s center
+	float closest_x;
+	if (circle_x < rect_x) {
+		closest_x = rect_x; // Circle is to the left of the rectangle
+	}
+	else if (circle_x > rect_x + rect_width) {
+		closest_x = rect_x + rect_width; // Circle is to the right of the rectangle
+	}
+	else {
+		closest_x = circle_x; // Circle is within the horizontal bounds of the rectangle
+	}
+
+	// Find the closest y-coordinate on the rectangle to the circle’s center
+	float closest_y;
+	if (circle_y < rect_y) {
+		closest_y = rect_y; // Circle is above the rectangle
+	}
+	else if (circle_y > rect_y + rect_height) {
+		closest_y = rect_y + rect_height; // Circle is below the rectangle
+	}
+	else {
+		closest_y = circle_y; // Circle is within the vertical bounds of the rectangle
+	}
 
 	// Calculate the distance between the circle’s center and this closest point
 	float distance = CP_Math_Distance(circle_x, circle_y, closest_x, closest_y);

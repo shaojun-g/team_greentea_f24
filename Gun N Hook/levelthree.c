@@ -309,6 +309,7 @@ void Levelthree_Update(void)
 
 	}
 
+	//gravity if not standing on platform
 	if (player.on_ground != 1) {
 		gravity(&player.y, &player.velocity.y, dt);
 	}
