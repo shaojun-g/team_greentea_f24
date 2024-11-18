@@ -41,7 +41,7 @@ void init_pea_shooter(Bullet bullets[], struct Player* player) {
 	for (int i = 0; i < 50; i++) {
 		bullets[i].x = player->x;
 		bullets[i].y = player->y;
-		bullets[i].diameter = 10;
+		bullets[i].diameter = 12.5;
 		bullets[i].speed = 800.0;
 		bullets[i].live = 0;
 	}
