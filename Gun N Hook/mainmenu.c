@@ -1,11 +1,16 @@
 #include "cprocessing.h"
-#include <stdio.h>;
-#include "utils.h";
+
+
 #include "levelselect.h"
 #include "credit.h"
 //hi
+#include <stdio.h>
+#include "utils.h"
+#include "levelone.h"
+#include "structs.h"
+
 CP_Font myFont;
-double textSize;
+float textSize;
 
 
 void Main_Menu_Init(void)
@@ -42,7 +47,7 @@ void Main_Menu_Update(void)
     
     if (CP_Input_MouseClicked()) {
         if (IsAreaClicked(xRect, yRect1, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
-            CP_Engine_SetNextGameState(Level_Select_Init, Level_Select_Update, Level_Select_Exit);
+            CP_Engine_SetNextGameState(Levelone_Init, Levelone_Update, Levelone_Exit);
         };
     };
 

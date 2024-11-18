@@ -1,28 +1,12 @@
 #pragma once
+#define NUM_BOSS_PARTS 9
+#include "structs.h"
 
 
-typedef struct Platform {
 
-	double x;
-	double y;
-	double width;
-	double height;
-	CP_Color platform_color;
-
-} platform;
 
 //initialize all goal structs
-typedef struct Goal {
 
-	double x;
-	double y;
-	double width;
-	double height;
-	double degrees;
-	double corner_radius;
-	CP_Color goal_color;
-
-}goal;
 
 
 
@@ -35,9 +19,19 @@ void levelselecthover(float area_center_x, float area_center_y, float area_width
 void buttoncreate(float area_center_x, float area_center_y, float area_width, float area_height, CP_Color color);
 void textwrite(const char* text, float x_position, float y_position, CP_Color color);
 
-//level functions
-void draw_platform(platform platform);
-void draw_goal(goal goal);
-
 //pause functions
 int pause_menu(int state);
+float collisionCooldown;  // Cooldown timer for on_ground reset
+float collisionCooldownDuration; // Duration in seconds for cooldown
+//define dt as time
+int IsAreaClicked(float area_center_x, float area_center_y, float area_width, float area_height, float click_x, float click_y);
+int IsCircleClicked(float circle_center_x, float circle_center_y, float diameter, float click_x, float click_y);
+
+//all used funct
+int AreCircles_GoalIntersecting(float circle_x, float circle_y, float radius, float rect_x, float rect_y, float rect_width, float rect_height);
+void draw_platform(Platform platform);
+void draw_goal(Goal goal);
+void draw_boss(Boss* boss);
+void Restart_Level();
+void goal_function();
+void ApplyElasticCollision(Player* player, MELEE_Enemy hazard, float restitution);

@@ -1,6 +1,6 @@
 #pragma once
-void Level_1_Init(void);
+void Levelone_Init(void);
 
-void Level_1_Update(void);
+void Levelone_Update(void);
 
-void Level_1_Exit(void);
+void Levelone_Exit(void);

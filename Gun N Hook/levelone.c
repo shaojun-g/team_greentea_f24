@@ -1,195 +1,174 @@
-
-#include <stdio.h>
-#include <stdbool.h>
-
-#include "cprocessing.h"
-#include "string.h"
-#include "utils.h"
-#include "levelone.h"
+#include "stdio.h"
+#include "stdbool.h"
 #include "mainmenu.h"
-#include "player.h"
+#include "cprocessing.h"
+#include "utils.h"
+#include "leveltwo.h"
+#include "levelone.h"
 #include "collision_utils.h"
-#include "health.h"
+#include "movement.h"
+#include "enemy.h"
 
-//player starting values
-Player player;// = { 100, 700, 1,{0, 0} };
-
-
-CP_Font myFont;
-CP_Image FullHeart;
-double textSize;
+#define PLATFORM_SIZE 4
 
 
-//heart coordinates
-float heartwidth = 50.f;
-float heartheight = 50.f;
-float heartx = 30.f;
-float hearty = 30.f;
-float spacing = 50.f;
+CP_TEXT_ALIGN_HORIZONTAL h = CP_TEXT_ALIGN_H_CENTER;
+CP_TEXT_ALIGN_VERTICAL v = CP_TEXT_ALIGN_V_MIDDLE;
+MELEE_Enemy hazard;
+Platform platform[PLATFORM_SIZE];
+Goal goal_start, goal_end;
+Healthbar player_health, player_health_background;
+Player player;
+Grapple grapple1 = { 0, 0, 0 };
+collisionCooldown = 0.0f;  // Cooldown timer for on_ground reset
+collisionCooldownDuration = 0.3f;  // Duration in seconds for cooldown
+float dt;
+float elapsed_time; 
 
-//pointer for the number of hearts
-int* size = 3;
-bool game_running = true;
-int x;
+void Levelone_Init(void)
+{
+	elapsed_time = 0;
+	//Set font size for all goal texts
+	CP_Settings_TextSize(25.00f);
+	CP_Settings_TextAlignment(h, v);
+	//game window size is (1600, 900)
+	//set all platform color as the same(dark red)
+	//set healthbar color 
+	player_health.rect_color = CP_Color_Create(255, 0, 0, 255);
+	player_health_background.rect_color = CP_Color_Create(255, 0, 0, 100);
+	//platform_base is the ground 
+	platform[0] = (Platform){ CP_System_GetWindowWidth() / 2 , 800.00, CP_System_GetWindowWidth(), 15.00,CP_Color_Create(255, 128, 128, 255) };
+	//platform1 is first platform
+	//all platforms increment at y coordinates by 150.00f
+	//all platforms increment at x coordinates by minimum 200.00f
+	//default platforms will have 150.00f as width and 15.00f as height
+	platform[1] = (Platform){ 1000.00 , 650.00, 150.00, 15.00, CP_Color_Create(255, 128, 128, 255) };
+	//platform2 is second platform
+	platform[2] = (Platform){ 1200.00 , 500.00, 150.00, 15.00, CP_Color_Create(255, 128, 128, 255) };
+	//platform goal will be where user gets to head to next level
+	//default platform goal width will be 250.00f
+	platform[3] = (Platform){ 1475.00 , 350.00, 250.00, 15.00, CP_Color_Create(255, 128, 128, 255) };
+	//start goal will be where user spawns
+	goal_start.x = 100.00;
+	goal_start.y = 765.00;
+	goal_start.width = 40.00;
+	goal_start.height = 70.00;
+	goal_start.corner_radius = 10;
+	//end goal will be where user goes to next map
+	goal_end.x = 1550.00;
+	goal_end.y = 315.00;
+	goal_end.width = 40.00;
+	goal_end.height = 70.00;
+	goal_end.corner_radius = 10;
+	//player healthbar at top of map (will be rendered over everything else)
+	player_health.x = 200.00;
+	player_health.y = 50.00;
+	player_health.width = 300.00;
+	player_health.height = 20.00;
+	//background of player healthbar
+	player_health_background.x = 200.00;
+	player_health_background.y = 50.00;
+	player_health_background.width = 300.00;
+	player_health_background.height = 20.00;
 
- 
+	CP_Settings_RectMode(CP_POSITION_CENTER);
+	//to test hazard object
+	hazard.x = 500.00;
+	hazard.y = 750.00;
+	hazard.width = 40.00;
+	hazard.height = 100.00;
 
-void Level_1_Init(void) {
-    textSize = 50.0f;
-    myFont = CP_Font_Load("Assets/Exo2-Regular.ttf");
-	FullHeart = CP_Image_Load("Assets/heart.png");
-    CP_Settings_TextSize(textSize);
-
-	player = (Player){ 100, 700, 1,{0, 0} };
-
+	//player values
+	player = (Player){ 100, 785, 30, 30, 5, 1, {0, 0} };
+	
 }
 
-void Level_1_Update(void) {
-	heart fullheart[100] = {
-		{FullHeart,heartx, hearty, heartwidth, heartheight},  // Heart 1
-		{FullHeart,heartx, hearty, heartwidth, heartheight},  // Heart 2
-		{FullHeart,heartx, hearty, heartwidth, heartheight},  // Heart 3
-		{FullHeart,heartx, hearty, heartwidth, heartheight},  // Heart 4
-		{FullHeart,heartx, hearty, heartwidth, heartheight},  // Heart 5
-		{FullHeart,heartx, hearty, heartwidth, heartheight},  // Heart 6
-		{FullHeart,heartx, hearty, heartwidth, heartheight},  // Heart 7
-		{FullHeart,heartx, hearty, heartwidth, heartheight},  // Heart 8
-		{FullHeart,heartx, hearty, heartwidth, heartheight},  // Heart 9
-		{FullHeart,heartx, hearty, heartwidth, heartheight}   // Heart 10
-	};
 
-
-	// set rectangle x & y position 
-	double xRect = CP_System_GetWindowWidth() / 2.0f;
-	double yRect1 = CP_System_GetWindowHeight() / 4.6f;
-	double yRect2 = CP_System_GetWindowHeight() / 1.9f;
-	double yRect3 = CP_System_GetWindowHeight() / 1.2f;
-	double rectW = CP_System_GetWindowWidth() / 4.4f;
-	double rectH = CP_System_GetWindowHeight() / 4.4f;
-
-	//colors used
-	CP_Color Blue = CP_Color_Create(0, 200, 255, 255);
-	CP_Color White = CP_Color_Create(255, 255, 255, 255);
-	CP_Color Black = CP_Color_Create(0, 0, 0, 255);
-
-
-    //set background
-    CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255));
-
-	//width and height of the window
-	int width = CP_System_GetWindowWidth();
-	int height = CP_System_GetWindowHeight();
+void Levelone_Update(void)
+{
+	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255)); // clear background to gray
+	dt = CP_System_GetDt();//date time function
+	//drawGrapple(&player.x, &player.y, &grapple.x, &grapple.y, dt); //draw grapple
 	
-	//heart coordinates
-	fullheart[0].x = 30.f;
+	//draw all platforms
+	for (int i = 0; i < PLATFORM_SIZE; i++) {
+		draw_platform(platform[i]);
 
-	//delta time
-	double dt = CP_System_GetDt();
-	if (game_running) {
-		basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground, dt);
-	}
-
-	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
-	CP_Graphics_DrawCircle(player.x, player.y, 100);
-
-	
-
-	///Draw Hearts
-	draw_hearts(fullheart, &size);
-	
-
-	CP_Graphics_DrawRect(width / 2.0, 800.00, width, 10.00);
-	CP_Graphics_DrawRect(width / 2.0, 400.00, width, 10.00);
-
-	//Game Pause
-	if (!game_running) {
-		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 100));
-		CP_Graphics_DrawRect(width/2.0, height/2.0, width, height);
-		
-		//continue button
-		buttoncreate(xRect, yRect1, rectW, rectH, Blue);
-		textwrite("Continue", xRect, yRect1, Black);
-
-		if (CP_Input_MouseClicked()) {
-			if (IsAreaClicked(xRect, yRect1, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
-				game_running = pause_menu(game_running);
-
-			}
+		if (c_rect_rect(player.x, player.y, player.width, player.height, platform[i].x, platform[i].y, platform[i].width, platform[i].height)) {
+			player.velocity.y = 0;
+			player.on_ground = 1;
 		}
-
-		// restart button
-		buttoncreate(xRect, yRect2, rectW, rectH, Blue);
-		textwrite("Restart", xRect, yRect2, Black);
-
-		if (CP_Input_MouseClicked()) {
-			if (IsAreaClicked(xRect, yRect2, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
-				game_running = pause_menu(game_running);
-				CP_Engine_SetNextGameStateForced(Level_1_Init, Level_1_Update, Level_1_Exit);
-			};
-		};
-
-
-		// exit button
-		buttoncreate(xRect, yRect3, rectW, rectH, Blue);
-		textwrite("Exit to main menu", xRect, yRect3, Black);
-
-		if (CP_Input_MouseClicked()) {
-			if (IsAreaClicked(xRect, yRect3, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
-				game_running = pause_menu(game_running);
-				CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
-			};
-		};
-
-
 	}
-	else {
-		//CP_Settings_Tint(CP_Color_Create(0, 0, 0, 0));
-	}
+	//draw goals
+	draw_goal(goal_start);
+	draw_goal(goal_end);
+	//draw healthbar (with background)
+	draw_healthbar(player_health_background);
+	draw_healthbar(player_health);
+	//draw hazard 
+	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255)); // Red color
+	CP_Graphics_DrawRect(hazard.x, hazard.y, hazard.width, hazard.height);
+	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground, dt);//start basic movement 
+	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
 
-	
 
-	if (c_rect_rect(player.x, player.y, 100, 100, (CP_System_GetWindowWidth() / 2.0), 800.00, (CP_System_GetWindowWidth()), 10.00)) {
-		player.velocity.y = 0;
-		player.on_ground = 1;
+	// Decrease cooldown time
+	if (collisionCooldown > 0.0f) {
+		collisionCooldown -= dt;
 	}
 
 	if (player.on_ground != 1) {
 		gravity(&player.y, &player.velocity.y, dt);
 	}
-	//return to main menu
+
 	if (CP_Input_KeyTriggered(KEY_Q))
 	{
-		CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
+		CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit); // exit using Q
 	}
-
-	//heart test
-	if (CP_Input_KeyTriggered(KEY_H)) {
-		remove_hearts(&size);
-
+	//draw text for start_goal when 
+	if (AreCircles_GoalIntersecting(player.x, player.y, 30, goal_start.x, goal_start.y, goal_start.width, goal_start.height)) {
+		CP_Font_DrawTextBox("Get to the Goal!", 50, 675, 100);
 	}
-	if (CP_Input_KeyTriggered(KEY_J)) {
-		add_hearts(&size);
-
+	//test for next level (this will be for goal function)
+	if (AreCircles_GoalIntersecting(player.x, player.y, 30, goal_end.x, goal_end.y, goal_end.width, goal_end.height)) {
+		CP_Font_DrawTextBox("Press N to head to next level!", 1500, 200, 100);
+		if (CP_Input_KeyTriggered(KEY_N))
+		{
+			CP_Engine_SetNextGameState(Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit); // next level using N
+		}
 	}
+	/*collide_platform(&player, &platform1.x, &platform1.y, &platform1.width, &platform1.height);*/
 
-	//pause menu
-	if (CP_Input_KeyTriggered(KEY_ESCAPE)) {
-		game_running = pause_menu(game_running);
-
+	if ((c_rect_rect(player.x, player.y, 30, 30, (CP_System_GetWindowWidth() / 2), 800.00, (CP_System_GetWindowWidth()), 10.00)) != FALSE) {
+		player.velocity.y = 0;
+		player.on_ground = 1;
 	}
-	if (CP_Input_KeyTriggered(KEY_G)) {
+	/*if ((c_rect_rect(player.x, player.y, 30, 30, platform1.x, platform1.y, platform1.width, platform1.height)) != FALSE) {
+		player.velocity.y = 0;
+		player.on_ground = 1;
+	}
+	if ((c_rect_rect(player.x, player.y, 30, 30, platform2.x, platform2.y, platform2.width, platform2.height)) != FALSE) {
+		player.velocity.y = 0;
+		player.on_ground = 1;
+	}
+	if ((c_rect_rect(player.x, player.y, 30, 30, platform_goal.x, platform_goal.y, platform_goal.width, platform_goal.height)) != FALSE) {
+		player.velocity.y = 0;
+		player.on_ground = 1;
+	}*/
 
-		 CP_Engine_SetNextGameStateForced(Level_1_Init, Level_1_Update, Level_1_Exit);
+	if (player.on_ground != 1) {
+		gravity(&player.y, &player.velocity.y, dt);
 	}
 	
-	//end program
-	if (CP_Input_KeyTriggered(KEY_R))
-	{
-		CP_Engine_Terminate();
+	if (CP_Input_KeyTriggered(KEY_P)) {
+		
 	}
-
+	
 }
 
-void Level_1_Exit(void) {
+
+
+void Levelone_Exit(void)
+{
 
 }
