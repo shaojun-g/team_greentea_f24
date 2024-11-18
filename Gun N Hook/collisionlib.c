@@ -19,6 +19,7 @@ void player_damage(float* player_x, float* player_y, float* player_width, float*
 		if (*projectile_Live) {
 			*player_HP -= 1;
 			*projectile_Live = 0;
+			printf("enemy bullet detected");
 		}
 }
 

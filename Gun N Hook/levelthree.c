@@ -242,12 +242,16 @@ void Levelthree_Update(void)
 	pea_shooter(bullets, &player.x, &player.y);
 	//deal damage to melee enemies
 	deal_damage(bullets, &melee_enemy.x, &melee_enemy.y, &melee_enemy.width, &melee_enemy.height, &melee_enemy.health);
+	
 	deal_damage(bullets, &melee_enemy2.x, &melee_enemy2.y, &melee_enemy2.width, &melee_enemy2.height, &melee_enemy2.health);
-	deal_damage(bullets, &melee_enemy3.x, &melee_enemy3.y, &melee_enemy3.width, &melee_enemy3.height, &melee_enemy3.health);
+
 	deal_damage(bullets, &melee_enemy3.x, &melee_enemy3.y, &melee_enemy3.width, &melee_enemy3.height, &melee_enemy3.health);
 
+	deal_damage(bullets, &melee_enemy3.x, &melee_enemy3.y, &melee_enemy3.width, &melee_enemy3.height, &melee_enemy3.health);
+
+	//draw player
 	CP_Settings_Fill(CP_Color_Create(250, 250, 250, 255));
-	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
+	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);
 	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground, dt);//start basic movement 
 
 
@@ -321,6 +325,16 @@ void Levelthree_Update(void)
 		}
 
 	}
+
+	deal_damage(&enemy_projectile, &player.x, &player.y, &player.width, &player.height, &player.HP);
+
+
+		if (player.HP == 0) {
+			player.HP = 5;
+			CP_Engine_SetNextGameStateForced(Levelthree_Init, Levelthree_Update, Levelthree_Exit);
+			printf("next state updated");
+		}
+	
 
 	//gravity if not standing on platform
 	if (player.on_ground != 1) {
