@@ -97,14 +97,14 @@ void gravity(float* player_y, float *speed_y, float dt) {
 
 int grapple_extending = 0;
 float grapple_distance = 0;
-float grapple_max_distance = 500.00;
+float grapple_max_distance = 200.00;
 float grapple_speed = 1000.0;
 CP_Vector grapple_target;
 float hook_x = 0.0;
 float hook_y = 9.0;
 float player_pulling = 0;
 float player_grapple_speed = 500.0;
-float cd_time = 5.0f;
+float cd_time = 2.0f;
 float cd_remaining = 0.0f;
 
 void drawGrapple(Player *player, float* grapple_x, float* grapple_y, Platform* platforms, int num_of_platforms, float dt) {
@@ -205,11 +205,11 @@ void drawGrapple(Player *player, float* grapple_x, float* grapple_y, Platform* p
 		//cd background
 		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 		CP_Settings_RectMode(CP_POSITION_CORNER);
-		CP_Graphics_DrawRect(player->x - cd_width / 2, player->y - 100.0f, cd_width, cd_height);
+		CP_Graphics_DrawRect(player->x - cd_width / 2, player->y - 50.0f, cd_width, cd_height);
 	
 		//cd progress bar
 		CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-		CP_Graphics_DrawRect(player->x - cd_width / 2, player->y - 100.0f, cd_width * cd_fraction, cd_height);
+		CP_Graphics_DrawRect(player->x - cd_width / 2, player->y - 50.0f, cd_width * cd_fraction, cd_height);
 	
 	}
 
