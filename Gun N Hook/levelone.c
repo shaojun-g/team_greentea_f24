@@ -40,12 +40,7 @@ void Level_1_Init(void) {
 	FullHeart = CP_Image_Load("Assets/heart.png");
     CP_Settings_TextSize(textSize);
 
-	//values for reset
-	player.x = 100;
-	player.y = 700;
-	player.on_ground = 1;
-	player.velocity.x = 0;
-	player.velocity.y = 0;
+	player = (Player){ 100, 700, 1,{0, 0} };
 
 }
 
@@ -99,14 +94,14 @@ void Level_1_Update(void) {
 
 	
 
-	
+	///Draw Hearts
 	draw_hearts(fullheart, &size);
 	
 
 	CP_Graphics_DrawRect(width / 2.0, 800.00, width, 10.00);
 	CP_Graphics_DrawRect(width / 2.0, 400.00, width, 10.00);
 
-
+	//Game Pause
 	if (!game_running) {
 		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 100));
 		CP_Graphics_DrawRect(width/2.0, height/2.0, width, height);

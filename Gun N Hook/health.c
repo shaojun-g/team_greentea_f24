@@ -6,10 +6,10 @@
 
 
 
-void draw_healthbar(healthbar health) {
-	CP_Settings_Fill(health.color);
-	CP_Graphics_DrawRect(health.rectx, health.recty, health.width, health.height);
-}
+//void draw_healthbar(healthbar health) {
+//	CP_Settings_Fill(health.color);
+//	CP_Graphics_DrawRect(health.rectx, health.recty, health.width, health.height);
+//}
 
 
 void draw_hearts(heart heart[],int *size) {
