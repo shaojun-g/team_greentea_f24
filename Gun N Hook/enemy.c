@@ -150,11 +150,24 @@ void state_change(MELEE_Enemy* enemy, Platform* platform, Player* player, float 
 	}
 }
 void enemy_shoot_projectile(Projectile* projectile,RANGE_Enemy* enemy, float speed) {
-	projectile->x -= speed * CP_System_GetDt();
-	if (projectile->x < 0) {
-		projectile->x = enemy->shoot_posX;
-		projectile->travelling = 0;
+	switch (enemy->dir)
+	{
+	case LEFT:
+		projectile->x -= speed * CP_System_GetDt();
+		if (projectile->x < 0) {
+			projectile->x = enemy->shoot_posX;
+			projectile->travelling = 0;
+		}
+		break;
+	case RIGHT:
+		projectile->x += speed * CP_System_GetDt();
+		if (projectile->x < CP_System_GetWindowWidth()){
+			projectile->x = enemy->shoot_posX;
+			projectile->travelling = 0;
+		}
+
 	}
+	
 }
 
 void Enemy_Update(void) {

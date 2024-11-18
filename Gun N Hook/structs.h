@@ -51,6 +51,11 @@ enum MELEE_EnemyState { // only 3 states , do nothing , patrolling , attacking/c
 	PATROL,
 	ATTACK
 };
+//RANGE enemy
+enum RANGE_EnemyDir {
+	LEFT,
+	RIGHT
+};
 typedef struct { //square enemy
 	//drawing variables
 	float x;
@@ -72,6 +77,7 @@ typedef struct {
 	float width;
 	float height;
 	//
+	enum RANGE_EnemyDir dir;
 	float shoot_posX;
 	float shoot_posY;
 }RANGE_Enemy;
