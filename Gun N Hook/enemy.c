@@ -60,6 +60,7 @@ void Enemy_Init(void)
 	enemy2.height = 40;
 	enemy2.shoot_posX = enemy2.x;
 	enemy2.shoot_posY = enemy2.y+(enemy2.height/2);
+	enemy2.dir = RIGHT;
 	//player
 	player1.x = 860;
 	player1.y = 560;
@@ -150,11 +151,24 @@ void state_change(MELEE_Enemy* enemy, Platform* platform, Player* player, float 
 	}
 }
 void enemy_shoot_projectile(Projectile* projectile,RANGE_Enemy* enemy, float speed) {
-	projectile->x -= speed * CP_System_GetDt();
-	if (projectile->x < 0) {
-		projectile->x = enemy->shoot_posX;
-		projectile->travelling = 0;
+	switch (enemy->dir)
+	{
+	case LEFT:
+		projectile->x -= speed * CP_System_GetDt();
+		if (projectile->x < 0) {
+			projectile->x = enemy->shoot_posX;
+			projectile->travelling = 0;
+		}
+		break;
+	case RIGHT:
+		projectile->x += speed * CP_System_GetDt();
+		if (projectile->x > CP_System_GetWindowWidth()){
+			projectile->x = enemy->shoot_posX;
+			projectile->travelling = 0;
+		}
+
 	}
+	
 }
 
 void Enemy_Update(void) {

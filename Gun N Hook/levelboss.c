@@ -8,6 +8,9 @@
 // Copyright ? 2020 DigiPen, All rights reserved.
 //---------------------------------------------------------
 
+//increase projecctile size diameter++
+//burst fire shoot 3x projectile
+
 #include "stdio.h"
 #include "mainmenu.h"
 #include "cprocessing.h"
