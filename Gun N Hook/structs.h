@@ -10,7 +10,7 @@ typedef struct {
 } Velocity;
 
 // Define a struct for Player
-typedef struct {
+typedef struct Player{
 	float x, y;  // x and y coordinates of the player position
 	float width;
 	float height;

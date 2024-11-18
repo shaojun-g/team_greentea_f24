@@ -12,9 +12,10 @@
 #include "movement.h"
 #include "enemy.h"
 #include "levelthree.h"
-
+#include "utils.h"
 
 #define PLATFORM_SIZE 9
+
 Platform platform_base, platform1, platform2, platform3, platform4, platform_goal;
 Platform platform[PLATFORM_SIZE];
 Platform platform_enemy1, platform_enemy2, platform_enemy3;
@@ -29,6 +30,11 @@ float dt, elapsedtime;
 
 void Levelthree_Init(void)
 {
+	CP_TEXT_ALIGN_HORIZONTAL h_text = CP_TEXT_ALIGN_H_CENTER;
+	CP_TEXT_ALIGN_VERTICAL v_text = CP_TEXT_ALIGN_V_MIDDLE;
+	//size for text box
+	CP_Settings_TextSize(25.00f);
+	CP_Settings_TextAlignment(h_text, v_text);
 	//game window size is (1600, 900)
 	//set all platform color as the same(dark red)
 	platform_base.platform_color = CP_Color_Create(255, 128, 128, 255);
@@ -144,7 +150,7 @@ void Levelthree_Init(void)
 	//range projectile
 	enemy_projectile.x = range_enemy.shoot_posX;
 	enemy_projectile.y = range_enemy.shoot_posY;
-	enemy_projectile.diameter = 15;
+	enemy_projectile.diameter = 25;
 	enemy_projectile.travelling = 1;
 	// Initialize range enemy 2
 	range_enemy2.width = platform[6].width;
@@ -156,7 +162,7 @@ void Levelthree_Init(void)
 	//range projectile
 	enemy_projectile2.x = range_enemy2.shoot_posX;
 	enemy_projectile2.y = range_enemy2.shoot_posY;
-	enemy_projectile2.diameter = 15;
+	enemy_projectile2.diameter = 25;
 	enemy_projectile2.travelling = 1;
 	// Initialize range enemy 3
 	range_enemy3.width = platform[7].width;
@@ -168,7 +174,7 @@ void Levelthree_Init(void)
 	//range projectile
 	enemy_projectile3.x = range_enemy3.shoot_posX;
 	enemy_projectile3.y = range_enemy3.shoot_posY;
-	enemy_projectile3.diameter = 15;
+	enemy_projectile3.diameter = 25;
 	enemy_projectile3.travelling = 1;
 	//player values
 	player = (Player){ 100, 785, 30, 30, 5, 1, {0, 0} };
@@ -190,10 +196,8 @@ void Levelthree_Update(void)
 	for (int i = 0; i < PLATFORM_SIZE; i++) {
 		draw_platform(platform[i]);
 
-		if (c_rect_rect(player.x, player.y, player.width, player.height, platform[i].x, platform[i].y, platform[i].width, platform[i].height)) {
-			player.velocity.y = 0;
-			player.on_ground = 1;
-		}
+		collide_platform(&player, &platform[i]);
+		
 	}
 
 	// Draw melee enemy
@@ -238,17 +242,26 @@ void Levelthree_Update(void)
 	CP_Graphics_DrawCircle(enemy_projectile3.x, enemy_projectile3.y, enemy_projectile3.diameter);
 	enemy_shoot_projectile(&enemy_projectile3, &range_enemy3, 200);
 
+
 	//pea shooter function
 	pea_shooter(bullets, &player.x, &player.y);
 	//deal damage to melee enemies
 	deal_damage(bullets, &melee_enemy.x, &melee_enemy.y, &melee_enemy.width, &melee_enemy.height, &melee_enemy.health);
+	
 	deal_damage(bullets, &melee_enemy2.x, &melee_enemy2.y, &melee_enemy2.width, &melee_enemy2.height, &melee_enemy2.health);
-	deal_damage(bullets, &melee_enemy3.x, &melee_enemy3.y, &melee_enemy3.width, &melee_enemy3.height, &melee_enemy3.health);
+
 	deal_damage(bullets, &melee_enemy3.x, &melee_enemy3.y, &melee_enemy3.width, &melee_enemy3.height, &melee_enemy3.health);
 
+	deal_damage(bullets, &melee_enemy4.x, &melee_enemy4.y, &melee_enemy4.width, &melee_enemy4.height, &melee_enemy4.health);
+
+
+	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement
+	if (!(player.on_ground))
+		gravity(&player.velocity.y);
+
+	//draw player
 	CP_Settings_Fill(CP_Color_Create(250, 250, 250, 255));
 	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
-	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground, dt);//start basic movement 
 
 
 	// Update melee enemy state and behavior
@@ -266,18 +279,11 @@ void Levelthree_Update(void)
 	//collision between melee enemy and player
 	if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy.x, melee_enemy.y, melee_enemy.width, melee_enemy.height)) {
 		// Apply elastic collision
-
 		ApplyElasticCollision(&player, melee_enemy, 1.f);
-		player.on_ground = 0;
 		player.HP -= 1;
-		collisionCooldown = collisionCooldownDuration;  // Set cooldown timer
+		collisionCooldown = collisionCooldownDuration;// Set cooldown timer
+		player.on_ground = 0;
 		printf("player hp : %i", player.HP);
-		if (player.HP == 0) {
-			player.HP = 5;
-			CP_Engine_SetNextGameStateForced(Levelthree_Init, Levelthree_Update, Levelthree_Exit);
-			printf("next state updated");
-		}
-
 	}
 
 	if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy2.x, melee_enemy2.y, melee_enemy2.width, melee_enemy2.height)) {
@@ -286,12 +292,6 @@ void Levelthree_Update(void)
 		player.on_ground = 0;
 		player.HP -= 1;
 		collisionCooldown = collisionCooldownDuration;  // Set cooldown timer
-		if (player.HP == 0) {
-			player.HP = 5;
-			CP_Engine_SetNextGameStateForced(Levelthree_Init, Levelthree_Update, Levelthree_Exit);
-			printf("next state updated");
-		}
-
 	}
 
 	if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy3.x, melee_enemy3.y, melee_enemy3.width, melee_enemy3.height)) {
@@ -300,11 +300,6 @@ void Levelthree_Update(void)
 		player.on_ground = 0;
 		player.HP -= 1;
 		collisionCooldown = collisionCooldownDuration;  // Set cooldown timer
-		if (player.HP == 0) {
-			player.HP = 5;
-			CP_Engine_SetNextGameStateForced(Levelthree_Init, Levelthree_Update, Levelthree_Exit);
-			printf("next state updated");
-		}
 
 	}
 
@@ -314,31 +309,62 @@ void Levelthree_Update(void)
 		player.on_ground = 0;
 		player.HP -= 1;
 		collisionCooldown = collisionCooldownDuration;  // Set cooldown timer
+	}
+	//--------------------------------------------------------------------------------------
+	//for hp of melee enemies and player
+	if (player.HP == 0) {
+		player.HP = 5;
+		CP_Engine_SetNextGameStateForced(Levelthree_Init, Levelthree_Update, Levelthree_Exit);
+		printf("next state updated");
+	}
+	
+	if (melee_enemy.health <= 0) {
+		melee_enemy.x = -1000; // A position far off the screen
+		melee_enemy.y = -1000; // A position far off the screen
+	}
+
+	if (melee_enemy2.health <= 0) {
+		melee_enemy2.x = -1000; // A position far off the screen
+		melee_enemy2.y = -1000; // A position far off the screen
+	}
+	if (melee_enemy3.health <= 0) {
+		melee_enemy3.x = -1000; // A position far off the screen
+		melee_enemy3.y = -1000; // A position far off the screen
+	}
+	if (melee_enemy4.health <= 0) {
+		melee_enemy4.x = -1000; // A position far off the screen
+		melee_enemy4.y = -1000; // A position far off the screen
+	}
+	//-----------------------------------------------------------------------------------------
+	
+
+
 		if (player.HP == 0) {
 			player.HP = 5;
 			CP_Engine_SetNextGameStateForced(Levelthree_Init, Levelthree_Update, Levelthree_Exit);
 			printf("next state updated");
 		}
 
-	}
 
-	//gravity if not standing on platform
-	if (player.on_ground != 1) {
-		gravity(&player.y, &player.velocity.y, dt);
-	}
 
 	//draw_healthbar(player_health_background);
 	draw_healthbar(player_health_background);
 	draw_healthbar(player_health);
 
-	if (CP_Input_KeyTriggered(KEY_Q))
-	{
-		CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit); // exit using Q
+	
+
+	if (AreC_RIntersecting(player.x, player.y, 40, goal_start.x, goal_start.y, goal_start.width, goal_start.height)) {
+		printf("touching start");
+		CP_Font_DrawTextBox("Get to the Goal!", 50, 675, 100);
 	}
-	//test for next level (this will be for goal function)
-	if (CP_Input_KeyTriggered(KEY_N))
-	{
-		CP_Engine_SetNextGameState(Levelboss_Init, Levelboss_Update, Levelboss_Exit); // next level using N
+
+	if (AreC_RIntersecting(player.x, player.y, 40, goal_end.x, goal_end.y, goal_end.width, goal_end.height)) {
+		printf("intersect good");
+		CP_Font_DrawTextBox("Press N to head to next level!", 1500, 200, 100);
+		if (CP_Input_KeyTriggered(KEY_N))
+		{
+			CP_Engine_SetNextGameState(Levelboss_Init, Levelboss_Update, Levelboss_Exit); // next level using N
+		}
 	}
 
 }

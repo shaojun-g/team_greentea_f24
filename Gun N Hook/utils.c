@@ -48,7 +48,7 @@ int IsCircleClicked(float circle_center_x, float circle_center_y, float diameter
 	};
 }
 
-int AreCircles_GoalIntersecting(float circle_x, float circle_y, float radius, float rect_x, float rect_y, float rect_width, float rect_height)
+int AreC_RIntersecting(float circle_x, float circle_y, float radius, float rect_x, float rect_y, float rect_width, float rect_height)
 {
 	// Find the closest x-coordinate on the rectangle to the circle’s center
 	float closest_x;
@@ -184,4 +184,20 @@ void ApplyElasticCollision(Player* player, MELEE_Enemy hazard, float restitution
 			player->velocity.y *= -restitution;
 		}
 	}
+}
+
+int check_collision_rect(float proj_x, float proj_y, float proj_diameter,
+	float player_x, float player_y, float player_width, float player_height) {
+	return (proj_x + proj_diameter / 2 >= player_x &&
+		proj_x - proj_diameter / 2 <= player_x + player_width &&
+		proj_y + proj_diameter / 2 >= player_y &&
+		proj_y - proj_diameter / 2 <= player_y + player_height);
+}
+
+void update_projectile(Projectile* projectile, float player_x, float player_y, float player_width, float player_height, int* player_hp) {
+
+		if (check_collision_rect(projectile->x, projectile->y, projectile->diameter, player_x,  player_y,  player_width,  player_height)) {
+			(*player_hp)--;
+			printf("collison");
+		}
 }
