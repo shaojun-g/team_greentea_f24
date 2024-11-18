@@ -161,7 +161,7 @@ void enemy_shoot_projectile(Projectile* projectile,RANGE_Enemy* enemy, float spe
 		break;
 	case RIGHT:
 		projectile->x += speed * CP_System_GetDt();
-		if (projectile->x < CP_System_GetWindowWidth()){
+		if (projectile->x > CP_System_GetWindowWidth()){
 			projectile->x = enemy->shoot_posX;
 			projectile->travelling = 0;
 		}
