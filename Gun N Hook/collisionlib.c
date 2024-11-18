@@ -9,8 +9,12 @@ void collide_platform(Player* player, Platform* platform) {
 		//	if player is falling && above platform:
 		if (player->velocity.y >= 0 && player->y < platform->y) {
 			player->on_ground = 1;
+			player->velocity.y = 0;
 			player->y = platform->y - (platform->height / 2) - (player->height / 2);
+			
 		}
+		if (player->x - player->width / 3 > platform->x + platform->width / 2 || player->x + player->width / 3 < platform->x - platform->width / 2)
+			player->on_ground = 0;
 	}
 }
 

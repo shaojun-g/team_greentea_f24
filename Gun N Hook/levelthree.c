@@ -50,7 +50,7 @@ void Levelthree_Init(void)
 	player_health.rect_color = CP_Color_Create(255, 0, 0, 255);
 	player_health_background.rect_color = CP_Color_Create(255, 0, 0, 100);
 	//platform_base is the ground 
-	platform[0] = (Platform){ CP_System_GetWindowWidth() / 2 , 825.00, CP_System_GetWindowWidth(), 75.00,CP_Color_Create(255, 128, 128, 255) };
+	platform[0] = (Platform){ CP_System_GetWindowWidth() / 2 , 800.00, CP_System_GetWindowWidth(), 15.00,CP_Color_Create(255, 128, 128, 255) };
 	//platform1 is first platform
 	//all platforms increment at y coordinates by 150.00f
 	//all platforms increment at x coordinates by minimum 200.00f
@@ -197,10 +197,7 @@ void Levelthree_Update(void)
 		draw_platform(platform[i]);
 
 		collide_platform(&player, &platform[i]);
-		//if (c_rect_rect(player.x, player.y, player.width, player.height, platform[i].x, platform[i].y, platform[i].width, platform[i].height)) {
-		//	player.velocity.y = 0;
-		//	player.on_ground = 1;
-		//}
+		
 	}
 
 	// Draw melee enemy
@@ -257,13 +254,15 @@ void Levelthree_Update(void)
 
 	deal_damage(bullets, &melee_enemy4.x, &melee_enemy4.y, &melee_enemy4.width, &melee_enemy4.height, &melee_enemy4.health);
 
-	//draw player
-	CP_Settings_Fill(CP_Color_Create(250, 250, 250, 255));
-	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
 
 	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement
 	if (!(player.on_ground))
 		gravity(&player.velocity.y);
+
+	//draw player
+	CP_Settings_Fill(CP_Color_Create(250, 250, 250, 255));
+	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
+
 
 	// Update melee enemy state and behavior
 	state_change(&melee_enemy, &platform[1], &player, 3.0f, 8.0f, &elapsedtime);
@@ -278,7 +277,7 @@ void Levelthree_Update(void)
 	state_change(&melee_enemy4, &platform[4], &player, 3.0f, 8.0f, &elapsedtime);
 
 	//collision between melee enemy and player
-	/*if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy.x, melee_enemy.y, melee_enemy.width, melee_enemy.height)) {
+	if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy.x, melee_enemy.y, melee_enemy.width, melee_enemy.height)) {
 		// Apply elastic collision
 		ApplyElasticCollision(&player, melee_enemy, 1.f);
 		player.HP -= 1;
@@ -339,17 +338,14 @@ void Levelthree_Update(void)
 	//-----------------------------------------------------------------------------------------
 	
 
-	//gravity if not standing on platform
-	if (player.on_ground != 1) {
-		gravity(&player.y, &player.velocity.y, dt);
-	}
+
 		if (player.HP == 0) {
 			player.HP = 5;
 			CP_Engine_SetNextGameStateForced(Levelthree_Init, Levelthree_Update, Levelthree_Exit);
 			printf("next state updated");
 		}
 
-	}*/
+
 
 	//draw_healthbar(player_health_background);
 	draw_healthbar(player_health_background);

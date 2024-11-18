@@ -3,6 +3,7 @@
 #include "utils.h"
 #include "levelthree.h"
 #include "structs.h"
+#include "levelone.h"
 
 CP_Font myFont;
 float textSize;
@@ -39,7 +40,7 @@ void Main_Menu_Update(void)
     CP_Font_DrawText("Play", CP_System_GetWindowWidth() / 2.1f, CP_System_GetWindowHeight() / 3.75f);
     if (CP_Input_MouseClicked()) {
         if (IsAreaClicked(xRect, yRect1, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
-            CP_Engine_SetNextGameState(Levelthree_Init, Levelthree_Update, Levelthree_Exit);
+            CP_Engine_SetNextGameState(Levelone_Init, Levelone_Update, Levelone_Exit);
         };
     };
 

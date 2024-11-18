@@ -94,11 +94,7 @@ void Levelone_Update(void)
 	//draw all platforms
 	for (int i = 0; i < PLATFORM_SIZE; i++) {
 		draw_platform(platform[i]);
-
-		if (c_rect_rect(player.x, player.y, player.width, player.height, platform[i].x, platform[i].y, platform[i].width, platform[i].height)) {
-			player.velocity.y = 0;
-			player.on_ground = 1;
-		}
+		collide_platform(&player, &platform[i]);
 	}
 	//draw goals
 	draw_goal(goal_start);
@@ -106,21 +102,24 @@ void Levelone_Update(void)
 	//draw healthbar (with background)
 	draw_healthbar(player_health_background);
 	draw_healthbar(player_health);
-	//draw hazard 
-	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255)); // Red color
-	CP_Graphics_DrawRect(hazard.x, hazard.y, hazard.width, hazard.height);
-	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement 
-	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
+	////draw hazard 
+	//CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255)); // Red color
+	//CP_Graphics_DrawRect(hazard.x, hazard.y, hazard.width, hazard.height);
+	
+	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement
+	if (!(player.on_ground))
+		gravity(&player.velocity.y);
 
+	//draw player
+	CP_Settings_Fill(CP_Color_Create(250, 250, 250, 255));
+	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
 
 	// Decrease cooldown time
 	if (collisionCooldown > 0.0f) {
 		collisionCooldown -= dt;
 	}
 
-	//if (player.on_ground != 1) {
-	//	gravity(&player.y, &player.velocity.y, dt);
-	//}
+
 
 	if (CP_Input_KeyTriggered(KEY_Q))
 	{
@@ -138,28 +137,7 @@ void Levelone_Update(void)
 			CP_Engine_SetNextGameState(Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit); // next level using N
 		}
 	}
-	//collide_platform(&player, &platform1.x, &platform1.y, &platform1.width, &platform1.height);
-
-	if ((c_rect_rect(player.x, player.y, 30, 30, (CP_System_GetWindowWidth() / 2), 800.00, (CP_System_GetWindowWidth()), 10.00)) != FALSE) {
-		player.velocity.y = 0;
-		player.on_ground = 1;
-	}
-	if ((c_rect_rect(player.x, player.y, 30, 30, platform[1].x, platform[1].y, platform[1].width, platform[2].height)) != FALSE) {
-		player.velocity.y = 0;
-		player.on_ground = 1;
-	}
-	if ((c_rect_rect(player.x, player.y, 30, 30, platform[2].x, platform[2].y, platform[2].width, platform[2].height)) != FALSE) {
-		player.velocity.y = 0;
-		player.on_ground = 1;
-	}
-	if ((c_rect_rect(player.x, player.y, 30, 30, platform[3].x, platform[3].y, platform[3].width, platform[3].height)) != FALSE) {
-		player.velocity.y = 0;
-		player.on_ground = 1;
-	}
-
-	//if (player.on_ground != 1) {
-	//	gravity(&player.y, &player.velocity.y, dt);
-	//}
+	
 	
 	if (CP_Input_KeyTriggered(KEY_P)) {
 		

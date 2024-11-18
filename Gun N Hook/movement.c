@@ -28,7 +28,7 @@ void basic_movement(float* player_x, float* player_y, float* speed_x, float* spe
 
 	//	initial upward speed when jump.
 	if ((CP_Input_KeyDown(KEY_W) || CP_Input_KeyDown(KEY_SPACE)) && *on_ground) {
-		*speed_y = -650;
+		*speed_y = -500;
 		*on_ground = 0;
 	}
 	//	hold down key to get hang time.
@@ -39,18 +39,18 @@ void basic_movement(float* player_x, float* player_y, float* speed_x, float* spe
 		*speed_y += 200;
 	}*/
 
-	//	translate player coordinates based on speed computed.
-	if ((*player_x > 30 && *speed_x > 0) || (*player_x < 1570 && *speed_x < 0)) {
+	////	translate player coordinates based on speed computed.
+	//if ((*player_x > 30 && *speed_x > 0) || (*player_x < 1570 && *speed_x < 0)) {
 		*player_x += *speed_x * CP_System_GetDt();
-	}
-	if ((*player_y > 30 && *speed_y > 0) || (*player_y < 870 && *speed_y < 0)) {
+	
+	//if ((*player_y > 30 && *speed_y > 0) || (*player_y < 870 && *speed_y < 0)) {
 		*player_y += *speed_y * CP_System_GetDt();
-	}
+	
 }
 
 void gravity(float* speed_y) {
 	//	increase downward speed as time passes.
-	if (*speed_y < 1500)	{ *speed_y += 1800 * CP_System_GetDt(); }
+	if (*speed_y < 1500)	{ *speed_y += 1500 * CP_System_GetDt(); }
 	//	set max speed.
 	else					{ *speed_y = 2500; }
 }

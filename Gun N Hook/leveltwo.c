@@ -130,11 +130,7 @@ void Leveltwo_Update(void)
 	//draw all platforms
 	for (int i = 0; i < PLATFORM_SIZE; i++) {
 		draw_platform(platform[i]);
-
-		if (c_rect_rect(player.x, player.y, player.width, player.height, platform[i].x, platform[i].y, platform[i].width, platform[i].height)) {
-			player.velocity.y = 0;
-			player.on_ground = 1;
-		}
+		collide_platform(&player, &platform[i]);
 	}
 	// Draw melee enemy
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255)); // Red color
@@ -150,12 +146,9 @@ void Leveltwo_Update(void)
 	CP_Graphics_DrawRect(melee_enemy3.x, melee_enemy3.y, melee_enemy3.width, melee_enemy3.height);
 
 	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
-
-	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement 
-
-	//if (player.on_ground != 1) {
-	//	gravity(&player.y, &player.velocity.y, dt);
-	//}
+	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement
+	if (!(player.on_ground))
+		gravity(&player.velocity.y);
 
 	//draw healthbar (with background)
 	//draw_healthbar(player_health_background);
