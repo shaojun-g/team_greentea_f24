@@ -109,7 +109,7 @@ void Levelone_Update(void)
 	//draw hazard 
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255)); // Red color
 	CP_Graphics_DrawRect(hazard.x, hazard.y, hazard.width, hazard.height);
-	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground, dt);//start basic movement 
+	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement 
 	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
 
 
@@ -118,9 +118,9 @@ void Levelone_Update(void)
 		collisionCooldown -= dt;
 	}
 
-	if (player.on_ground != 1) {
-		gravity(&player.y, &player.velocity.y, dt);
-	}
+	//if (player.on_ground != 1) {
+	//	gravity(&player.y, &player.velocity.y, dt);
+	//}
 
 	if (CP_Input_KeyTriggered(KEY_Q))
 	{
@@ -157,9 +157,9 @@ void Levelone_Update(void)
 		player.on_ground = 1;
 	}
 
-	if (player.on_ground != 1) {
-		gravity(&player.y, &player.velocity.y, dt);
-	}
+	//if (player.on_ground != 1) {
+	//	gravity(&player.y, &player.velocity.y, dt);
+	//}
 	
 	if (CP_Input_KeyTriggered(KEY_P)) {
 		

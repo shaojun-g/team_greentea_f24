@@ -4,7 +4,58 @@
 #include "movement.h"
 #include "collision_utils.h"
 
-void basic_movement(float*player_x, float*player_y, float*speed_x, float*speed_y, int *on_ground, float dt) {
+void basic_movement(float* player_x, float* player_y, float* speed_x, float* speed_y, int* on_ground) {
+	//	left right movement
+	if (CP_Input_KeyDown(KEY_D)) {
+		*speed_x = 250;
+	}
+	else if (CP_Input_KeyDown(KEY_A)) {
+		*speed_x = -250;
+	} else {
+		*speed_x = 0;
+	}
+
+	//	hold down S key to drop down platform
+	if (CP_Input_KeyDown(KEY_S)) {
+		float time_start = CP_System_GetDt();
+		float time_elapsed = CP_System_GetDt();
+
+		time_elapsed += CP_System_GetDt();
+
+		if (time_elapsed - time_start > 0.75)
+			*on_ground = 0;
+	}
+
+	//	initial upward speed when jump.
+	if ((CP_Input_KeyDown(KEY_W) || CP_Input_KeyDown(KEY_SPACE)) && *on_ground) {
+		*speed_y = -650;
+		*on_ground = 0;
+	}
+	//	hold down key to get hang time.
+	if (CP_Input_KeyDown(KEY_W) || CP_Input_KeyDown(KEY_SPACE) && !(*on_ground)) {
+		*speed_y += -10;
+	}
+	/*else if (CP_Input_KeyReleased(KEY_W) || CP_Input_KeyReleased(KEY_SPACE)) {
+		*speed_y += 200;
+	}*/
+
+	//	translate player coordinates based on speed computed.
+	if ((*player_x > 30 && *speed_x > 0) || (*player_x < 1570 && *speed_x < 0)) {
+		*player_x += *speed_x * CP_System_GetDt();
+	}
+	if ((*player_y > 30 && *speed_y > 0) || (*player_y < 870 && *speed_y < 0)) {
+		*player_y += *speed_y * CP_System_GetDt();
+	}
+}
+
+void gravity(float* speed_y) {
+	//	increase downward speed as time passes.
+	if (*speed_y < 1500)	{ *speed_y += 1800 * CP_System_GetDt(); }
+	//	set max speed.
+	else					{ *speed_y = 2500; }
+}
+
+/*void basic_movement(float* player_x, float* player_y, float* speed_x, float* speed_y, int* on_ground, float dt) {
 	if (CP_Input_KeyDown(KEY_D)) {
 		*speed_x = 300;
 		*player_x += *speed_x * dt;
@@ -41,7 +92,7 @@ void basic_movement(float*player_x, float*player_y, float*speed_x, float*speed_y
 void gravity(float* player_y, float *speed_y, float dt) {
 	*speed_y = 500;
 	*player_y += *speed_y * dt;
-}
+}*/
 
 int grapple_extending = 0;
 float grapple_distance = 0;

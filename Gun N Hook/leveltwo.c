@@ -151,11 +151,11 @@ void Leveltwo_Update(void)
 
 	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
 
-	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground, dt);//start basic movement 
+	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement 
 
-	if (player.on_ground != 1) {
-		gravity(&player.y, &player.velocity.y, dt);
-	}
+	//if (player.on_ground != 1) {
+	//	gravity(&player.y, &player.velocity.y, dt);
+	//}
 
 	//draw healthbar (with background)
 	//draw_healthbar(player_health_background);
