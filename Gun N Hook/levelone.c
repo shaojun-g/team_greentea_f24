@@ -137,29 +137,28 @@ void Levelone_Update(void)
 			CP_Engine_SetNextGameState(Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit); // next level using N
 		}
 	}
+	/*collide_platform(&player, &platform1.x, &platform1.y, &platform1.width, &platform1.height);*/
 
-	
-	// Check for game over (player collision with hazard)
-	if (c_rect_rect(player.x, player.y, player.width, player.height, hazard.x, hazard.y, hazard.width, hazard.height)) {
-		printf("Player-Hazard Collision Detected\n");
-		printf("Player Position: x=%.2f, y=%.2f, Velocity: x=%.2f, y=%.2f\n", player.x, player.y, player.velocity.x, player.velocity.y);
-		// Apply elastic collision
-		ApplyElasticCollision(&player, hazard, 1.f);
-		printf("After Collision: x=%.2f, y=%.2f, Velocity: x=%.2f, y=%.2f\n", player.x, player.y, player.velocity.x, player.velocity.y);
-		// Reset on_ground and start cooldown
-		player.on_ground = 0;
-		collisionCooldown = collisionCooldownDuration;  // Set cooldown timer
-		//player.HP -= 1;
-		if (player.HP == 0) {
-			player.HP = 3;
-			CP_Engine_SetNextGameStateForced(Levelone_Init, Levelone_Update, Levelone_Exit);
-			printf("next state updated");
-		}
+	if ((c_rect_rect(player.x, player.y, 30, 30, (CP_System_GetWindowWidth() / 2), 800.00, (CP_System_GetWindowWidth()), 10.00)) != FALSE) {
+		player.velocity.y = 0;
+		player.on_ground = 1;
 	}
-	
-	
+	/*if ((c_rect_rect(player.x, player.y, 30, 30, platform1.x, platform1.y, platform1.width, platform1.height)) != FALSE) {
+		player.velocity.y = 0;
+		player.on_ground = 1;
+	}
+	if ((c_rect_rect(player.x, player.y, 30, 30, platform2.x, platform2.y, platform2.width, platform2.height)) != FALSE) {
+		player.velocity.y = 0;
+		player.on_ground = 1;
+	}
+	if ((c_rect_rect(player.x, player.y, 30, 30, platform_goal.x, platform_goal.y, platform_goal.width, platform_goal.height)) != FALSE) {
+		player.velocity.y = 0;
+		player.on_ground = 1;
+	}*/
 
-	
+	if (player.on_ground != 1) {
+		gravity(&player.y, &player.velocity.y, dt);
+	}
 	
 	if (CP_Input_KeyTriggered(KEY_P)) {
 		

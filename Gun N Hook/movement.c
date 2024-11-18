@@ -32,9 +32,10 @@ void basic_movement(float*player_x, float*player_y, float*speed_x, float*speed_y
 		}
 		if (CP_Input_KeyReleased(KEY_W) || CP_Input_KeyReleased(KEY_SPACE)) {
 			*on_ground = 0;
+			*speed_y = 500;
+			*player_y += *speed_y * dt;
 		}
 	}
-
 }
 
 void gravity(float* player_y, float *speed_y, float dt) {

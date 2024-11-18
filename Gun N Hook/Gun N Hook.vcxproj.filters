@@ -12,6 +12,7 @@
     <ClCompile Include="movement.c" />
     <ClCompile Include="utils.c" />
     <ClCompile Include="enemy.c" />
+    <ClCompile Include="collisionlib.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="collision_utils.h" />

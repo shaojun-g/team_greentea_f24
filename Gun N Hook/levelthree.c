@@ -173,6 +173,9 @@ void Levelthree_Init(void)
 	//player values
 	player = (Player){ 100, 785, 30, 30, 5, 1, {0, 0} };
 	elapsedtime = 0;
+
+	//pea-shooter init
+	pea_shooter_init(bullets, &player.x, &player.y);
 }
 
 
@@ -235,7 +238,9 @@ void Levelthree_Update(void)
 	CP_Graphics_DrawCircle(enemy_projectile3.x, enemy_projectile3.y, enemy_projectile3.diameter);
 	enemy_shoot_projectile(&enemy_projectile3, &range_enemy3, 200);
 
-
+	//pea shooter function
+	pea_shooter(bullets, &player.x, &player.y);
+	CP_Settings_Fill(CP_Color_Create(250, 250, 250, 255));
 	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
 	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground, dt);//start basic movement 
 
