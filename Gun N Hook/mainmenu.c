@@ -3,6 +3,7 @@
 #include "utils.h"
 #include "levelone.h"
 #include "structs.h"
+#include "levelone.h"
 
 CP_Font myFont;
 float textSize;
@@ -32,8 +33,7 @@ void Main_Menu_Update(void)
 
     // draw a rectangle at the center of the screen
     CP_Settings_Fill(CP_Color_Create(0, 200, 255, 255));
-    CP_Graphics_DrawRect(xRect, yRect1,
-        rectW, rectH);
+    CP_Graphics_DrawRect(xRect, yRect1,rectW, rectH);
 
     CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
     CP_Font_DrawText("Play", CP_System_GetWindowWidth() / 2.1f, CP_System_GetWindowHeight() / 3.75f);

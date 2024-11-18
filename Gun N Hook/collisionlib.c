@@ -5,15 +5,19 @@
 
 
 // function to prevent overlap of player and platforms.
-void collide_platform(struct Player* player, float* platform_x, float* platform_y, float* platform_width, float* platform_height) {
-	// if player is intersecting with platform.
-	if (c_rect_rect(player->x, player->y, player->width, player->height, *platform_x, *platform_y, *platform_width, *platform_height)) {
-		// player is above platform
-		if (player->y < (*platform_y - *platform_height / 2)) {
-			// push player up to prevent overlap with platform.
-			player->y = *platform_y - ((player->height / 2) + (*platform_height / 2));
+void collide_platform(Player* player, Platform* platform) {
+	//	if player is intersecting with platform.
+	if (c_rect_rect(player->x, player->y, player->width, player->height, platform->x, platform->y, platform->width, platform->height)) {
+		//	if player is falling && above platform:
+		if (player->velocity.y >= 0 && player->y < platform->y) {
+			player->on_ground = 1;
+			player->velocity.y = 0;
+			player->y = platform->y - (platform->height / 2) - (player->height / 2);
 		}
+		if (player->x - player->width / 3 > platform->x + platform->width / 2 || player->x + player->width / 3 < platform->x - platform->width / 2)
+			player->on_ground = 0;
 	}
+	
 }
 
 // function that causes player to take damage when colliding with enemies or enemy projectiles.

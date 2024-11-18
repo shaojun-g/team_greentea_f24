@@ -14,6 +14,9 @@
 #include "game.h"
 #include "enemy.h"
 #include "levelboss.h"
+#include "levelone.h"
+#include "leveltwo.h"
+#include "levelthree.h"
 
 // main() the starting point for the program
 // CP_Engine_SetNextGameState() tells CProcessing which functions to use for init, update and exit

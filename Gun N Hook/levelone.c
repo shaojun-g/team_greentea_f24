@@ -8,6 +8,7 @@
 #include "collision_utils.h"
 #include "movement.h"
 #include "enemy.h"
+#include "collisionlib.h"
 
 
 
@@ -99,6 +100,8 @@ void Levelone_Init(void)
 	
 	init_pea_shooter(bullets, &player);
 	
+	//pea-shooter init
+	pea_shooter_init(bullets, &player.x, &player.y);
 }
 
 
@@ -110,8 +113,21 @@ void Levelone_Update(void)
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255)); // clear background to gray
 	dt = CP_System_GetDt();//date time function
 	//drawGrapple(&player.x, &player.y, &grapple.x, &grapple.y, dt); //draw grapple
-	CP_Settings_Fill(CP_Color_Create(250, 250, 250, 255));
-	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
+	
+	//draw all platforms
+	for (int i = 0; i < PLATFORM_SIZE; i++) {
+		draw_platform(platform[i]);
+
+		collide_platform(&player, &platform[i]);
+	}
+
+	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement
+	if (!(player.on_ground))
+		gravity(&player.velocity.y);
+
+    //pea shooter function();
+	pea_shooter(bullets, &player.x, &player.y);
+
 	//draw goals
 	draw_goal(goal_start);
 	draw_goal(goal_end);
@@ -124,8 +140,10 @@ void Levelone_Update(void)
 	draw_healthbar(player_health_background);
 	draw_healthbar(player_health);
 	//draw hazard 
-	draw_platform(hazard);
-	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground, dt);//start basic movement 
+	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255)); // Red color
+	CP_Graphics_DrawRect(hazard.x, hazard.y, hazard.width, hazard.height);
+	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
+
 
 	// Decrease cooldown time
 	if (collisionCooldown > 0.0f) {
@@ -164,28 +182,13 @@ void Levelone_Update(void)
 			CP_Engine_SetNextGameState(Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit); // next level using N
 		}
 	}
-	//collide_platform(&player, &platform1.x, &platform1.y, &platform1.width, &platform1.height);
-
-	if ((c_rect_rect(player.x, player.y, 30, 30, (CP_System_GetWindowWidth() / 2), 800.00, (CP_System_GetWindowWidth()), 10.00)) != FALSE) {
-		player.velocity.y = 0;
-		player.on_ground = 1;
-	}
-	if ((c_rect_rect(player.x, player.y, 30, 30, platform1.x, platform1.y, platform1.width, platform1.height)) != FALSE) {
-		player.velocity.y = 0;
-		player.on_ground = 1;
-	}
-	if ((c_rect_rect(player.x, player.y, 30, 30, platform2.x, platform2.y, platform2.width, platform2.height)) != FALSE) {
-		player.velocity.y = 0;
-		player.on_ground = 1;
-	}
-	if ((c_rect_rect(player.x, player.y, 30, 30, platform_goal.x, platform_goal.y, platform_goal.width, platform_goal.height)) != FALSE) {
-		player.velocity.y = 0;
-		player.on_ground = 1;
-	}
-
-	if (player.on_ground != 1) {
-		gravity(&player.y, &player.velocity.y, dt);
-	}
+	
+	//draw player
+	CP_Settings_Fill(CP_Color_Create(250, 250, 250, 255));
+	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
+	//if (player.on_ground != 1) {
+	//	gravity(&player.y, &player.velocity.y, dt);
+	//}
 	
 	if (CP_Input_KeyTriggered(KEY_P)) {
 		

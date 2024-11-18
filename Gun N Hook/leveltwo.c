@@ -3,7 +3,7 @@
 #include "cprocessing.h"
 #include "utils.h"
 #include "levelthree.h"
-#include "structs.h"
+#include "collisionlib.h"
 
 Platform platform_base, platform1, platform2, platform3, platform_goal;
 Goal goal_start, goal_end;
@@ -83,19 +83,77 @@ void Leveltwo_Update(void)
 	draw_goal(goal_start);
 	draw_goal(goal_end);
 	//draw all platforms
-	draw_platform(platform_base);
-	draw_platform(platform1);
-	draw_platform(platform2);
-	draw_platform(platform3);
-	draw_platform(platform_goal);
+	for (int i = 0; i < PLATFORM_SIZE; i++) {
+		draw_platform(platform[i]);
+
+		collide_platform(&player, &platform[i]);
+	}
+
+	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement
+	if (!(player.on_ground))
+		gravity(&player.velocity.y);
+
+	//pea shooter function
+	pea_shooter(bullets, &player.x, &player.y);
+
+	// Draw melee enemy
+	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255)); // Red color
+	CP_Graphics_DrawRect(melee_enemy.x, melee_enemy.y, melee_enemy.width, melee_enemy.height);
+
+	// Draw melee enemy2
+	CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255)); // Blue color
+	CP_Graphics_DrawRect(melee_enemy2.x, melee_enemy2.y, melee_enemy2.width, melee_enemy2.height);
+
+
+	// Draw melee enemy3
+	CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255)); // Blue color
+	CP_Graphics_DrawRect(melee_enemy3.x, melee_enemy3.y, melee_enemy3.width, melee_enemy3.height);
+
+	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
+
+	//if (player.on_ground != 1) {
+	//	gravity(&player.y, &player.velocity.y, dt);
+	//}
+
 	//draw healthbar (with background)
 	//draw_healthbar(player_health_background);
 	draw_healthbar(player_health_background);
 	draw_healthbar(player_health);
 
-	if (CP_Input_KeyTriggered(KEY_Q))
-	{
-		CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit); // exit using Q
+
+	// Update melee enemy state and behavior
+	state_change(&melee_enemy, &platform[1], &player, 3.0f, 8.0f, &elapsedtime);
+
+	//update melee enemy2 state and behaviour
+	state_change(&melee_enemy2, &platform[2], &player, 3.0f, 8.0f, &elapsedtime);
+
+	//update melee enemy2 state and behaviour
+	state_change(&melee_enemy3, &platform[3], &player, 3.0f, 8.0f, &elapsedtime);
+
+
+	
+	//damage for melee enemy
+	deal_damage(bullets, &melee_enemy.x, &melee_enemy.y, &melee_enemy.width, &melee_enemy.height, &melee_enemy.health);
+
+	deal_damage(bullets, &melee_enemy2.x, &melee_enemy2.y, &melee_enemy2.width, &melee_enemy2.height, &melee_enemy2.health);
+
+	deal_damage(bullets, &melee_enemy3.x, &melee_enemy3.y, &melee_enemy3.width, &melee_enemy3.height, &melee_enemy3.health);
+
+	//collision between melee enemy and player
+	if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy.x, melee_enemy.y, melee_enemy.width, melee_enemy.height)) {
+		// Apply elastic collision
+		
+		ApplyElasticCollision(&player, melee_enemy, 1.f);
+		player.on_ground = 0;
+		player.HP -= 1;
+		collisionCooldown = collisionCooldownDuration;  // Set cooldown timer
+		printf("player hp : %i", player.HP);
+		if (player.HP == 0) {
+			player.HP = 5;
+			CP_Engine_SetNextGameStateForced(Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit);
+			printf("next state updated");
+		}
+		
 	}
 	//test for next level (this will be for goal function)
 	if (CP_Input_KeyTriggered(KEY_N))

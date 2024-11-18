@@ -5,6 +5,17 @@
 #include "utils.h"
 #include "levelboss.h"
 #include "structs.h"
+#include "stdio.h"
+#include "stdbool.h"
+#include "leveltwo.h"
+#include "collision_utils.h"
+#include "movement.h"
+#include "enemy.h"
+#include "levelthree.h"
+#include "utils.h"
+#include "collisionlib.h"
+
+#define PLATFORM_SIZE 9
 
 Platform platform_base, platform1, platform2, platform3, platform4, platform_goal;
 Platform platform_enemy1, platform_enemy2, platform_enemy3;
@@ -128,6 +139,12 @@ void Levelthree_Update(void)
 	if (CP_Input_KeyTriggered(KEY_Q))
 	{
 		CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit); // exit using Q
+	}
+	
+
+	if (AreC_RIntersecting(player.x, player.y, 40, goal_start.x, goal_start.y, goal_start.width, goal_start.height)) {
+		printf("touching start");
+		CP_Font_DrawTextBox("Get to the Goal!", 50, 675, 100);
 	}
 	//test for next level (this will be for goal function)
 	if (CP_Input_KeyTriggered(KEY_N))
