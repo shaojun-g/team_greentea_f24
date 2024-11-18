@@ -60,6 +60,7 @@ void Enemy_Init(void)
 	enemy2.height = 40;
 	enemy2.shoot_posX = enemy2.x;
 	enemy2.shoot_posY = enemy2.y+(enemy2.height/2);
+	enemy2.dir = RIGHT;
 	//player
 	player1.x = 860;
 	player1.y = 560;

@@ -41,20 +41,16 @@ struct Bullet bullets[50];
 /*--------------------------------------------------------------------------------------------------------------------------------*/
 
 //	include enemy structs here
-//MELEE enemy
-enum MELEE_EnemyDir { //enemy only face left or right
+
+enum EnemyDir { //enemy only face left or right
 	LEFT,
 	RIGHT
 };
+//MELEE enemy
 enum MELEE_EnemyState { // only 3 states , do nothing , patrolling , attacking/chasing same thing
 	IDLE,
 	PATROL,
 	ATTACK
-};
-//RANGE enemy
-enum RANGE_EnemyDir {
-	LEFT,
-	RIGHT
 };
 typedef struct { //square enemy
 	//drawing variables
@@ -66,7 +62,7 @@ typedef struct { //square enemy
 	int health;
 	float speed;
 	enum MELEE_EnemyState state;
-	enum MELEE_EnemyDir dir;
+	enum EnemyDir dir;
 	//enum EnemyDir dir;
 }MELEE_Enemy; // end of struct
 //RANGE ENEMY
@@ -77,7 +73,7 @@ typedef struct {
 	float width;
 	float height;
 	//
-	enum RANGE_EnemyDir dir;
+	enum EnemyDir dir;
 	float shoot_posX;
 	float shoot_posY;
 }RANGE_Enemy;
