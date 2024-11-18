@@ -21,7 +21,7 @@ void player_damage(float* player_x, float* player_y, float* player_width, float*
 				address and *projectile_Live (to ensure projectiles only hit once).
 *  @output	-	void but changes value in address of enemy_DamageCount.															  */
 /*--------------------------------------------------------------------------------------------------------------------------------*/
-void enemy_damage(float* PProjectile_x, float* PProjectile_y, float* PProjectile_width, float* PProjectile_height, float* enemy_x, float* enemy_y, float* enemy_width, float* enemy_height, int* enemy_DamageCount, int* projectile_Live);
+void deal_damage(Bullet bullets[], float* char_x, float* char_y, float* char_width, float* char_height, int* char_HP);
 
 void pea_shooter_init(Bullet bullets[], float* player_x, float* player_y);
 
