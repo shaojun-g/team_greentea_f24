@@ -12,8 +12,7 @@
 #define PLATFORM_SIZE 4
 
 
-CP_TEXT_ALIGN_HORIZONTAL h = CP_TEXT_ALIGN_H_CENTER;
-CP_TEXT_ALIGN_VERTICAL v = CP_TEXT_ALIGN_V_MIDDLE;
+
 MELEE_Enemy hazard;
 Platform platform[PLATFORM_SIZE];
 Goal goal_start, goal_end;
@@ -27,10 +26,12 @@ float elapsed_time;
 
 void Levelone_Init(void)
 {
+	CP_TEXT_ALIGN_HORIZONTAL h_text = CP_TEXT_ALIGN_H_CENTER;
+	CP_TEXT_ALIGN_VERTICAL v_text = CP_TEXT_ALIGN_V_MIDDLE;
 	elapsed_time = 0;
 	//Set font size for all goal texts
 	CP_Settings_TextSize(25.00f);
-	CP_Settings_TextAlignment(h, v);
+	CP_Settings_TextAlignment(h_text, v_text);
 	//game window size is (1600, 900)
 	//set all platform color as the same(dark red)
 	//set healthbar color 
@@ -125,36 +126,36 @@ void Levelone_Update(void)
 	{
 		CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit); // exit using Q
 	}
-	//draw text for start_goal when 
-	if (AreCircles_GoalIntersecting(player.x, player.y, 30, goal_start.x, goal_start.y, goal_start.width, goal_start.height)) {
+	//draw text for start_goal 
+	if (AreC_RIntersecting(player.x, player.y, 30, goal_start.x, goal_start.y, goal_start.width, goal_start.height)) {
 		CP_Font_DrawTextBox("Get to the Goal!", 50, 675, 100);
 	}
 	//test for next level (this will be for goal function)
-	if (AreCircles_GoalIntersecting(player.x, player.y, 30, goal_end.x, goal_end.y, goal_end.width, goal_end.height)) {
+	if (AreC_RIntersecting(player.x, player.y, 30, goal_end.x, goal_end.y, goal_end.width, goal_end.height)) {
 		CP_Font_DrawTextBox("Press N to head to next level!", 1500, 200, 100);
 		if (CP_Input_KeyTriggered(KEY_N))
 		{
 			CP_Engine_SetNextGameState(Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit); // next level using N
 		}
 	}
-	/*collide_platform(&player, &platform1.x, &platform1.y, &platform1.width, &platform1.height);*/
+	//collide_platform(&player, &platform1.x, &platform1.y, &platform1.width, &platform1.height);
 
 	if ((c_rect_rect(player.x, player.y, 30, 30, (CP_System_GetWindowWidth() / 2), 800.00, (CP_System_GetWindowWidth()), 10.00)) != FALSE) {
 		player.velocity.y = 0;
 		player.on_ground = 1;
 	}
-	/*if ((c_rect_rect(player.x, player.y, 30, 30, platform1.x, platform1.y, platform1.width, platform1.height)) != FALSE) {
+	if ((c_rect_rect(player.x, player.y, 30, 30, platform[1].x, platform[1].y, platform[1].width, platform[2].height)) != FALSE) {
 		player.velocity.y = 0;
 		player.on_ground = 1;
 	}
-	if ((c_rect_rect(player.x, player.y, 30, 30, platform2.x, platform2.y, platform2.width, platform2.height)) != FALSE) {
+	if ((c_rect_rect(player.x, player.y, 30, 30, platform[2].x, platform[2].y, platform[2].width, platform[2].height)) != FALSE) {
 		player.velocity.y = 0;
 		player.on_ground = 1;
 	}
-	if ((c_rect_rect(player.x, player.y, 30, 30, platform_goal.x, platform_goal.y, platform_goal.width, platform_goal.height)) != FALSE) {
+	if ((c_rect_rect(player.x, player.y, 30, 30, platform[3].x, platform[3].y, platform[3].width, platform[3].height)) != FALSE) {
 		player.velocity.y = 0;
 		player.on_ground = 1;
-	}*/
+	}
 
 	if (player.on_ground != 1) {
 		gravity(&player.y, &player.velocity.y, dt);

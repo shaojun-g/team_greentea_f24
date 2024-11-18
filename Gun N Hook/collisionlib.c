@@ -19,7 +19,7 @@ void player_damage(float* player_x, float* player_y, float* player_width, float*
 		if (*projectile_Live) {
 			*player_HP -= 1;
 			*projectile_Live = 0;
-			printf("enemy bullet detected");
+		
 		}
 }
 
@@ -33,6 +33,7 @@ void deal_damage(Bullet bullets[], float *char_x, float* char_y, float* char_wid
 		if (c_rect_rect(bullets[i].x, bullets[i].y, bullets[i].diameter, bullets[i].diameter, *char_x, *char_y, *char_width, *char_height) && bullets[i].live == 1) {
 			bullets[i].live = 2;
 			*char_HP -= 1;
+			printf("enemy bullet detected");
 		}
 	}
 }
