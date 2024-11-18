@@ -171,6 +171,7 @@ void enemy_shoot_projectile(Projectile* projectile,RANGE_Enemy* enemy, float spe
 	
 }
 
+
 void Enemy_Update(void) {
 	//void state_change(struct MELEE_Enemy* enemy, struct Platform* platform, struct Player* player, float idletopatrol_sec, float attacktopatrol_sec, float elapsedTime);
 	//idletopatrol_sec is how many seconds for enemy to  change from idle to patrol(NOT SO RANDOM MOVEMENT)
@@ -207,7 +208,7 @@ void Enemy_Update(void) {
 	CP_Settings_EllipseMode(CP_POSITION_CENTER);
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 	CP_Graphics_DrawCircle(projectile1.x, projectile1.y, projectile1.diameter);
-	enemy_shoot_projectile(&projectile1, &enemy2, 200);
+	enemy_shoot_projectile(&projectile1, &enemy2, 200, -1);
 	//collision
 	//if (enemy.hit == 1) {
 	//	enemy1.health -= 1;

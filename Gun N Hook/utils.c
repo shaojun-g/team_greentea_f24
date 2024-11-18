@@ -11,6 +11,7 @@
 
 int current_level = 0;
 
+
 int IsAreaClicked(float area_center_x, float area_center_y, float area_width, float area_height, float click_x, float click_y)
 {
 	//Calculate the half width and height of rectangle
@@ -49,9 +50,29 @@ int IsCircleClicked(float circle_center_x, float circle_center_y, float diameter
 
 int AreCircles_GoalIntersecting(float circle_x, float circle_y, float radius, float rect_x, float rect_y, float rect_width, float rect_height)
 {
-	// Find the closest point on the rectangle to the circle’s center
-	float closest_x = fmax(rect_x, fmin(circle_x, rect_x + rect_width));
-	float closest_y = fmax(rect_y, fmin(circle_y, rect_y + rect_height));
+	// Find the closest x-coordinate on the rectangle to the circle’s center
+	float closest_x;
+	if (circle_x < rect_x) {
+		closest_x = rect_x; // Circle is to the left of the rectangle
+	}
+	else if (circle_x > rect_x + rect_width) {
+		closest_x = rect_x + rect_width; // Circle is to the right of the rectangle
+	}
+	else {
+		closest_x = circle_x; // Circle is within the horizontal bounds of the rectangle
+	}
+
+	// Find the closest y-coordinate on the rectangle to the circle’s center
+	float closest_y;
+	if (circle_y < rect_y) {
+		closest_y = rect_y; // Circle is above the rectangle
+	}
+	else if (circle_y > rect_y + rect_height) {
+		closest_y = rect_y + rect_height; // Circle is below the rectangle
+	}
+	else {
+		closest_y = circle_y; // Circle is within the vertical bounds of the rectangle
+	}
 
 	// Calculate the distance between the circle’s center and this closest point
 	float distance = CP_Math_Distance(circle_x, circle_y, closest_x, closest_y);
@@ -117,7 +138,7 @@ void goal_function() {
 
 }
 
-void ApplyElasticCollision(Player* player, Platform hazard, float restitution) {
+void ApplyElasticCollision(Player* player, MELEE_Enemy hazard, float restitution) {
 	// Calculate the edges of the centered hazard rectangle
 	float hazard_left = hazard.x - hazard.width / 2;
 	float hazard_right = hazard.x + hazard.width / 2;
@@ -130,11 +151,10 @@ void ApplyElasticCollision(Player* player, Platform hazard, float restitution) {
 	float player_top = player->y - player->height / 2;
 	float player_bottom = player->y + player->height / 2;
 
-	float bounce_back_distance = 2.50; //change this to determine distaance of bounceback
+	float bounce_back_distance = 3.00; //change this to determine distaance of bounceback
 
 	// Check which side the collision occurred and adjust player position and velocity
 	if (player_right > hazard_left && player_left < hazard_right) {
-		
 		 // Check if the player is moving right and collides with the left side of the hazard
 		if (player->velocity.x >= 0 && player_right > hazard_left && player_left < hazard_left) {
 			printf("1");
@@ -143,14 +163,14 @@ void ApplyElasticCollision(Player* player, Platform hazard, float restitution) {
 			player->velocity.x *= -restitution;  // Reverse the horizontal velocity (bounce)
 		}
 		// Check if the player is moving left and collides with the right side of the hazard
-		else if (player->velocity.x < 0 && hazard_right - player_left < player->width) {
+		else if (player->velocity.x <= 0 && hazard_right - player_left < player->width) {
 			printf("2");
 			// Collision on the right side of the hazard
 			player->x = hazard_right + player->width * bounce_back_distance;
-			player->velocity.x *= -restitution;
+			player->velocity.x *= restitution;
 		}
 	}
-
+	
 	if (player_bottom > hazard_top && player_top < hazard_bottom) {
 		if (player->velocity.y > 0 && player_bottom - hazard_top < player->height) { 
 			// Collision on the top

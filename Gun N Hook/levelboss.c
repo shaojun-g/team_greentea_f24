@@ -28,7 +28,7 @@ enum { NUM_BOSS_TURRETS = 4 };
 RANGE_Enemy boss_turrets[NUM_BOSS_TURRETS];
 enum { MAX_TURRET_PROJECTILE = 4 };
 Projectile turret_projectiles[MAX_TURRET_PROJECTILE];
-Player player1;
+Player player;
 CP_Font my_awesome_font;
 float elaspedTime;
 
@@ -140,15 +140,8 @@ void Levelboss_Init(void)
 	boss_health.y = 850;
 	boss_health.width = 1400.00;
 	boss_health.height = 75.00;
-
-
-
-	//debugging player
-	player1.x = platform_base.x;
-	player1.y = platform_base.y-20;
-	player1.width = 30;
-	player1.height = 30;
-	player1.on_ground = 1;
+	player = (Player){ 100, 785, 30, 30, 3, 1, {0, 0} };
+	
 }
 
 void test_debug(void){
@@ -157,31 +150,31 @@ void test_debug(void){
 	//player
 	CP_Settings_EllipseMode(CP_POSITION_CENTER);
 	CP_Settings_Fill(CP_Color_Create(140, 0, 0, 255));
-	CP_Graphics_DrawRect(player1.x, player1.y, player1.width, player1.height);
+	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);
 	//movement
 	if (CP_Input_KeyDown(KEY_A)) { //move left when move left x--
 		//movement
-		player1.x -= 5 + CP_System_GetDt();
+		player.x -= 5 + CP_System_GetDt();
 	} // end of check key A
 	else if (CP_Input_KeyDown(KEY_D)) { //move right when move right x++
 		//movement
-		player1.x += 5 + CP_System_GetDt();
+		player.x += 5 + CP_System_GetDt();
 	} // end of check key D
 	//updown
 	if (CP_Input_KeyDown(KEY_W)) { //move up when move left y--
 		//movement
-		player1.y -= 5 + CP_System_GetDt();
+		player.y -= 5 + CP_System_GetDt();
 	} // end of check key A
 	else if (CP_Input_KeyDown(KEY_S)) { //move down when move right y++
 		//movement
-		player1.y += 5 + CP_System_GetDt();
+		player.y += 5 + CP_System_GetDt();
 	} // end of check key D
 
 	// Create an array of characters (aka a string) that can store up to 256 characters.
 	char buffer[256];
 	// Fill the buffer with the text we want.
 	// Notice that it uses a similar syntax as printf()!
-	sprintf_s(buffer, sizeof(buffer), "Player X: %.2f, Player: %.2f", player1.x, player1.y);
+	sprintf_s(buffer, sizeof(buffer), "Player X: %.2f, Player: %.2f", player.x, player.y);
 	// Tells CProcessing to use the white color for anything we are drawing on the screen
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 	// Draw the text using the string stored in the buffer in the center of the screen.
@@ -236,7 +229,7 @@ void Levelboss_Update(void)
 	//shoot projectile
 	for (int i = 0; i < MAX_TURRET_PROJECTILE; i++) {
 		if (turret_projectiles[i].travelling == 1) {
-			enemy_shoot_projectile(&turret_projectiles[i], &boss_turrets[i], 300);
+			enemy_shoot_projectile(&turret_projectiles[i], &boss_turrets[i], 300, -1);
 		}
 	}
 	if (CP_Input_KeyTriggered(KEY_Q))
