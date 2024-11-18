@@ -208,7 +208,7 @@ void Enemy_Update(void) {
 	CP_Settings_EllipseMode(CP_POSITION_CENTER);
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 	CP_Graphics_DrawCircle(projectile1.x, projectile1.y, projectile1.diameter);
-	enemy_shoot_projectile(&projectile1, &enemy2, 200, -1);
+	enemy_shoot_projectile(&projectile1, &enemy2, 200);
 	//collision
 	//if (enemy.hit == 1) {
 	//	enemy1.health -= 1;

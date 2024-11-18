@@ -213,23 +213,23 @@ void Levelboss_Update(void)
 		CP_Graphics_DrawCircle(turret_projectiles[i].x, turret_projectiles[i].y, turret_projectiles[i].diameter);
 	}
 
-	if (player1.on_ground == 1 && (player1.y >= platform_base.y - player1.width * 2) && (player1.y <= platform_base.y - player1.width / 2)) {
+	if (player.on_ground == 1 && (player.y >= platform_base.y - player.width * 2) && (player.y <= platform_base.y - player.width / 2)) {
 		turret_projectiles[0].travelling = 1;
 	}
-	if (player1.on_ground == 1 && (player1.y >= platform1.y - player1.width * 2) && (player1.y <= platform1.y - player1.width / 2)) {
+	if (player.on_ground == 1 && (player.y >= platform1.y - player.width * 2) && (player.y <= platform1.y - player.width / 2)) {
 		turret_projectiles[1].travelling = 1;
 	}
-	if (player1.on_ground == 1 && (player1.y >= platform2.y - player1.width * 2) && (player1.y <= platform2.y - player1.width / 2)) {
+	if (player.on_ground == 1 && (player.y >= platform2.y - player.width * 2) && (player.y <= platform2.y - player.width / 2)) {
 		turret_projectiles[2].travelling = 1;
 	}
-	if (player1.on_ground == 1 && (player1.y >= platform3.y - player1.width * 2) && (player1.y <= platform3.y - player1.width / 2)) {
+	if (player.on_ground == 1 && (player.y >= platform3.y - player.width * 2) && (player.y <= platform3.y - player.width / 2)) {
 		turret_projectiles[3].travelling = 1;
 	}
 
 	//shoot projectile
 	for (int i = 0; i < MAX_TURRET_PROJECTILE; i++) {
 		if (turret_projectiles[i].travelling == 1) {
-			enemy_shoot_projectile(&turret_projectiles[i], &boss_turrets[i], 300, -1);
+			enemy_shoot_projectile(&turret_projectiles[i], &boss_turrets[i], 300);
 		}
 	}
 	if (CP_Input_KeyTriggered(KEY_Q))

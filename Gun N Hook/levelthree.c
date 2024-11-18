@@ -215,7 +215,7 @@ void Levelthree_Update(void)
 	CP_Settings_EllipseMode(CP_POSITION_CENTER);
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 	CP_Graphics_DrawCircle(enemy_projectile.x, enemy_projectile.y, enemy_projectile.diameter);
-	enemy_shoot_projectile(&enemy_projectile, &range_enemy, 200, 1);
+	enemy_shoot_projectile(&enemy_projectile, &range_enemy, 200);
 
 	//draw range enemy 2
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
@@ -223,7 +223,7 @@ void Levelthree_Update(void)
 	//draw projectile
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 	CP_Graphics_DrawCircle(enemy_projectile2.x, enemy_projectile2.y, enemy_projectile2.diameter);
-	enemy_shoot_projectile(&enemy_projectile2, &range_enemy2, 200, -1);
+	enemy_shoot_projectile(&enemy_projectile2, &range_enemy2, 200);
 
 	//draw range enemy 2
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
@@ -231,7 +231,7 @@ void Levelthree_Update(void)
 	//draw projectile
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 	CP_Graphics_DrawCircle(enemy_projectile3.x, enemy_projectile3.y, enemy_projectile3.diameter);
-	enemy_shoot_projectile(&enemy_projectile3, &range_enemy3, 200, -1);
+	enemy_shoot_projectile(&enemy_projectile3, &range_enemy3, 200);
 
 
 	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
@@ -239,16 +239,16 @@ void Levelthree_Update(void)
 
 
 	// Update melee enemy state and behavior
-	state_change(&melee_enemy, &platform[1], &player, 3.0f, 8.0f);
+	state_change(&melee_enemy, &platform[1], &player, 3.0f, 8.0f, 0);
 
 	//update melee enemy2 state and behaviour
-	state_change(&melee_enemy2, &platform[2], &player, 3.0f, 8.0f);
+	state_change(&melee_enemy2, &platform[2], &player, 3.0f, 8.0f, 0);
 
 	//update melee enemy3 state and behaviour
-	state_change(&melee_enemy3, &platform[3], &player, 3.0f, 8.0f);
+	state_change(&melee_enemy3, &platform[3], &player, 3.0f, 8.0f, 0);
 
 	//update melee enemy4 state and behaviour
-	state_change(&melee_enemy4, &platform[4], &player, 3.0f, 8.0f);
+	state_change(&melee_enemy4, &platform[4], &player, 3.0f, 8.0f, 0);
 
 	//collision between melee enemy and player
 	if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy.x, melee_enemy.y, melee_enemy.width, melee_enemy.height)) {
