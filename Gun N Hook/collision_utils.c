@@ -1,7 +1,7 @@
 #include <math.h>
 #include "cprocessing.h"
 
-// rect-plane		probably don't need
+// rect-line		probably don't need
 int c_rect_line(float rect_x, float rect_y, float rect_width, float rect_height, float plane_x1, float plane_y1, float plane_x2, float plane_y2) {
 	if (((plane_x1 <= (rect_x + rect_width / 2) && plane_x1 >= (rect_x - rect_width / 2)) && (plane_y1 <= (rect_y + rect_height / 2) && plane_y1 >= (rect_y - rect_height / 2))) ||
 		((plane_x2 <= (rect_x + rect_width / 2) && plane_x2 >= (rect_x - rect_width / 2)) && (plane_y2 <= (rect_y + rect_height / 2) && plane_y2 >= (rect_y - rect_height / 2))))

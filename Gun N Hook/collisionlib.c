@@ -1,6 +1,8 @@
-#include "collision_utils.h"
-#include "collisionlib.h"
 #include "cprocessing.h"
+#include "utils.h"
+#include "collisionlib.h"
+
+
 
 // function to prevent overlap of player and platforms.
 void collide_platform(struct Player* player, float* platform_x, float* platform_y, float* platform_width, float* platform_height) {
@@ -15,23 +17,23 @@ void collide_platform(struct Player* player, float* platform_x, float* platform_
 }
 
 // function that causes player to take damage when colliding with enemies or enemy projectiles.
-void player_damage(struct Player player, float* enemy_x, float* enemy_y, float* enemy_width, float* enemy_height, int* player_HP, int* projectile_Live) {
-	if (c_rect_rect(player.x, player.y, player.width, player.height, *enemy_x, *enemy_y, *enemy_width, *enemy_height))
+void player_damage(struct Player* player, float* enemy_x, float* enemy_y, float* enemy_width, float* enemy_height, int* player_HP, int* projectile_Live) {
+	if (c_rect_rect(player->x, player->y, player->width, player->height, *enemy_x, *enemy_y, *enemy_width, *enemy_height))
 		if (*projectile_Live) {
 			*player_HP -= 1;
 			*projectile_Live = 0;
 		}
 }
 
-// function that causes enemies to take damage when colliding with player projectiles.
-void enemy_damage(struct Bullet bullets[], struct Enemy enemy[]) {
-	int i = 0;
-	if (c_rect_rect(bullets[i].x, bullets[i].x, bullets[i].x, bullets[i].x, enemy[i].x, enemy[i].y, enemy[i].width, enemy[i].height))
-		if (bullets[i].live) {
-			enemy[i].DMG += 1;
-			bullets[i].live = 0;
-		}
-}
+//// function that causes enemies to take damage when colliding with player projectiles.
+//void enemy_damage(struct Bullet bullets[], struct Enemy enemy[]) {
+//	int i = 0;
+//	if (c_rect_rect(bullets[i].x, bullets[i].x, bullets[i].x, bullets[i].x, enemy[i].x, enemy[i].y, enemy[i].width, enemy[i].height))
+//		if (bullets[i].live) {
+//			enemy[i].DMG += 1;
+//			bullets[i].live = 0;
+//		}
+//}
 
 // initial values for pea_shooters
 void init_pea_shooter(Bullet bullets[], struct Player* player) {
@@ -39,15 +41,36 @@ void init_pea_shooter(Bullet bullets[], struct Player* player) {
 	for (int i = 0; i < 50; i++) {
 		bullets[i].x = player->x;
 		bullets[i].y = player->y;
-		bullets[i].diameter = 35;
+		bullets[i].diameter = 10;
 		bullets[i].speed = 800.0;
 		bullets[i].live = 0;
 	}
 }
 
 // pea-shooter function.
-void pea_shooter(Bullet bullets[], struct Player* player, float mouse_click_x) {
+void pea_shooter(Bullet bullets[], struct Player* player) {
 	CP_Color colorCyan = CP_Color_Create(100, 250, 250, 255);
+
+	// if mouse triggered, make live 1 bullet
+	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+		float mouse_click_x = CP_Input_GetMouseX();
+		for (int i = 0; i < 50; i++) {
+			if (!(bullets[i].live)) {
+				// if speed is positive and mouse clicked left of player, negative the speed.
+				if ((player->x - mouse_click_x) > 0 && bullets[i].speed > 0)
+					bullets[i].speed = -bullets[i].speed;
+				// if speed is negative and mouse clicked right of player, negative the speed.
+				else if ((player->x - mouse_click_x) < 0 && bullets[i].speed < 0)
+					bullets[i].speed = -bullets[i].speed;
+
+				bullets[i].live = 1;
+			}
+			else
+				continue;
+
+			break;
+		}
+	}
 
 	//	for loop to update every bullet; draw bullet and update x coordinate.
 	for (int i = 0; i < 50; i++) {
@@ -70,26 +93,6 @@ void pea_shooter(Bullet bullets[], struct Player* player, float mouse_click_x) {
 				bullets[i].x = player->x;
 				bullets[i].y = player->y;
 			}
-		}
-	}
-
-	// if mouse triggered, make live 1 bullet
-	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-		for (int i = 0; i < 50; i++) {
-			if (!(bullets[i].live)) {
-				// if speed is positive and mouse clicked left of player, negative the speed.
-				if ((player->x - mouse_click_x) > 0 && bullets[i].speed > 0)
-					bullets[i].speed = -bullets[i].speed;
-				// if speed is negative and mouse clicked right of player, negative the speed.
-				else if ((player->x - mouse_click_x) < 0 && bullets[i].speed < 0)
-					bullets[i].speed = -bullets[i].speed;
-
-				bullets[i].live = 1;
-			}
-			else
-				continue;
-
-			break;
 		}
 	}
 }

@@ -1,24 +1,25 @@
 #pragma once
 
-//	create player struct.
-typedef struct Player {
-	float x;
-	float y;
-	float width;
-	float height;
-	int HP;
-} Player;
 
-//	create bullet struct.
-typedef struct Bullet {
-	float diameter;
-	float x;
-	float y;
-	float speed;
-	int live;
-} Bullet;
-
-struct Bullet bullets[50];
+////	create player struct.
+//typedef struct Player {
+//	float x;
+//	float y;
+//	float width;
+//	float height;
+//	int HP;
+//} Player;
+//
+////	create bullet struct.
+//typedef struct Bullet {
+//	float diameter;
+//	float x;
+//	float y;
+//	float speed;
+//	int live;
+//} Bullet;
+//
+//struct Bullet bullets[50];
 
 /*--------------------------------------------------------------------------------------------------------------------------------*/
 /* @brief	-	player in contact with ground or platform.
@@ -56,4 +57,4 @@ void init_pea_shooter(Bullet bullets[], struct Player* player);
 *  @output	-	when function is called, will spawn circle projectiles with a constant speed that will fly either left or right of
 				player depending on mouse_click_x with respect to player position.												  */
 /*--------------------------------------------------------------------------------------------------------------------------------*/
-void pea_shooter(Bullet bullets[], struct Player* player, float mouse_click_x);
+void pea_shooter(Bullet bullets[], struct Player* player);

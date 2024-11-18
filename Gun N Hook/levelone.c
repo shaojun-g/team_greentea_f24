@@ -97,16 +97,20 @@ void Levelone_Init(void)
 	player = (Player){ 100, 785, 30, 30, 3, 1, {0, 0} };
 	health = 3;
 	
-	
+	init_pea_shooter(bullets, &player);
 	
 }
 
 
 void Levelone_Update(void)
 {
+	// Pea-shooter
+	pea_shooter(bullets, &player);
+
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255)); // clear background to gray
 	dt = CP_System_GetDt();//date time function
 	//drawGrapple(&player.x, &player.y, &grapple.x, &grapple.y, dt); //draw grapple
+	CP_Settings_Fill(CP_Color_Create(250, 250, 250, 255));
 	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
 	//draw goals
 	draw_goal(goal_start);
@@ -160,6 +164,7 @@ void Levelone_Update(void)
 			CP_Engine_SetNextGameState(Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit); // next level using N
 		}
 	}
+	//collide_platform(&player, &platform1.x, &platform1.y, &platform1.width, &platform1.height);
 
 	if ((c_rect_rect(player.x, player.y, 30, 30, (CP_System_GetWindowWidth() / 2), 800.00, (CP_System_GetWindowWidth()), 10.00)) != FALSE) {
 		player.velocity.y = 0;

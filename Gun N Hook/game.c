@@ -18,6 +18,7 @@ void Game_Init(void)
 	grapple = (Grapple){ 0, 0, 0 };
 	platforms[0] = (Platform){ CP_System_GetWindowWidth() / 2 , 800.00, CP_System_GetWindowWidth(), 100.00,CP_Color_Create(255, 128, 128, 255)};
 	platforms[1] = (Platform){ CP_System_GetWindowWidth() / 2, 400.00, CP_System_GetWindowWidth()/4, 100.00, CP_Color_Create(255, 128, 128, 255)};
+	init_pea_shooter(bullets, &player);
 }
 
 void Game_Update(void)
@@ -29,6 +30,8 @@ void Game_Update(void)
 	{
 		CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
 	}
+
+	pea_shooter(bullets, &player, CP_Input_GetMouseX());
 
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 	CP_Graphics_DrawCircle(player.x, player.y, player.width);
@@ -51,6 +54,7 @@ void Game_Update(void)
 	}
 	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground, dt);
 	drawGrapple(&player.x, &player.y, &grapple.x, &grapple.y, &platforms, PLATFORM_SIZE, dt);
+
 
 }
 
