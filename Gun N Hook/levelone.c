@@ -89,7 +89,7 @@ void Levelone_Update(void)
 {
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255)); // clear background to gray
 	dt = CP_System_GetDt();//date time function
-	//drawGrapple(&player.x, &player.y, &grapple.x, &grapple.y, dt); //draw grapple
+	//drawGrapple(&player, &grapple.x, &grapple.y, dt); //draw grapple
 	
 	//draw all platforms
 	for (int i = 0; i < PLATFORM_SIZE; i++) {
