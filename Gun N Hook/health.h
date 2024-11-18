@@ -16,7 +16,7 @@ typedef struct Health {
 	float height;
 } heart;
 
-void draw_healthbar(healthbar health);
+//void draw_healthbar(healthbar health);
 
 void draw_hearts(heart health[], int *size);
 

@@ -23,6 +23,16 @@ bool progress_check(const char *level) {
 		textwrite("Save File could not be read", CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f, Black);
 		return false;
 	}
+	
+	if (check) {
+		CP_Settings_Fill(Red);
+		CP_Settings_RectMode(CP_POSITION_CENTER);
+		CP_Graphics_DrawRect(CP_System_GetWindowHeight() / 1.13f, CP_System_GetWindowHeight() / 1.98f, CP_System_GetWindowWidth() / 4.3f, CP_System_GetWindowHeight() / 8.0f);
+		CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255));
+		textwrite("Save File loaded", CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f, Black);
+		return true;
+
+	}
 
 	if (letter = fgetc(check) != EOF) {
 		if (letter == 1);
