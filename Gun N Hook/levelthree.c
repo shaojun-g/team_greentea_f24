@@ -25,7 +25,7 @@ MELEE_Enemy melee_enemy, melee_enemy2, melee_enemy3, melee_enemy4;
 RANGE_Enemy range_enemy, range_enemy2, range_enemy3;
 Projectile enemy_projectile, enemy_projectile2, enemy_projectile3;
 
-float dt;
+float dt, elapsedtime;
 
 void Levelthree_Init(void)
 {
@@ -140,6 +140,7 @@ void Levelthree_Init(void)
 	range_enemy.y = platform[5].y - platform[5].height / 2 - range_enemy.height / 2;;
 	range_enemy.shoot_posX = range_enemy.x;
 	range_enemy.shoot_posY = range_enemy.y;
+	range_enemy.dir = RIGHT;
 	//range projectile
 	enemy_projectile.x = range_enemy.shoot_posX;
 	enemy_projectile.y = range_enemy.shoot_posY;
@@ -171,6 +172,7 @@ void Levelthree_Init(void)
 	enemy_projectile3.travelling = 1;
 	//player values
 	player = (Player){ 100, 785, 30, 30, 5, 1, {0, 0} };
+	elapsedtime = 0;
 }
 
 
@@ -239,16 +241,16 @@ void Levelthree_Update(void)
 
 
 	// Update melee enemy state and behavior
-	state_change(&melee_enemy, &platform[1], &player, 3.0f, 8.0f, 0);
+	state_change(&melee_enemy, &platform[1], &player, 3.0f, 8.0f, &elapsedtime);
 
 	//update melee enemy2 state and behaviour
-	state_change(&melee_enemy2, &platform[2], &player, 3.0f, 8.0f, 0);
+	state_change(&melee_enemy2, &platform[2], &player, 3.0f, 8.0f, &elapsedtime);
 
 	//update melee enemy3 state and behaviour
-	state_change(&melee_enemy3, &platform[3], &player, 3.0f, 8.0f, 0);
+	state_change(&melee_enemy3, &platform[3], &player, 3.0f, 8.0f, &elapsedtime);
 
 	//update melee enemy4 state and behaviour
-	state_change(&melee_enemy4, &platform[4], &player, 3.0f, 8.0f, 0);
+	state_change(&melee_enemy4, &platform[4], &player, 3.0f, 8.0f, &elapsedtime);
 
 	//collision between melee enemy and player
 	if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy.x, melee_enemy.y, melee_enemy.width, melee_enemy.height)) {

@@ -27,6 +27,7 @@ float elapsed_time;
 
 void Levelone_Init(void)
 {
+	elapsed_time = 0;
 	//Set font size for all goal texts
 	CP_Settings_TextSize(25.00f);
 	CP_Settings_TextAlignment(h, v);

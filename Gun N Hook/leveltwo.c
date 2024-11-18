@@ -23,6 +23,7 @@ Projectile enemy_projectile;
 
 
 float dt;
+float elapsedtime;
 
 void Leveltwo_Init(void)
 {
@@ -105,6 +106,9 @@ void Leveltwo_Init(void)
 	//player values
 	player = (Player){ 100, 785, 30, 30, 5, 1, {0, 0} };
 
+	//elapsed time
+	elapsedtime = 0;
+
 	
 	
 }
@@ -158,13 +162,13 @@ void Leveltwo_Update(void)
 	draw_healthbar(player_health);
 
 	// Update melee enemy state and behavior
-	state_change(&melee_enemy, &platform[1], &player, 3.0f, 8.0f, 0);
+	state_change(&melee_enemy, &platform[1], &player, 3.0f, 8.0f, &elapsedtime);
 
 	//update melee enemy2 state and behaviour
-	state_change(&melee_enemy2, &platform[2], &player, 3.0f, 8.0f, 0);
+	state_change(&melee_enemy2, &platform[2], &player, 3.0f, 8.0f, &elapsedtime);
 
 	//update melee enemy2 state and behaviour
-	state_change(&melee_enemy3, &platform[3], &player, 3.0f, 8.0f, 0);
+	state_change(&melee_enemy3, &platform[3], &player, 3.0f, 8.0f, &elapsedtime);
 
 	//collision between melee enemy and player
 	if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy.x, melee_enemy.y, melee_enemy.width, melee_enemy.height)) {
