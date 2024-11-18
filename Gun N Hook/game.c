@@ -50,7 +50,7 @@ void Game_Update(void)
 		gravity(&player.y, &player.velocity.y, dt);
 	}
 	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground, dt);
-	drawGrapple(&player.x, &player.y, &grapple.x, &grapple.y, &platforms, PLATFORM_SIZE, dt);
+	drawGrapple(&player, &grapple.x, &grapple.y, &platforms, PLATFORM_SIZE, dt);
 
 }
 
