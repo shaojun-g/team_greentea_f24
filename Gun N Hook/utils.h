@@ -35,3 +35,5 @@ void draw_boss(Boss* boss);
 void Restart_Level();
 void goal_function();
 void ApplyElasticCollision(Player* player, MELEE_Enemy hazard, float restitution);
+
+

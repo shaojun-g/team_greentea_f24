@@ -13,6 +13,9 @@
     <ClCompile Include="utils.c" />
     <ClCompile Include="enemy.c" />
     <ClCompile Include="collisionlib.c" />
+    <ClCompile Include="credit.c" />
+    <ClCompile Include="InitialSplash.h" />
+    <ClCompile Include="InitialSplash.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="collision_utils.h" />
@@ -25,5 +28,7 @@
     <ClInclude Include="utils.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="structs.h" />
+    <ClInclude Include="collisionlib.h" />
+    <ClInclude Include="credit.h" />
   </ItemGroup>
 </Project>

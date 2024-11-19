@@ -15,6 +15,8 @@ float textSize;
 
 void Main_Menu_Init(void)
 {
+    // set rectangle x & y position 
+
     textSize = 50.0f;
     myFont = CP_Font_Load("Assets/Exo2-Regular.ttf");
     CP_Settings_TextSize(textSize);
@@ -22,7 +24,7 @@ void Main_Menu_Init(void)
 
 void Main_Menu_Update(void)
 {
-    // set rectangle x & y position 
+    
     double xRect = CP_System_GetWindowWidth() / 2.0f;
     double yRect1 = CP_System_GetWindowHeight() / 4.6f;
     double yRect2 = CP_System_GetWindowHeight() / 1.9f;
