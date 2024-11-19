@@ -29,7 +29,7 @@ void basic_movement(float* player_x, float* player_y, float* speed_x, float* spe
 
 	//	initial upward speed when jump.
 	if ((CP_Input_KeyDown(KEY_W) || CP_Input_KeyDown(KEY_SPACE)) && *on_ground) {
-		*speed_y = -300;
+		*speed_y = -400;
 		*on_ground = 0;
 	}
 	//	hold down key to get hang time.
@@ -52,7 +52,7 @@ void basic_movement(float* player_x, float* player_y, float* speed_x, float* spe
 void gravity(float* speed_y) {
 	//	increase downward speed as time passes.
 	if (*speed_y < 1000 )	{
-		*speed_y += 1500 * CP_System_GetDt(); 
+		*speed_y += 1600 * CP_System_GetDt(); 
 	}
 	//	set max speed.
 	else				
@@ -109,7 +109,7 @@ float hook_x = 0.0;
 float hook_y = 9.0;
 float player_pulling = 0;
 float player_grapple_speed = 500.0;// max grapple pulling speed
-float cd_time = 2.0f; // cooldown tiimer
+float cd_time = 1.0f; // cooldown tiimer
 float cd_remaining = 0.0f;
 
 void drawGrapple(Player *player, float* grapple_x, float* grapple_y, Platform* platforms, int num_of_platforms, float dt) {
@@ -188,6 +188,8 @@ void drawGrapple(Player *player, float* grapple_x, float* grapple_y, Platform* p
 			//*grapple_x = 0;
 			//*grapple_y = 0;
 			grapple_extending = 0;
+			// make player go up platform with some nice accel.
+			player->velocity.y += -400;
 
 			cd_remaining = cd_time;
 		}
