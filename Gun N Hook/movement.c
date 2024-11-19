@@ -51,9 +51,14 @@ void basic_movement(float* player_x, float* player_y, float* speed_x, float* spe
 
 void gravity(float* speed_y) {
 	//	increase downward speed as time passes.
-	if (*speed_y < 1500)	{ *speed_y += 1500 * CP_System_GetDt(); }
+	if (*speed_y < 1000 )	{
+		*speed_y += 1500 * CP_System_GetDt(); 
+	}
 	//	set max speed.
-	else					{ *speed_y = 2500; }
+	else				
+	{ 
+		*speed_y = 1500; 
+	}
 }
 
 /*void basic_movement(float* player_x, float* player_y, float* speed_x, float* speed_y, int* on_ground, float dt) {
