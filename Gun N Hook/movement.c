@@ -29,7 +29,7 @@ void basic_movement(float* player_x, float* player_y, float* speed_x, float* spe
 
 	//	initial upward speed when jump.
 	if ((CP_Input_KeyDown(KEY_W) || CP_Input_KeyDown(KEY_SPACE)) && *on_ground) {
-		*speed_y = -500;
+		*speed_y = -300;
 		*on_ground = 0;
 	}
 	//	hold down key to get hang time.
@@ -97,14 +97,14 @@ void gravity(float* player_y, float *speed_y, float dt) {
 
 int grapple_extending = 0;
 float grapple_distance = 0;
-float grapple_max_distance = 200.00;
+float grapple_max_distance = 200.00;// max distance for grapple
 float grapple_speed = 1000.0;
 CP_Vector grapple_target;
 float hook_x = 0.0;
 float hook_y = 9.0;
 float player_pulling = 0;
-float player_grapple_speed = 500.0;
-float cd_time = 2.0f;
+float player_grapple_speed = 500.0;// max grapple pulling speed
+float cd_time = 2.0f; // cooldown tiimer
 float cd_remaining = 0.0f;
 
 void drawGrapple(Player *player, float* grapple_x, float* grapple_y, Platform* platforms, int num_of_platforms, float dt) {

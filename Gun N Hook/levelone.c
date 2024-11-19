@@ -81,7 +81,9 @@ void Levelone_Init(void)
 
 	//player values
 	player = (Player){ 100, 785, 30, 30, 5, 1, {0, 0} };
-	
+
+	//pea-shooter init
+	pea_shooter_init(bullets, &player.x, &player.y);
 }
 
 
@@ -109,6 +111,9 @@ void Levelone_Update(void)
 	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement
 	if (!(player.on_ground))
 		gravity(&player.velocity.y);
+
+	//pea shooter function
+	pea_shooter(bullets, &player.x, &player.y);
 
 	//draw player
 	CP_Settings_Fill(CP_Color_Create(250, 250, 250, 255));
