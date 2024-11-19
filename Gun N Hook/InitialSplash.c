@@ -1,8 +1,6 @@
 #include "cprocessing.h" // Must have
-/*#include "game.h" */// Must have  
 #include "InitialSplash.h"
 #include "mainmenu.h"
-//#include "TitleSplash.h"
 
 float LogoOpacity;
 float fadespeed_outwards;
@@ -30,6 +28,10 @@ void InitialSplash_Update(void) {
             LogoOpacity = 0.0f;
             CP_Engine_SetNextGameState(Main_Menu_Init ,Main_Menu_Update, Main_Menu_Exit);
         }
+    }
+
+    if (CP_Input_MouseClicked()) {
+        CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
     }
 }
 

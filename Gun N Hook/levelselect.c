@@ -43,12 +43,28 @@ void Level_Select_Update(void) {
 	CP_Color Blue = CP_Color_Create(0, 200, 255, 255);
 	CP_Color White = CP_Color_Create(255, 255, 255, 255);
 	CP_Color Black = CP_Color_Create(0, 0, 0, 255);
+	CP_Color Red = CP_Color_Create(255, 200, 200, 255);
 
 	timer += CP_System_GetDt();
 
 	//Save State Check
 	if (timer < 1.3f && timer > .3f) {
-		progress_check("Assets/Save_File/level_0.txt");
+		if (!progress_check("Assets/Save_File/level_1.txt") || !progress_check("Assets/Save_File/level_2.txt") || !progress_check("Assets/Save_File/level_3.txt") || !progress_check("Assets/Save_File/level_4.txt") || !progress_check("Assets/Save_File/level_5.txt")) {
+			CP_Settings_Fill(Red);
+			CP_Settings_RectMode(CP_POSITION_CENTER);
+			CP_Graphics_DrawRect(CP_System_GetWindowHeight() / 1.13f, CP_System_GetWindowHeight() / 1.98f, CP_System_GetWindowWidth() / 2.8f, CP_System_GetWindowHeight() / 8.0f);
+			CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255));
+			textwrite("Save File could not be read", CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f, Black);
+		}
+		else {
+			CP_Settings_Fill(Red);
+			CP_Settings_RectMode(CP_POSITION_CENTER);
+			CP_Graphics_DrawRect(CP_System_GetWindowHeight() / 1.13f, CP_System_GetWindowHeight() / 1.98f, CP_System_GetWindowWidth() / 4.3f, CP_System_GetWindowHeight() / 8.0f);
+			CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255));
+			textwrite("Save File loaded", CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f, Black);
+		}
+		
+		
 		CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255));
 
 	}
@@ -105,7 +121,7 @@ void Level_Select_Update(void) {
 	//level 1
 	if (CP_Input_MouseClicked()) {
 		if (IsAreaClicked(xRect1, yRect1, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
-				CP_Engine_SetNextGameState(Level_1_Init, Level_1_Update, Level_1_Exit);
+				CP_Engine_SetNextGameState(Levelone_Init, Levelone_Update, Levelone_Exit);
 			};
 		};
 		//level 2

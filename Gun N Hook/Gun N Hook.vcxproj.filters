@@ -16,6 +16,8 @@
     <ClCompile Include="credit.c" />
     <ClCompile Include="InitialSplash.h" />
     <ClCompile Include="InitialSplash.c" />
+    <ClCompile Include="save.c" />
+    <ClCompile Include="levelselect.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="collision_utils.h" />
@@ -30,5 +32,7 @@
     <ClInclude Include="structs.h" />
     <ClInclude Include="collisionlib.h" />
     <ClInclude Include="credit.h" />
+    <ClInclude Include="save.h" />
+    <ClInclude Include="levelselect.h" />
   </ItemGroup>
 </Project>

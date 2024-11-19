@@ -25,12 +25,12 @@ void Main_Menu_Init(void)
 void Main_Menu_Update(void)
 {
     
-    double xRect = CP_System_GetWindowWidth() / 2.0f;
-    double yRect1 = CP_System_GetWindowHeight() / 4.6f;
-    double yRect2 = CP_System_GetWindowHeight() / 1.9f;
-    double yRect3 = CP_System_GetWindowHeight() / 1.2f;
-    double rectW = CP_System_GetWindowWidth() / 4.4f;
-    double rectH = CP_System_GetWindowHeight() / 4.4f;
+    double xRect = CP_System_GetWindowWidth() / 3.8f;
+    double xRect1 = CP_System_GetWindowWidth() / 2.0f;
+    double xRect2 =  CP_System_GetWindowWidth() / 1.35f;
+    double yRect = CP_System_GetWindowHeight() / 1.2f;
+    double rectW = CP_System_GetWindowWidth() / 6.4f;
+    double rectH = CP_System_GetWindowHeight() / 6.4f;
 
     //colors used
     CP_Color Blue = CP_Color_Create(0, 200, 255, 255);
@@ -44,21 +44,23 @@ void Main_Menu_Update(void)
     CP_Settings_RectMode(CP_POSITION_CENTER);
 
     // draw a rectangle for the play button
-    buttoncreate(xRect, yRect1, rectW, rectH,Blue);
-    textwrite("Play", xRect, yRect1, Black);
+    buttoncreate(xRect, yRect, rectW, rectH,Blue);
+    textwrite("Play", xRect, yRect, Black);
     
     if (CP_Input_MouseClicked()) {
-        if (IsAreaClicked(xRect, yRect1, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
-            CP_Engine_SetNextGameState(Levelone_Init, Levelone_Update, Levelone_Exit);
+        if (IsAreaClicked(xRect, yRect, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+            CP_Engine_SetNextGameState(Level_Select_Init, Level_Select_Update,Level_Select_Exit);
         };
     };
 
     // draw a rectangle for the credit button
-    buttoncreate(xRect, yRect2, rectW, rectH, Blue);
-    textwrite("Credit", xRect, yRect2, Black);
+    buttoncreate(xRect1, yRect, rectW, rectH, Blue);
+    textwrite("Controls/", xRect1, yRect- 25.f, Black);
+    textwrite("Credit", xRect1, yRect + 25.f, Black);
+
 
     if (CP_Input_MouseClicked()) {
-        if (IsAreaClicked(xRect, yRect2, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+        if (IsAreaClicked(xRect1, yRect, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
             CP_Engine_SetNextGameState(Credit_Init, Credit_Update, Credit_Exit);
         };
     };
@@ -66,11 +68,11 @@ void Main_Menu_Update(void)
 
 
     // draw a rectangle for the exit button
-    buttoncreate(xRect, yRect3, rectW, rectH, Blue);
-    textwrite("Exit", xRect, yRect3, Black);
+    buttoncreate(xRect2, yRect, rectW, rectH, Blue);
+    textwrite("Exit", xRect2, yRect, Black);
 
     if (CP_Input_MouseClicked()) {
-        if (IsAreaClicked(xRect, yRect3, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+        if (IsAreaClicked(xRect2, yRect, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
             CP_Engine_Terminate();
         };
     };
