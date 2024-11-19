@@ -237,17 +237,17 @@ void Levelthree_Update(void)
 	CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255)); // Blue color
 	CP_Graphics_DrawRect(melee_enemy4.x, melee_enemy4.y, melee_enemy4.width, melee_enemy4.height);
 
+	//draw
+	for (int i = 0; i < MAX_RANGE_Enemy; i++) {
+		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+		CP_Graphics_DrawCircle(enemy_projectiles[i].x, enemy_projectiles[i].y, enemy_projectiles[i].diameter);
+	}
 	//draw range enemy
 	for (int i = 0; i < MAX_RANGE_Enemy; i++) {
 		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
 		CP_Graphics_DrawRect(range_enemies[i].x, range_enemies[i].y, range_enemies[i].width, range_enemies[i].height);
 	}
 
-	//draw
-	for (int i = 0; i < MAX_RANGE_Enemy; i++) {
-		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-		CP_Graphics_DrawCircle(enemy_projectiles[i].x, enemy_projectiles[i].y, enemy_projectiles[i].diameter);
-	}
 	//shoot enemy
 	/*for (int i = 0; i < MAX_RANGE_Enemy; i++) {
 		enemy_shoot_projectile(&enemy_projectiles[i], &range_enemies[i], 200);
@@ -277,10 +277,10 @@ void Levelthree_Update(void)
 	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement
 	if (!(player.on_ground))
 		gravity(&player.velocity.y);
-
+	drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); //draw grapple
 	//draw player
 	CP_Settings_Fill(CP_Color_Create(250, 250, 250, 255));
-	drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); //draw grapple
+
 	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
 
 

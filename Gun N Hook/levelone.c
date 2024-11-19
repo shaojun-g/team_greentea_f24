@@ -93,22 +93,25 @@ void Levelone_Update(void)
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255)); // clear background to gray
 	dt = CP_System_GetDt();//date time function
 	
-	
+	drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); //draw grapple
+
+	draw_goal(goal_start);
+	draw_goal(goal_end);
+
 	//draw all platforms
 	for (int i = 0; i < PLATFORM_SIZE; i++) {
 		draw_platform(platform[i]);
 		collide_platform(&player, &platform[i]);
 	}
 	//draw goals
-	draw_goal(goal_start);
-	draw_goal(goal_end);
+
 	//draw healthbar (with background)
 	draw_healthbar(player_health_background);
 	draw_healthbar(player_health);
 	////draw hazard 
 	//CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255)); // Red color
 	//CP_Graphics_DrawRect(hazard.x, hazard.y, hazard.width, hazard.height);
-	drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); //draw grapple
+
 	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement
 	if (!(player.on_ground))
 		gravity(&player.velocity.y);

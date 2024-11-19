@@ -125,6 +125,8 @@ void Leveltwo_Update(void)
 	if (collisionCooldown > 0.0f) {
 		collisionCooldown -= dt;
 	}
+
+	drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); //draw grapple
 	
 	//draw goals
 	draw_goal(goal_start);
@@ -148,7 +150,7 @@ void Leveltwo_Update(void)
 	CP_Graphics_DrawRect(melee_enemy3.x, melee_enemy3.y, melee_enemy3.width, melee_enemy3.height);
 
 	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
-	drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); //draw grapple
+
 	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement
 	if (!(player.on_ground))
 		gravity(&player.velocity.y);
@@ -244,7 +246,6 @@ void Leveltwo_Update(void)
 	}
 	
 	//-----------------------------------------------------------------------------------------
-
 	if (AreC_RIntersecting(player.x, player.y, 40, goal_start.x, goal_start.y, goal_start.width, goal_start.height)) {
 		
 		CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255)); // Blue color

@@ -146,7 +146,7 @@ void drawGrapple(Player *player, float* grapple_x, float* grapple_y, Platform* p
 		int hit_platforms = 0;
 		for (int i = 0; i < num_of_platforms; i++) {
 			if (c_rect_point(platforms[i].x, platforms[i].y, platforms[i].width, platforms[i].height, *grapple_x, *grapple_y)) {
-				printf("grapple hit!\n");
+				//printf("grapple hit!\n");
 				hit_platforms = 1;
 
 				// set hook location for pulling
@@ -219,5 +219,6 @@ void drawGrapple(Player *player, float* grapple_x, float* grapple_y, Platform* p
 		CP_Graphics_DrawRect(player->x - cd_width / 2, player->y - 50.0f, cd_width * cd_fraction, cd_height);
 	
 	}
-
+	CP_Settings_Stroke(CP_Color_Create(255, 255, 255, 0));
+	CP_Settings_RectMode(CP_POSITION_CENTER);
 }
