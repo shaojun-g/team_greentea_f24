@@ -22,7 +22,7 @@
 // CP_Engine_Run() is the core function that starts the simulation
 int main(void)
 {
-	//CP_Engine_SetNextGameState(Game_Init, Game_Update, Game_Exit);
+	CP_Engine_SetNextGameState(Game_Init, Game_Update, Game_Exit);
 	//CP_Engine_SetNextGameState(Enemy_Init, Enemy_Update, Enemy_Exit);
 	//CP_Engine_SetNextGameState(Levelboss_Init, Levelboss_Update, Levelboss_Exit);
 	//CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
