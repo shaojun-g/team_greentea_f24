@@ -1,4 +1,4 @@
-#include "cprocessing.h"
+﻿#include "cprocessing.h"
 #include <stdio.h>;
 #include "utils.h";
 #include "mainmenu.h";
@@ -38,13 +38,13 @@ void Credit_Update(void) {
 	CP_Settings_Fill(White);
 	CP_Graphics_DrawEllipse(xelli, yelli, 100.f, 100.f);
 	CP_Settings_Fill(Black);
-	CP_Font_DrawText("<-", xelli, yelli);
+	CP_Font_DrawText("<<", xelli, yelli);
 
 	
 	CP_Settings_Fill(White);
 	CP_Graphics_DrawEllipse(xelli2, yelli, 100.f, 100.f);
 	CP_Settings_Fill(Black);
-	CP_Font_DrawText("->", xelli2, yelli);
+	CP_Font_DrawText(">>", xelli2, yelli);
 	
 	
 	
