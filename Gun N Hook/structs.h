@@ -10,7 +10,7 @@ typedef struct {
 } Velocity;
 
 // Define a struct for Player
-typedef struct {
+typedef struct Player{
 	float x, y;  // x and y coordinates of the player position
 	float width;
 	float height;
@@ -30,7 +30,7 @@ typedef struct Bullet {
 	float x;
 	float y;
 	float speed;
-	int live;
+	int live; // 0 or 1 or 2
 } Bullet;
 
 //	array of bullet structs for pea-shooter.
@@ -84,9 +84,10 @@ typedef struct {
 	float diameter;
 	float speed;
 	//
-	int travelling;
+	int travelling; //0 or 1
 }Projectile;
-/*--------------------------------------------------------------------------------------------------------------------------------*/
+
+/*------------------------------------------------------------------------------------------------------------------ - */
 //	LEVEL & UI STRUCTS
 /*--------------------------------------------------------------------------------------------------------------------------------*/
 

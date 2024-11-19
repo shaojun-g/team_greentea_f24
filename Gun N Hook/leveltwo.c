@@ -16,11 +16,11 @@ Platform platform_base, platform1, platform2, platform3, platform_goal;
 Platform platform[PLATFORM_SIZE];
 Player player;
 Goal goal_start, goal_end;
+Grapple grapple;
 Healthbar player_health, player_health_background;
 MELEE_Enemy melee_enemy, melee_enemy2, melee_enemy3;
 RANGE_Enemy range_enemy;
 Projectile enemy_projectile;
-
 
 float dt;
 float elapsedtime;
@@ -105,23 +105,28 @@ void Leveltwo_Init(void)
 	
 	//player values
 	player = (Player){ 100, 785, 30, 30, 5, 1, {0, 0} };
+	grapple = (Grapple){ 0, 0, 0 };
 
 	//elapsed time
 	elapsedtime = 0;
 
-	
+	//pea-shooter init
+	pea_shooter_init(bullets, &player.x, &player.y);
 	
 }
 
 
 void Leveltwo_Update(void)
 {
+
 	dt = CP_System_GetDt();//date time function
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255)); // clear background to gray
 	// Decrease cooldown time
 	if (collisionCooldown > 0.0f) {
 		collisionCooldown -= dt;
 	}
+
+	drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); //draw grapple
 	
 	//draw goals
 	draw_goal(goal_start);
@@ -129,11 +134,7 @@ void Leveltwo_Update(void)
 	//draw all platforms
 	for (int i = 0; i < PLATFORM_SIZE; i++) {
 		draw_platform(platform[i]);
-
-		if (c_rect_rect(player.x, player.y, player.width, player.height, platform[i].x, platform[i].y, platform[i].width, platform[i].height)) {
-			player.velocity.y = 0;
-			player.on_ground = 1;
-		}
+		collide_platform(&player, &platform[i]);
 	}
 	// Draw melee enemy
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255)); // Red color
@@ -150,16 +151,15 @@ void Leveltwo_Update(void)
 
 	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
 
-	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground, dt);//start basic movement 
-
-	if (player.on_ground != 1) {
-		gravity(&player.y, &player.velocity.y, dt);
-	}
+	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement
+	if (!(player.on_ground))
+		gravity(&player.velocity.y);
 
 	//draw healthbar (with background)
 	//draw_healthbar(player_health_background);
 	draw_healthbar(player_health_background);
 	draw_healthbar(player_health);
+
 
 	// Update melee enemy state and behavior
 	state_change(&melee_enemy, &platform[1], &player, 3.0f, 8.0f, &elapsedtime);
@@ -169,6 +169,16 @@ void Leveltwo_Update(void)
 
 	//update melee enemy2 state and behaviour
 	state_change(&melee_enemy3, &platform[3], &player, 3.0f, 8.0f, &elapsedtime);
+
+
+	//pea shooter function
+	pea_shooter(bullets, &player.x, &player.y);
+	//damage for melee enemy
+	deal_damage(bullets, &melee_enemy.x, &melee_enemy.y, &melee_enemy.width, &melee_enemy.height, &melee_enemy.health);
+
+	deal_damage(bullets, &melee_enemy2.x, &melee_enemy2.y, &melee_enemy2.width, &melee_enemy2.height, &melee_enemy2.health);
+
+	deal_damage(bullets, &melee_enemy3.x, &melee_enemy3.y, &melee_enemy3.width, &melee_enemy3.height, &melee_enemy3.health);
 
 	//collision between melee enemy and player
 	if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy.x, melee_enemy.y, melee_enemy.width, melee_enemy.height)) {
@@ -214,15 +224,35 @@ void Leveltwo_Update(void)
 		}
 		
 	}
+	//for hp of melee enemies and player
+	if (player.HP == 0) {
+		player.HP = 5;
+		CP_Engine_SetNextGameStateForced(Levelthree_Init, Levelthree_Update, Levelthree_Exit);
+		printf("next state updated");
+	}
 
+	if (melee_enemy.health <= 0) {
+		melee_enemy.x = -1000; // A position far off the screen
+		melee_enemy.y = -1000; // A position far off the screen
+	}
 
-	if (AreCircles_GoalIntersecting(player.x, player.y, 40, goal_start.x, goal_start.y, goal_start.width, goal_start.height)) {
+	if (melee_enemy2.health <= 0) {
+		melee_enemy2.x = -1000; // A position far off the screen
+		melee_enemy2.y = -1000; // A position far off the screen
+	}
+	if (melee_enemy3.health <= 0) {
+		melee_enemy3.x = -1000; // A position far off the screen
+		melee_enemy3.y = -1000; // A position far off the screen
+	}
+	
+	//-----------------------------------------------------------------------------------------
+	if (AreC_RIntersecting(player.x, player.y, 40, goal_start.x, goal_start.y, goal_start.width, goal_start.height)) {
 		
 		CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255)); // Blue color
 		CP_Font_DrawTextBox("Get to the Goal!", 50, 675, 100);
 	}
 	
-	if (AreCircles_GoalIntersecting(player.x, player.y, 40, goal_end.x, goal_end.y, goal_end.width, goal_end.height)) {
+	if (AreC_RIntersecting(player.x, player.y, 40, goal_end.x, goal_end.y, goal_end.width, goal_end.height)) {
 		printf("intersect good");
 		CP_Font_DrawTextBox("Press N to head to next level!", 1500, 200, 100);
 		if (CP_Input_KeyTriggered(KEY_N))
