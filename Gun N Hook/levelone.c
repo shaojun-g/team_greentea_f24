@@ -18,7 +18,7 @@ Platform platform[PLATFORM_SIZE];
 Goal goal_start, goal_end;
 Healthbar player_health, player_health_background;
 Player player;
-Grapple grapple1 = { 0, 0, 0 };
+Grapple grapple;
 collisionCooldown = 0.0f;  // Cooldown timer for on_ground reset
 collisionCooldownDuration = 0.3f;  // Duration in seconds for cooldown
 float dt;
@@ -81,6 +81,7 @@ void Levelone_Init(void)
 
 	//player values
 	player = (Player){ 100, 785, 30, 30, 5, 1, {0, 0} };
+	grapple =(Grapple) { 0, 0, 0 };
 
 	//pea-shooter init
 	pea_shooter_init(bullets, &player.x, &player.y);
@@ -91,7 +92,7 @@ void Levelone_Update(void)
 {
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255)); // clear background to gray
 	dt = CP_System_GetDt();//date time function
-	drawGrapple(&player, &grapple1.x, &grapple1.y, platform, PLATFORM_SIZE, dt); //draw grapple
+	
 	
 	//draw all platforms
 	for (int i = 0; i < PLATFORM_SIZE; i++) {
@@ -107,7 +108,7 @@ void Levelone_Update(void)
 	////draw hazard 
 	//CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255)); // Red color
 	//CP_Graphics_DrawRect(hazard.x, hazard.y, hazard.width, hazard.height);
-	
+	drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); //draw grapple
 	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement
 	if (!(player.on_ground))
 		gravity(&player.velocity.y);

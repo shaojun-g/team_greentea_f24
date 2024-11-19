@@ -16,6 +16,7 @@ Platform platform_base, platform1, platform2, platform3, platform_goal;
 Platform platform[PLATFORM_SIZE];
 Player player;
 Goal goal_start, goal_end;
+Grapple grapple;
 Healthbar player_health, player_health_background;
 MELEE_Enemy melee_enemy, melee_enemy2, melee_enemy3;
 RANGE_Enemy range_enemy;
@@ -104,6 +105,7 @@ void Leveltwo_Init(void)
 	
 	//player values
 	player = (Player){ 100, 785, 30, 30, 5, 1, {0, 0} };
+	grapple = (Grapple){ 0, 0, 0 };
 
 	//elapsed time
 	elapsedtime = 0;
@@ -116,6 +118,7 @@ void Leveltwo_Init(void)
 
 void Leveltwo_Update(void)
 {
+
 	dt = CP_System_GetDt();//date time function
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255)); // clear background to gray
 	// Decrease cooldown time
@@ -145,6 +148,7 @@ void Leveltwo_Update(void)
 	CP_Graphics_DrawRect(melee_enemy3.x, melee_enemy3.y, melee_enemy3.width, melee_enemy3.height);
 
 	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
+	drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); //draw grapple
 	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement
 	if (!(player.on_ground))
 		gravity(&player.velocity.y);

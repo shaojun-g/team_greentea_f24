@@ -21,6 +21,7 @@ Platform platform_enemy1, platform_enemy2, platform_enemy3;
 Goal goal_start, goal_end;
 Healthbar player_health, player_health_background;
 Player player;
+Grapple grapple;
 MELEE_Enemy melee_enemy, melee_enemy2, melee_enemy3, melee_enemy4;
 //RANGE_Enemy range_enemy, range_enemy2, range_enemy3;
 //Projectile enemy_projectile, enemy_projectile2, enemy_projectile3;
@@ -180,6 +181,7 @@ void Levelthree_Init(void)
 	//enemy_projectiles[2].live = 1;
 
 	player = (Player){ 100, 785, 30, 30, 5, 1, {0, 0} };
+	grapple = (Grapple){ 0, 0, 0 };
 	elapsedtime = 0;
 
 	//pea-shooter init
@@ -278,6 +280,7 @@ void Levelthree_Update(void)
 
 	//draw player
 	CP_Settings_Fill(CP_Color_Create(250, 250, 250, 255));
+	drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); //draw grapple
 	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
 
 
