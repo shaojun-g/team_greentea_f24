@@ -15,7 +15,6 @@
 #include "utils.h"
 
 #define PLATFORM_SIZE 9
-
 Platform platform_base, platform1, platform2, platform3, platform4, platform_goal;
 Platform platform[PLATFORM_SIZE];
 Platform platform_enemy1, platform_enemy2, platform_enemy3;
@@ -23,11 +22,12 @@ Goal goal_start, goal_end;
 Healthbar player_health, player_health_background;
 Player player;
 MELEE_Enemy melee_enemy, melee_enemy2, melee_enemy3, melee_enemy4;
-RANGE_Enemy range_enemy, range_enemy2, range_enemy3;
-Projectile enemy_projectile, enemy_projectile2, enemy_projectile3;
-
+//RANGE_Enemy range_enemy, range_enemy2, range_enemy3;
+//Projectile enemy_projectile, enemy_projectile2, enemy_projectile3;
+enum{MAX_RANGE_Enemy = 3};
+RANGE_Enemy range_enemies[MAX_RANGE_Enemy];
+Bullet enemy_projectiles[MAX_RANGE_Enemy];
 float dt, elapsedtime;
-
 void Levelthree_Init(void)
 {
 	CP_TEXT_ALIGN_HORIZONTAL h_text = CP_TEXT_ALIGN_H_CENTER;
@@ -140,48 +140,73 @@ void Levelthree_Init(void)
 	melee_enemy4.speed = 100;
 	melee_enemy4.health = 5;
 	// Initialize range enemy 1
-	range_enemy.width = platform[5].width;
-	range_enemy.height = 40;
-	range_enemy.x = platform[5].x;
-	range_enemy.y = platform[5].y - platform[5].height / 2 - range_enemy.height / 2;;
-	range_enemy.shoot_posX = range_enemy.x;
-	range_enemy.shoot_posY = range_enemy.y;
-	range_enemy.dir = RIGHT;
+	range_enemies[0].width = platform[5].width;
+	range_enemies[0].height = 40;
+	range_enemies[0].x = platform[5].x;
+	range_enemies[0].y = platform[5].y - platform[5].height / 2 - range_enemies[0].height / 2;;
+	range_enemies[0].shoot_posX = range_enemies[0].x;
+	range_enemies[0].shoot_posY = range_enemies[0].y;
+	range_enemies[0].dir = RIGHT;
 	//range projectile
-	enemy_projectile.x = range_enemy.shoot_posX;
-	enemy_projectile.y = range_enemy.shoot_posY;
-	enemy_projectile.diameter = 25;
-	enemy_projectile.travelling = 1;
+	//enemy_projectiles[0].x = range_enemies[0].shoot_posX;
+	//enemy_projectiles[0].y = range_enemies[0].shoot_posY;
+	//enemy_projectiles[0].diameter = 25;
+	//enemy_projectiles[0].live = 1;
 	// Initialize range enemy 2
-	range_enemy2.width = platform[6].width;
-	range_enemy2.height = 40;
-	range_enemy2.x = platform[6].x;
-	range_enemy2.y = platform[6].y - platform[6].height / 2 - range_enemy2.height / 2;;
-	range_enemy2.shoot_posX = range_enemy2.x;
-	range_enemy2.shoot_posY = range_enemy2.y;
+	range_enemies[1].width = platform[6].width;
+	range_enemies[1].height = 40;
+	range_enemies[1].x = platform[6].x;
+	range_enemies[1].y = platform[6].y - platform[6].height / 2 - range_enemies[1].height / 2;;
+	range_enemies[1].shoot_posX = range_enemies[1].x;
+	range_enemies[1].shoot_posY = range_enemies[1].y;
+	range_enemies[1].dir = LEFT;
 	//range projectile
-	enemy_projectile2.x = range_enemy2.shoot_posX;
-	enemy_projectile2.y = range_enemy2.shoot_posY;
-	enemy_projectile2.diameter = 25;
-	enemy_projectile2.travelling = 1;
+	//enemy_projectiles[1].x = range_enemies[1].shoot_posX;
+	//enemy_projectiles[1].y = range_enemies[1].shoot_posY;
+	//enemy_projectiles[1].diameter = 25;
+	//enemy_projectiles[1].live = 1;
 	// Initialize range enemy 3
-	range_enemy3.width = platform[7].width;
-	range_enemy3.height = 40;
-	range_enemy3.x = platform[7].x;
-	range_enemy3.y = platform[7].y - platform[7].height / 2 - range_enemy3.height / 2;;
-	range_enemy3.shoot_posX = range_enemy3.x;
-	range_enemy3.shoot_posY = range_enemy3.y;
+	range_enemies[2].width = platform[7].width;
+	range_enemies[2].height = 40;
+	range_enemies[2].x = platform[7].x;
+	range_enemies[2].y = platform[7].y - platform[7].height / 2 - range_enemies[2].height / 2;;
+	range_enemies[2].shoot_posX = range_enemies[2].x;
+	range_enemies[2].shoot_posY = range_enemies[2].y;
+	range_enemies[2].dir = LEFT;
 	//range projectile
-	enemy_projectile3.x = range_enemy3.shoot_posX;
-	enemy_projectile3.y = range_enemy3.shoot_posY;
-	enemy_projectile3.diameter = 25;
-	enemy_projectile3.travelling = 1;
-	//player values
+	//enemy_projectiles[2].x = range_enemies[2].shoot_posX;
+	//enemy_projectiles[2].y = range_enemies[2].shoot_posY;
+	//enemy_projectiles[2].diameter = 25;
+	//enemy_projectiles[2].live = 1;
+
 	player = (Player){ 100, 785, 30, 30, 5, 1, {0, 0} };
 	elapsedtime = 0;
 
 	//pea-shooter init
 	pea_shooter_init(bullets, &player.x, &player.y);
+
+	for (int i = 0; i < MAX_RANGE_Enemy; i++) {
+		enemy_projectiles[i].x = range_enemies[i].shoot_posX;
+		enemy_projectiles[i].y = range_enemies[i].shoot_posY;
+		enemy_projectiles[i].diameter = 25;
+		enemy_projectiles[i].live = 1;
+	}
+
+	for (int i = 0; i < MAX_RANGE_Enemy; i++) {
+		printf("enemy projectile x :%f\n", enemy_projectiles[i].x);
+		printf("enemy projectile y :%f\n", enemy_projectiles[i].y);
+		printf("enemy projectile diameter : %f\n", enemy_projectiles[i].diameter);
+		printf("enemy projectile live : %d\n\n\n", enemy_projectiles[i].live);
+	}
+	for (int i = 0; i < MAX_RANGE_Enemy; i++) {
+		printf("range_enemies  x :%f\n", range_enemies[i].x);
+		printf("range_enemies  y :%f\n", range_enemies[i].y);
+		printf("range_enemies  width :%f\n", range_enemies[i].width);
+		printf("range_enemies  height :%f\n", range_enemies[i].height);
+		printf("range_enemies  shoot_posX : %f\n", range_enemies[i].shoot_posX);
+		printf("range_enemies  shoot_posY : %f\n\n\n", range_enemies[i].shoot_posY);
+	}
+	printf("player hp : %d\n\n\n", player.HP);
 }
 
 
@@ -195,65 +220,57 @@ void Levelthree_Update(void)
 	//draw all platforms
 	for (int i = 0; i < PLATFORM_SIZE; i++) {
 		draw_platform(platform[i]);
-
-		collide_platform(&player, &platform[i]);
-		
+		collide_platform(&player, &platform[i]);	
 	}
-
 	// Draw melee enemy
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255)); // Red color
 	CP_Graphics_DrawRect(melee_enemy.x, melee_enemy.y, melee_enemy.width, melee_enemy.height);
-
 	// Draw melee enemy2
 	CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255)); // Blue color
 	CP_Graphics_DrawRect(melee_enemy2.x, melee_enemy2.y, melee_enemy2.width, melee_enemy2.height);
-
-
 	// Draw melee enemy3
 	CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255)); // Blue color
 	CP_Graphics_DrawRect(melee_enemy3.x, melee_enemy3.y, melee_enemy3.width, melee_enemy3.height);
-
 	// Draw melee enemy4
 	CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255)); // Blue color
 	CP_Graphics_DrawRect(melee_enemy4.x, melee_enemy4.y, melee_enemy4.width, melee_enemy4.height);
 
-	//draw range enemy 1
-	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
-	CP_Graphics_DrawRect(range_enemy.x, range_enemy.y, range_enemy.width, range_enemy.height);
-	//draw projectile
-	CP_Settings_EllipseMode(CP_POSITION_CENTER);
-	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-	CP_Graphics_DrawCircle(enemy_projectile.x, enemy_projectile.y, enemy_projectile.diameter);
-	enemy_shoot_projectile(&enemy_projectile, &range_enemy, 200);
+	//draw range enemy
+	for (int i = 0; i < MAX_RANGE_Enemy; i++) {
+		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
+		CP_Graphics_DrawRect(range_enemies[i].x, range_enemies[i].y, range_enemies[i].width, range_enemies[i].height);
+	}
 
-	//draw range enemy 2
-	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
-	CP_Graphics_DrawRect(range_enemy2.x, range_enemy2.y, range_enemy2.width, range_enemy2.height);
-	//draw projectile
-	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-	CP_Graphics_DrawCircle(enemy_projectile2.x, enemy_projectile2.y, enemy_projectile2.diameter);
-	enemy_shoot_projectile(&enemy_projectile2, &range_enemy2, 200);
-
-	//draw range enemy 2
-	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
-	CP_Graphics_DrawRect(range_enemy3.x, range_enemy3.y, range_enemy3.width, range_enemy3.height);
-	//draw projectile
-	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-	CP_Graphics_DrawCircle(enemy_projectile3.x, enemy_projectile3.y, enemy_projectile3.diameter);
-	enemy_shoot_projectile(&enemy_projectile3, &range_enemy3, 200);
-
-
+	//draw
+	for (int i = 0; i < MAX_RANGE_Enemy; i++) {
+		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+		CP_Graphics_DrawCircle(enemy_projectiles[i].x, enemy_projectiles[i].y, enemy_projectiles[i].diameter);
+	}
+	//shoot enemy
+	/*for (int i = 0; i < MAX_RANGE_Enemy; i++) {
+		enemy_shoot_projectile(&enemy_projectiles[i], &range_enemies[i], 200);
+	}*/
+	
+	enemy_shoot_projectile(&enemy_projectiles[0], &range_enemies[0], 200);
+	enemy_shoot_projectile(&enemy_projectiles[1], &range_enemies[1], 200);
+	enemy_shoot_projectile(&enemy_projectiles[2], &range_enemies[2], 200);
 	//pea shooter function
 	pea_shooter(bullets, &player.x, &player.y);
 	//deal damage to melee enemies
 	deal_damage(bullets, &melee_enemy.x, &melee_enemy.y, &melee_enemy.width, &melee_enemy.height, &melee_enemy.health);
-	
 	deal_damage(bullets, &melee_enemy2.x, &melee_enemy2.y, &melee_enemy2.width, &melee_enemy2.height, &melee_enemy2.health);
-
 	deal_damage(bullets, &melee_enemy3.x, &melee_enemy3.y, &melee_enemy3.width, &melee_enemy3.height, &melee_enemy3.health);
-
 	deal_damage(bullets, &melee_enemy4.x, &melee_enemy4.y, &melee_enemy4.width, &melee_enemy4.height, &melee_enemy4.health);
+	//deal damage to player
+	deal_damage_to_player(&enemy_projectiles[0],&range_enemies[0], &player);
+	deal_damage_to_player(&enemy_projectiles[1],  &range_enemies[1], &player);
+	deal_damage_to_player(&enemy_projectiles[2], &range_enemies[2], &player);
 
+
+	//
+	//deal_damage_to_player(&enemy_projectile, &player.x, &player.y, &player.width, &player.height, &player.HP);
+	//deal_damage_to_player(&enemy_projectile2, &player.x, &player.y, &player.width, &player.height, &player.HP);
+	//deal_damage_to_player(&enemy_projectile3, &player.x, &player.y, &player.width, &player.height, &player.HP);
 
 	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement
 	if (!(player.on_ground))
@@ -354,7 +371,7 @@ void Levelthree_Update(void)
 	
 
 	if (AreC_RIntersecting(player.x, player.y, 40, goal_start.x, goal_start.y, goal_start.width, goal_start.height)) {
-		printf("touching start");
+		//printf("touching start");
 		CP_Font_DrawTextBox("Get to the Goal!", 50, 675, 100);
 	}
 

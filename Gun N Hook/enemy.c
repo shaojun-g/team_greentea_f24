@@ -27,7 +27,7 @@ RANGE_Enemy enemy2;
 //struct Player player1;
 Player player1;
 Platform platform1;
-Projectile projectile1;
+Bullet bullet1;
 CP_Font my_awesome_font;
 float elapsedTime;
 //enemy state
@@ -69,10 +69,10 @@ void Enemy_Init(void)
 	player1.height = player1.width;
 
 	//projectile
-	projectile1.x = enemy2.shoot_posX;
-	projectile1.y = enemy2.shoot_posY;
-	projectile1.diameter = 15;
-	projectile1.travelling = 1;
+	bullet1.x = enemy2.shoot_posX;
+	bullet1.y = enemy2.shoot_posY;
+	bullet1.diameter = 15;
+	bullet1.live = 1;
 
 	elapsedTime = 0;
 }
@@ -150,25 +150,26 @@ void state_change(MELEE_Enemy* enemy, Platform* platform, Player* player, float 
 		enemy->state = ATTACK;
 	}
 }
-void enemy_shoot_projectile(Projectile* projectile,RANGE_Enemy* enemy, float speed) {
-	switch (enemy->dir)
-	{
-	case LEFT:
-		projectile->x -= speed * CP_System_GetDt();
-		if (projectile->x < 0) {
-			projectile->x = enemy->shoot_posX;
-			projectile->travelling = 0;
-		}
-		break;
-	case RIGHT:
-		projectile->x += speed * CP_System_GetDt();
-		if (projectile->x > CP_System_GetWindowWidth()){
-			projectile->x = enemy->shoot_posX;
-			projectile->travelling = 0;
-		}
+void enemy_shoot_projectile(Bullet* projectile,RANGE_Enemy* enemy, float speed) {
+	if (projectile->live = 1) {
+		switch (enemy->dir)
+		{
+		case LEFT:
+			projectile->x -= speed * CP_System_GetDt();
+			if (projectile->x < 0) {
+				projectile->x = enemy->shoot_posX;
+				projectile->live = 1;
+			}
+			break;
+		case RIGHT:
+			projectile->x += speed * CP_System_GetDt();
+			if (projectile->x > CP_System_GetWindowWidth()) {
+				projectile->x = enemy->shoot_posX;
+				projectile->live = 1;
+			}
 
-	}
-	
+		}
+	}	
 }
 
 
@@ -178,7 +179,7 @@ void Enemy_Update(void) {
 	//attacktopatrol_sec is how many seconds for enemy to  change from attack to patrol(STOP CHASING PLAYER)
 	state_change(&enemy1, &platform1,&player1,3, 8, &elapsedTime);
 	//void enemy_shoot_projectile(struct Projectile* projectile, struct RANGE_Enemy* enemy, float speed);
-	enemy_shoot_projectile(&projectile1, &enemy2, 200);
+	enemy_shoot_projectile(&bullet1, &enemy2, 200);
 	
 	if (CP_Input_KeyDown(KEY_A)) { //move left when move left x--
 		//movement
@@ -207,8 +208,8 @@ void Enemy_Update(void) {
 
 	CP_Settings_EllipseMode(CP_POSITION_CENTER);
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-	CP_Graphics_DrawCircle(projectile1.x, projectile1.y, projectile1.diameter);
-	enemy_shoot_projectile(&projectile1, &enemy2, 200);
+	CP_Graphics_DrawCircle(bullet1.x, bullet1.y, bullet1.diameter);
+	enemy_shoot_projectile(&bullet1, &enemy2, 200);
 	//collision
 	//if (enemy.hit == 1) {
 	//	enemy1.health -= 1;

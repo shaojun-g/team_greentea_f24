@@ -21,7 +21,6 @@ MELEE_Enemy melee_enemy, melee_enemy2, melee_enemy3;
 RANGE_Enemy range_enemy;
 Projectile enemy_projectile;
 
-
 float dt;
 float elapsedtime;
 
