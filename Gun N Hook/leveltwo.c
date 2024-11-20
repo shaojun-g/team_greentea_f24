@@ -22,7 +22,7 @@ Healthbar player_health, player_health_background;
 MELEE_Enemy melee_enemy, melee_enemy2, melee_enemy3;
 RANGE_Enemy range_enemy;
 Projectile enemy_projectile;
-int is_paused;
+int is_paused, is_dead;
 int* game_state;
 
 float dt;
@@ -32,7 +32,7 @@ void Leveltwo_Init(void)
 {
 	CP_System_SetFrameRate(60.0f);		//	limit to 60fps
 
-	CP_Settings_TextSize(25.00f);
+	CP_Settings_TextSize(25.00f); // set text size to 50.0f
 	//game window size is (1600, 900)
 	//set all platform color as the same(dark red)
 	//set healthbar color 
@@ -236,8 +236,8 @@ void Leveltwo_Update(void)
 		//-----------------------------------------------------------------------------------------------------------------------------------------//
 		//	player die
 		if (player.HP == 0) {
-			CP_Engine_SetNextGameStateForced(Levelthree_Init, Levelthree_Update, Levelthree_Exit);
-			printf("next state updated");
+			is_dead = 1;
+			pause_state(game_state);
 		}
 		//	enemy die
 		if (melee_enemy.health <= 0) {
@@ -287,7 +287,12 @@ void Leveltwo_Update(void)
 	draw_healthbar(player_health);
 	//	pause menu
 	if (is_paused) {
-		pause_menu(game_state, Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit);
+		if (is_dead) {
+			restart_menu(game_state, Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit);
+		}
+		else {
+			pause_menu(game_state, Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit);
+		}
 	}
 	//	esc to pause game
 	if (CP_Input_KeyTriggered(KEY_ESCAPE)) {

@@ -205,7 +205,7 @@ void ApplyElasticCollision(Player* player, MELEE_Enemy hazard, float restitution
 			// Collision on the top
 			player->y = hazard_top - player->height * bounce_back_distance;
 			player->velocity.y *= -restitution; // Bounce back vertically
-			player->on_ground = 1;  // Optional, mark as grounded after landing
+			player->on_ground = 1;  //mark as grounded after landing
 		}
 		else if (player->velocity.y < 0 && hazard_bottom - player_top < player->height) { 
 			// Collision on the bottom
@@ -330,6 +330,102 @@ void pause_menu(int *game_state,FunctionPtr currentlevel_init, FunctionPtr curre
 	}
 
 }
+
+void restart_menu(int* game_state, FunctionPtr currentlevel_init, FunctionPtr currentlevel_update, FunctionPtr currentlevel_exit) {
+
+	//width and height of the window
+	int width = CP_System_GetWindowWidth();
+	int height = CP_System_GetWindowHeight();
+
+	double xRect = CP_System_GetWindowWidth() / 2.0f;
+	//double yRect1 = CP_System_GetWindowHeight() / 4.6f;
+	double yRect2 = CP_System_GetWindowHeight() / 1.9f;
+	double yRect3 = CP_System_GetWindowHeight() / 1.2f;
+	double rectW = CP_System_GetWindowWidth() / 4.4f;
+	double rectH = CP_System_GetWindowHeight() / 4.4f;
+
+	CP_Color Blue = CP_Color_Create(0, 200, 255, 255);
+	CP_Color White = CP_Color_Create(255, 255, 255, 255);
+	CP_Color Black = CP_Color_Create(0, 0, 0, 255);
+
+	if (game_state) {
+		//gameover text
+		CP_Settings_TextSize(50.00f); // set text size to 50.0f
+		textwrite("Game Over", CP_System_GetWindowWidth()/2, 300, Black);
+		CP_Settings_TextSize(25.00f); // set text size to 25.0f
+		// restart button
+		buttoncreate(xRect, yRect2, rectW, rectH, Blue);
+		textwrite("Restart", xRect, yRect2, Black);
+
+		if (CP_Input_MouseClicked()) {
+			if (IsAreaClicked(xRect, yRect2, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+				CP_Engine_SetNextGameStateForced(currentlevel_init, currentlevel_update, currentlevel_exit);
+			};
+		};
+
+
+		// exit button
+		buttoncreate(xRect, yRect3, rectW, rectH, Blue);
+		textwrite("Exit to main menu", xRect, yRect3, Black);
+
+		if (CP_Input_MouseClicked()) {
+			if (IsAreaClicked(xRect, yRect3, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+				CP_Engine_SetNextGameStateForced(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
+			};
+		};
+
+
+	}
+
+}
+
+void win_menu(int* game_state, FunctionPtr currentlevel_init, FunctionPtr currentlevel_update, FunctionPtr currentlevel_exit) {
+
+	//width and height of the window
+	int width = CP_System_GetWindowWidth();
+	int height = CP_System_GetWindowHeight();
+
+	double xRect = CP_System_GetWindowWidth() / 2.0f;
+	//double yRect1 = CP_System_GetWindowHeight() / 4.6f;
+	double yRect2 = CP_System_GetWindowHeight() / 1.9f;
+	double yRect3 = CP_System_GetWindowHeight() / 1.6f;
+	double rectW = CP_System_GetWindowWidth() / 4.4f;
+	double rectH = CP_System_GetWindowHeight() / 4.4f;
+
+	CP_Color Blue = CP_Color_Create(0, 200, 255, 255);
+	CP_Color White = CP_Color_Create(255, 255, 255, 255);
+	CP_Color Black = CP_Color_Create(0, 0, 0, 255);
+
+	if (game_state) {
+		//gameover text
+		CP_Settings_TextSize(50.00f); // set text size to 50.0f
+		textwrite("You win!", CP_System_GetWindowWidth() / 2, 400, Black);
+		CP_Settings_TextSize(25.00f); // set text size to 25.0f
+		//// restart button
+		//buttoncreate(xRect, yRect2, rectW, rectH, Blue);
+		//textwrite("Restart", xRect, yRect2, Black);
+
+		//if (CP_Input_MouseClicked()) {
+		//	if (IsAreaClicked(xRect, yRect2, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+		//		CP_Engine_SetNextGameStateForced(currentlevel_init, currentlevel_update, currentlevel_exit);
+		//	};
+		//};
+
+
+		// exit button
+		buttoncreate(xRect, yRect3, rectW, rectH, Blue);
+		textwrite("Exit to main menu", xRect, yRect3, Black);
+
+		if (CP_Input_MouseClicked()) {
+			if (IsAreaClicked(xRect, yRect3, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+				CP_Engine_SetNextGameStateForced(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
+			};
+		};
+
+
+	}
+
+}
 int check_collision_rect(float proj_x, float proj_y, float proj_diameter,
 	float player_x, float player_y, float player_width, float player_height) {
 	return (proj_x + proj_diameter / 2 >= player_x &&
@@ -346,7 +442,7 @@ void update_projectile(Projectile* projectile, float player_x, float player_y, f
 		}
 }
 
-// Modified boss health bar update function
+//boss health bar update function
 void update_boss_healthbar(Healthbar* health_bar, int current_health) {
 	// Ensure health doesn't go below 0
 	if (current_health < 0) current_health = 0;

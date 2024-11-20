@@ -39,7 +39,7 @@ enum { MAX_TURRET_PROJECTILE = 4 };
 Bullet turret_projectiles[MAX_TURRET_PROJECTILE];
 
 CP_Font my_awesome_font;
-int is_paused;
+int is_paused, is_dead, boss_dead;
 float dt, elapsedtime; float iframe_cd, iframe_dur;
 int* game_state;
 
@@ -335,9 +335,10 @@ void Levelboss_Update(void)
 		//-----------------------------------------------------------------------------------------------------------------------------------------//
 		//	PLAYER DIES
 		if (player.HP == 0) {
-			player.HP = 5;
-			CP_Engine_SetNextGameStateForced(Levelboss_Init, Levelboss_Update, Levelboss_Exit);
-			printf("next state updated");
+			is_dead = 1;
+			pause_state(game_state);
+			//	clear grapple
+			drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); 
 		}
 		//	BOSS DEFEATED
 		if (boss1.health >= 0) {
@@ -347,7 +348,8 @@ void Levelboss_Update(void)
 			if (boss1.health <= 0) {
 				boss1.health = 0;  // Ensure health doesn't go negative
 				update_boss_healthbar(&boss_health, 0);  // Update health bar one final time
-				CP_Engine_SetNextGameStateForced(Levelboss_Init, Levelboss_Update, Levelboss_Exit);	//	<----------ADD WIN SCREEN
+				boss_dead = 1;	//	<----------ADD WIN SCREEN
+				pause_state(game_state);
 			}
 		}
 	}
@@ -378,7 +380,15 @@ void Levelboss_Update(void)
 	}
 	//	pause menu
 	if (is_paused) {
-		pause_menu(game_state, Levelboss_Init, Levelboss_Update, Levelboss_Exit);
+		if (is_dead) {
+			restart_menu(game_state, Levelboss_Init, Levelboss_Update, Levelboss_Exit);
+		}
+		else if (boss_dead) {
+			win_menu(game_state, Levelboss_Init, Levelboss_Update, Levelboss_Exit);
+		}
+		else {
+			pause_menu(game_state, Levelboss_Init, Levelboss_Update, Levelboss_Exit);
+		}
 	}
 	//	esc to pause game
 	if (CP_Input_KeyTriggered(KEY_ESCAPE))

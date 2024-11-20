@@ -27,18 +27,16 @@ enum{MAX_RANGE_Enemy = 3};
 RANGE_Enemy range_enemies[MAX_RANGE_Enemy];
 Bullet enemy_projectiles[MAX_RANGE_Enemy];
 float dt, elapsedtime; float iframe_cd, iframe_dur;
-int is_paused;
+int is_paused, is_dead;
 int* game_state;
+
 
 void Levelthree_Init(void)
 {
 	CP_System_SetFrameRate(60.0f);		//	limit to 60fps
-
-	CP_TEXT_ALIGN_HORIZONTAL h_text = CP_TEXT_ALIGN_H_CENTER;
-	CP_TEXT_ALIGN_VERTICAL v_text = CP_TEXT_ALIGN_V_MIDDLE;
+	CP_Settings_TextSize(25.00f); // set text size to 50.0f
+	
 	//size for text box
-	CP_Settings_TextSize(25.00f);
-	CP_Settings_TextAlignment(h_text, v_text);
 	//game window size is (1600, 900)
 	//set all platform color as the same(dark red)
 	/*platform_base.platform_color = CP_Color_Create(255, 128, 128, 255);
@@ -365,11 +363,13 @@ void Levelthree_Update(void)
 		//-----------------------------------------------------------------------------------------------------------------------------------------//
 		//	PLAYER DIES
 		if (player.HP == 0) {
+			is_dead = 1;
+			pause_state(game_state);
 			//	clear grapple
 			drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); //draw grapple
 
-			CP_Engine_SetNextGameStateForced(Levelthree_Init, Levelthree_Update, Levelthree_Exit);
-			printf("next state updated");
+			/*CP_Engine_SetNextGameStateForced(Levelthree_Init, Levelthree_Update, Levelthree_Exit);
+			printf("next state updated");*/
 		}
 		//	ENEMY DIES
 		if (melee_enemy.health <= 0) {
@@ -420,9 +420,14 @@ void Levelthree_Update(void)
 	//	draw_healthbar(player_health_background);
 	draw_healthbar(player_health_background);
 	draw_healthbar(player_health);
-	//	pause menu
+	//	pause menu and restart menu
 	if (is_paused) {
-		pause_menu(game_state, Levelthree_Init, Levelthree_Update, Levelthree_Exit);
+		if (is_dead) {
+			restart_menu(game_state, Levelthree_Init, Levelthree_Update, Levelthree_Exit);
+		}
+		else {
+			pause_menu(game_state, Levelthree_Init, Levelthree_Update, Levelthree_Exit);
+		}
 	}
 	//	esc to pause game
 	if (CP_Input_KeyTriggered(KEY_ESCAPE))

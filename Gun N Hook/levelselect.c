@@ -8,6 +8,7 @@
 #include "levelone.h"
 #include "leveltwo.h"
 #include "levelthree.h"
+#include "levelboss.h"
 #include "save.h"
 
 
@@ -81,7 +82,7 @@ void Level_Select_Update(void) {
 	double xRect3 = CP_System_GetWindowWidth() / 1.2f;
 	double xRect2 = CP_System_GetWindowWidth() / 2.0f;
 	double xRect1 = CP_System_GetWindowWidth() / 5.8f;
-	double xRect4 = CP_System_GetWindowWidth() / 3.0f;
+	double xRect4 = CP_System_GetWindowWidth() / 2.0f;
 	double xRect5 = CP_System_GetWindowWidth() / 1.5f;
 
 	//rectangle y coordinates
@@ -114,9 +115,9 @@ void Level_Select_Update(void) {
 	buttoncreate(xRect4, yRect2, rectW, rectH, Blue);
 	textwrite("Level 4", xRect4, yRect2, Black);
 
-	// draw a rectangle of level_5_select
-	buttoncreate(xRect5, yRect2, rectW, rectH, Blue);
-	textwrite("Level 5", xRect5, yRect2, Black);
+	//// draw a rectangle of level_5_select
+	//buttoncreate(xRect5, yRect2, rectW, rectH, Blue);
+	//textwrite("Level 5", xRect5, yRect2, Black);
 
 
 	//level select
@@ -143,15 +144,15 @@ void Level_Select_Update(void) {
 		//level 4
 		if (CP_Input_MouseClicked()) {
 			if (IsAreaClicked(xRect4, yRect2, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
-				//CP_Engine_SetNextGameState(Level_Select_Init, Level_Select_Update, Level_Select_Exit);
+				CP_Engine_SetNextGameState(Levelboss_Init, Levelboss_Update, Levelboss_Exit);
 			};
 		};
 		//level 5
-		if (CP_Input_MouseClicked()) {
-			if (IsAreaClicked(xRect5, yRect2, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
-				//CP_Engine_SetNextGameState(Level_Select_Init, Level_Select_Update, Level_Select_Exit);
-			};
-		};
+		//if (CP_Input_MouseClicked()) {
+		//	if (IsAreaClicked(xRect5, yRect2, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+		//		//CP_Engine_SetNextGameState(Level_Select_Init, Level_Select_Update, Level_Select_Exit);
+		//	};
+		//};
 
 
 

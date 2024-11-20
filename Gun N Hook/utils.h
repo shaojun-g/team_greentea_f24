@@ -20,6 +20,8 @@ void textwrite(const char* text, float x_position, float y_position, CP_Color co
 //pause functions
 void pause_state(int* game_state);
 void pause_menu(int *game_state, FunctionPtr currentlevel_init, FunctionPtr currentlevel_update, FunctionPtr currentlevel_exit);
+void restart_menu(int* game_state, FunctionPtr currentlevel_init, FunctionPtr currentlevel_update, FunctionPtr currentlevel_exit);
+void win_menu(int* game_state, FunctionPtr currentlevel_init, FunctionPtr currentlevel_update, FunctionPtr currentlevel_exit);
 float collisionCooldown;  // Cooldown timer for on_ground reset
 float collisionCooldownDuration; // Duration in seconds for cooldown
 //define dt as time
@@ -31,8 +33,6 @@ int AreC_RIntersecting(float circle_x, float circle_y, float radius, float rect_
 void draw_platform(Platform platform);
 void draw_goal(Goal goal);
 void draw_boss(Boss* boss);
-void Restart_Level();
-void goal_function();
 void ApplyElasticCollision(Player* player, MELEE_Enemy hazard, float restitution);
 
 
