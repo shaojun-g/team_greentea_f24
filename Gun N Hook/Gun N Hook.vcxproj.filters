@@ -34,5 +34,6 @@
     <ClInclude Include="credit.h" />
     <ClInclude Include="save.h" />
     <ClInclude Include="levelselect.h" />
+    <ClInclude Include="leveltwo.h" />
   </ItemGroup>
 </Project>

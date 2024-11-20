@@ -23,6 +23,8 @@ collisionCooldown = 0.0f;  // Cooldown timer for on_ground reset
 collisionCooldownDuration = 0.3f;  // Duration in seconds for cooldown
 float dt;
 float elapsed_time; 
+int is_paused;
+int* game_state;
 
 void Levelone_Init(void)
 {
@@ -85,6 +87,10 @@ void Levelone_Init(void)
 
 	//pea-shooter init
 	pea_shooter_init(bullets, &player.x, &player.y);
+
+	//init pause state
+	is_paused = 0;
+	game_state = &is_paused;
 }
 
 
@@ -112,13 +118,16 @@ void Levelone_Update(void)
 	//CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255)); // Red color
 	//CP_Graphics_DrawRect(hazard.x, hazard.y, hazard.width, hazard.height);
 
-	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement
-	if (!(player.on_ground))
-		gravity(&player.velocity.y);
+	
+	if (!is_paused) {
 
-	//pea shooter function
-	pea_shooter(bullets, &player.x, &player.y);
+		basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement
+		if (!(player.on_ground))
+			gravity(&player.velocity.y);
 
+		//pea shooter function
+		pea_shooter(bullets, &player.x, &player.y);
+	}
 	//draw player
 	CP_Settings_Fill(CP_Color_Create(250, 250, 250, 255));
 	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
@@ -127,8 +136,15 @@ void Levelone_Update(void)
 	if (collisionCooldown > 0.0f) {
 		collisionCooldown -= dt;
 	}
-
-
+	
+	if (is_paused) {
+		pause_menu(game_state, Levelone_Init, Levelone_Update, Levelone_Exit);
+	}
+	// esc to pause game
+	if (CP_Input_KeyTriggered(KEY_ESCAPE)) 
+	{
+		pause_state(game_state);
+	}
 
 	if (CP_Input_KeyTriggered(KEY_Q))
 	{

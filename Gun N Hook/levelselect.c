@@ -6,6 +6,8 @@
 #include "mainmenu.h"
 #include "utils.h"
 #include "levelone.h"
+#include "leveltwo.h"
+#include "levelthree.h"
 #include "save.h"
 
 
@@ -127,13 +129,15 @@ void Level_Select_Update(void) {
 		//level 2
 		if (CP_Input_MouseClicked()) {
 			if (IsAreaClicked(xRect2, yRect1, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
-				//CP_Engine_SetNextGameState(Level_Select_Init, Level_Select_Update, Level_Select_Exit);
+				CP_Engine_SetNextGameState(Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit);
+
+				
 			};
 		};
 		//level 3
 		if (CP_Input_MouseClicked()) {
 			if (IsAreaClicked(xRect3, yRect1, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
-				//CP_Engine_SetNextGameState(Level_Select_Init, Level_Select_Update, Level_Select_Exit);
+				CP_Engine_SetNextGameState(Levelthree_Init, Levelthree_Update, Levelthree_Exit);
 			};
 		};
 		//level 4

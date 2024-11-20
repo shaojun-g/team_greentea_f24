@@ -235,9 +235,70 @@ void textwrite(const char* text, float x_position, float y_position, CP_Color co
 //	CP_Graphics_DrawRectAdvanced(goal.x, goal.y, goal.width, goal.height, goal.degrees, goal.corner_radius);
 //}
 
+void pause_state(int *game_state) {
+	if (*game_state == 0) {
+		*game_state = 1;
+	} else
+	{
+		*game_state = !*game_state;
+	}
+}
 
-int pause_menu(int game_state) {
-	game_state = !game_state;
+void pause_menu(int *game_state,FunctionPtr currentlevel_init, FunctionPtr currentlevel_update, FunctionPtr currentlevel_exit) {
+
+	//width and height of the window
+	int width = CP_System_GetWindowWidth();
+	int height = CP_System_GetWindowHeight();
+
+	double xRect = CP_System_GetWindowWidth() / 2.0f;
+	double yRect1 = CP_System_GetWindowHeight() / 4.6f;
+	double yRect2 = CP_System_GetWindowHeight() / 1.9f;
+	double yRect3 = CP_System_GetWindowHeight() / 1.2f;
+	double rectW = CP_System_GetWindowWidth() / 4.4f;
+	double rectH = CP_System_GetWindowHeight() / 4.4f;
+
+	CP_Color Blue = CP_Color_Create(0, 200, 255, 255);
+	CP_Color White = CP_Color_Create(255, 255, 255, 255);
+	CP_Color Black = CP_Color_Create(0, 0, 0, 255);
+
+	if (game_state) {
+		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 100));
+		CP_Graphics_DrawRect(width / 2.0, height / 2.0, width, height);
+
+		//continue button
+		buttoncreate(xRect, yRect1, rectW, rectH, Blue);
+		textwrite("Continue", xRect, yRect1, Black);
+
+		if (CP_Input_MouseClicked()) {
+			if (IsAreaClicked(xRect, yRect1, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+				pause_state(*game_state);
+
+			}
+		}
+
+		// restart button
+		buttoncreate(xRect, yRect2, rectW, rectH, Blue);
+		textwrite("Restart", xRect, yRect2, Black);
+
+		if (CP_Input_MouseClicked()) {
+			if (IsAreaClicked(xRect, yRect2, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+				CP_Engine_SetNextGameStateForced(currentlevel_init,currentlevel_update,currentlevel_exit);
+			};
+		};
+
+
+		// exit button
+		buttoncreate(xRect, yRect3, rectW, rectH, Blue);
+		textwrite("Exit to main menu", xRect, yRect3, Black);
+
+		if (CP_Input_MouseClicked()) {
+			if (IsAreaClicked(xRect, yRect3, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+				CP_Engine_SetNextGameStateForced(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
+			};
+		};
+
+
+	}
 
 }
 int check_collision_rect(float proj_x, float proj_y, float proj_diameter,
