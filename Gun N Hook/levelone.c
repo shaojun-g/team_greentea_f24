@@ -14,12 +14,13 @@
 
 
 
-MELEE_Enemy hazard;
+//MELEE_Enemy hazard;
 Platform platform[PLATFORM_SIZE];
 Goal goal_start, goal_end;
 Healthbar player_health, player_health_background;
 Player player;
 Grapple grapple;
+heart player_healthbar[MAX_HEALTH];
 
 float dt;
 float elapsed_time; 
@@ -29,7 +30,14 @@ int* game_state;
 void Levelone_Init(void)
 {
 	CP_System_SetFrameRate(60.0f);		//	limit to 60fps
-
+	//draw hearts
+	for (int i = 0; i < MAX_HEALTH; ++i) {
+		player_healthbar[i].heart = CP_Image_Load("./Assets/Heart.png");
+		player_healthbar[i].x = 50.0f;  // Starting x position
+		player_healthbar[i].y = 50.0f;  // Starting y position
+		player_healthbar[i].width = 40.0f;  // Adjust as needed
+		player_healthbar[i].height = 40.0f;  // Adjust as needed
+	}
 	CP_TEXT_ALIGN_HORIZONTAL h_text = CP_TEXT_ALIGN_H_CENTER;
 	CP_TEXT_ALIGN_VERTICAL v_text = CP_TEXT_ALIGN_V_MIDDLE;
 	elapsed_time = 0;
@@ -38,9 +46,7 @@ void Levelone_Init(void)
 	CP_Settings_TextAlignment(h_text, v_text);
 	//game window size is (1600, 900)
 	//set all platform color as the same(dark red)
-	//set healthbar color 
-	player_health.rect_color = CP_Color_Create(255, 0, 0, 255);
-	player_health_background.rect_color = CP_Color_Create(255, 0, 0, 100);
+	
 	//platform_base is the ground 
 	platform[0] = (Platform){ CP_System_GetWindowWidth() / 2.0 , 800.00, CP_System_GetWindowWidth(), 15.00,CP_Color_Create(255, 128, 128, 255) };
 	//platform1 is first platform
@@ -65,24 +71,6 @@ void Levelone_Init(void)
 	goal_end.width = 40.00;
 	goal_end.height = 70.00;
 	goal_end.corner_radius = 10;
-	//player healthbar at top of map (will be rendered over everything else)
-	player_health.x = 200.00;
-	player_health.y = 50.00;
-	player_health.width = 300.00;
-	player_health.height = 20.00;
-	//background of player healthbar
-	player_health_background.x = 200.00;
-	player_health_background.y = 50.00;
-	player_health_background.width = 300.00;
-	player_health_background.height = 20.00;
-
-	CP_Settings_RectMode(CP_POSITION_CENTER);
-	//to test hazard object
-	hazard.x = 500.00;
-	hazard.y = 750.00;
-	hazard.width = 40.00;
-	hazard.height = 100.00;
-
 	//player values
 	player = (Player){ 100, 785, 30, 30, 5, 1, {0, 0} };
 	grapple =(Grapple) { 0, 0, 0 };
@@ -108,11 +96,8 @@ void Levelone_Update(void)
 	//	draw goals
 	draw_goal(goal_start);
 	draw_goal(goal_end);
-
 	//	GRAPPLING HOOK FUNCTION
 	drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); //draw grapple
-
-
 	//draw all platforms
 	for (int i = 0; i < PLATFORM_SIZE; i++) {
 		draw_platform(platform[i]);
@@ -139,10 +124,17 @@ void Levelone_Update(void)
 		//-----------------------------------------------------------------------------------------------------------------------------------------//
 		//	instructions for player start.
 		if (AreC_RIntersecting(player.x, player.y, 30, goal_start.x, goal_start.y, goal_start.width, goal_start.height)) {
+			CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255)); // Black color
 			CP_Font_DrawTextBox("Get to the Goal!", 50, 675, 100);
+		}
+		//	instructions for player to grapple.
+		if (AreC_RIntersecting(player.x, player.y, 30, 925, goal_start.y, goal_start.width, goal_start.height)) {
+			CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255)); // Black color
+			CP_Font_DrawTextBox("Right click to grapple!", 850, 675, 100);
 		}
 		//	player reach goal point	-	print instructions.
 		if (AreC_RIntersecting(player.x, player.y, 30, goal_end.x, goal_end.y, goal_end.width, goal_end.height)) {
+			CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255)); // Black color
 			CP_Font_DrawTextBox("Press N to head to next level!", 1500, 200, 100);
 			if (CP_Input_KeyTriggered(KEY_N))
 			{
@@ -159,8 +151,9 @@ void Levelone_Update(void)
 	//	UI
 	//-----------------------------------------------------------------------------------------------------------------------------------------//
 	//	draw_healthbar(player_health_background);
-	draw_healthbar(player_health_background);
-	draw_healthbar(player_health);
+	draw_hearts(player_healthbar, player.HP);
+	/*draw_healthbar(player_health_background);
+	draw_healthbar(player_health);*/
 	//	pause menu
 	if (is_paused) {
 		pause_menu(game_state, Levelone_Init, Levelone_Update, Levelone_Exit);
@@ -174,5 +167,9 @@ void Levelone_Update(void)
 
 void Levelone_Exit(void)
 {
+	// Free heart images
+	for (int i = 0; i < MAX_HEALTH; ++i) {
+		CP_Image_Free(&player_healthbar[i].heart);
+	}
 
 }

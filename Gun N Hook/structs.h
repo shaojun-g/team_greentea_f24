@@ -131,3 +131,12 @@ typedef struct Boss {
 	int health;
 
 }Boss;
+
+typedef struct Health {
+	CP_Image heart;
+	float x;
+	float y;
+	float width;
+	float height;
+} heart;
+

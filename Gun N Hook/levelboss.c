@@ -31,14 +31,14 @@ Healthbar player_health, player_health_background, boss_health, boss_health_back
 Player player;
 Grapple grapple;
 Boss boss1;
-enum {NUM_MAX_MELEE = 4};
+enum {NUM_MAX_MELEE = 5};
 MELEE_Enemy melee_enemy[NUM_MAX_MELEE];
 enum { NUM_BOSS_TURRETS = 4 };
 RANGE_Enemy boss_turrets[NUM_BOSS_TURRETS];
 enum { MAX_TURRET_PROJECTILE = 4 };
 Bullet turret_projectiles[MAX_TURRET_PROJECTILE];
+heart player_healthbar[MAX_HEALTH];
 
-CP_Font my_awesome_font;
 int is_paused, is_dead, boss_dead;
 float dt, elapsedtime; float iframe_cd, iframe_dur;
 int* game_state;
@@ -46,7 +46,7 @@ int* game_state;
 void Levelboss_Init(void)
 {
 	CP_System_SetFrameRate(60.0f);		//	limit to 60fps
-
+	CP_Settings_TextSize(25.00f); // set text size to 25.0f
 	int current_level = 4;
 	//game window size is (1600, 900)
 	boss1.num_parts = NUM_BOSS_PARTS;
@@ -95,15 +95,15 @@ void Levelboss_Init(void)
 	//all platforms increment at y coordinates by 150.00f
 	//all platforms increment at x coordinates by minimum 200.00f
 	//default platforms will have 150.00f as width and 15.00f as height
-	platform[1] = (Platform){ 600.00 ,  650.00, 250.00, 15.00,CP_Color_Create(255, 128, 128, 255) };
+	platform[1] = (Platform){ 400.00 ,  650.00, 250.00, 15.00,CP_Color_Create(255, 128, 128, 255) };
 	platform[1].left_limit = platform[1].x - platform[1].width / 2;
 	platform[1].right_limit = platform[1].x + platform[1].width / 2;
 	//platform2 is second platform
-	platform[2] = (Platform){ 800.00 ,  500.00, 250.00, 15.00,CP_Color_Create(255, 128, 128, 255) };
+	platform[2] = (Platform){ 600.00 ,  500.00, 250.00, 15.00,CP_Color_Create(255, 128, 128, 255) };
 	platform[2].left_limit = platform[2].x - platform[2].width / 2;
 	platform[2].right_limit = platform[2].x + platform[2].width / 2;
 	//platform3 is third platform
-	platform[3] = (Platform){ 1000.00 ,  350.00, 250.00, 15.00,CP_Color_Create(255, 128, 128, 255) };
+	platform[3] = (Platform){ 500.00 ,  350.00, 250.00, 15.00,CP_Color_Create(255, 128, 128, 255) };
 	platform[3].left_limit = platform[3].x - platform[3].width / 2;
 	platform[3].right_limit = platform[3].x + platform[3].width / 2;
 	//start goal will be where user spawns
@@ -168,56 +168,39 @@ void Levelboss_Init(void)
 	melee_enemy[3].dir = RIGHT;
 	melee_enemy[3].speed = 100;
 	melee_enemy[3].health = 5;
+	//initialize melee enemy 5 to stop player from staying on level one
+	melee_enemy[4].width = 40;
+	melee_enemy[4].height = 40;
+	melee_enemy[4].x = platform[0].x -200;
+	melee_enemy[4].y = platform[0].y - platform[0].height / 2 - melee_enemy[0].height / 2; // Place enemy just above platform
+	melee_enemy[4].state = PATROL; // Start in patrol state
+	melee_enemy[4].dir = RIGHT;
+	melee_enemy[4].speed = 130;
+	melee_enemy[4].health = 5;
 	//initialize player
 	player = (Player){ 100, 785, 30, 30, 5, 1, {0, 0} };
 	grapple = (Grapple){ 0, 0, 0 };
 	elapsedtime = 0;  iframe_dur = 0.5f, iframe_cd = 0.0f;
+	// Initialize heart array
+	for (int i = 0; i < MAX_HEALTH; ++i) {
+		player_healthbar[i].heart = CP_Image_Load("./Assets/Heart.png");
+		player_healthbar[i].x = 50.0f;  // Starting x position
+		player_healthbar[i].y = 50.0f;  // Starting y position
+		player_healthbar[i].width = 40.0f;  // Adjust as needed
+		player_healthbar[i].height = 40.0f;  // Adjust as needed
+	}
 	//pea-shooter init
 	pea_shooter_init(bullets, &player.x, &player.y);
 
+	//death state
+	is_dead = 0;
 	//pause state
 	is_paused = 0;
 	game_state = &is_paused;
 	
+	
 }
 
-//void test_debug(void){
-//
-//	//test debugging turret
-//	//player
-//	CP_Settings_EllipseMode(CP_POSITION_CENTER);
-//	CP_Settings_Fill(CP_Color_Create(140, 0, 0, 255));
-//	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);
-//	//movement
-//	if (CP_Input_KeyDown(KEY_A)) { //move left when move left x--
-//		//movement
-//		player.x -= 5 + CP_System_GetDt();
-//	} // end of check key A
-//	else if (CP_Input_KeyDown(KEY_D)) { //move right when move right x++
-//		//movement
-//		player.x += 5 + CP_System_GetDt();
-//	} // end of check key D
-//	//updown
-//	if (CP_Input_KeyDown(KEY_W)) { //move up when move left y--
-//		//movement
-//		player.y -= 5 + CP_System_GetDt();
-//	} // end of check key A
-//	else if (CP_Input_KeyDown(KEY_S)) { //move down when move right y++
-//		//movement
-//		player.y += 5 + CP_System_GetDt();
-//	} // end of check key D
-//
-//	// Create an array of characters (aka a string) that can store up to 256 characters.
-//	char buffer[256];
-//	// Fill the buffer with the text we want.
-//	// Notice that it uses a similar syntax as printf()!
-//	sprintf_s(buffer, sizeof(buffer), "Player X: %.2f, Player: %.2f", player.x, player.y);
-//	// Tells CProcessing to use the white color for anything we are drawing on the screen
-//	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
-//	// Draw the text using the string stored in the buffer in the center of the screen.
-//	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
-//	CP_Font_DrawText(buffer, (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 - 300);
-//}
 
 void Levelboss_Update(void)
 {
@@ -284,6 +267,8 @@ void Levelboss_Update(void)
 		state_change(&melee_enemy[2], &platform[2], &player, 3.0f, 8.0f, &elapsedtime);
 		//	update melee enemy4 state and behaviour
 		state_change(&melee_enemy[3], &platform[3], &player, 3.0f, 8.0f, &elapsedtime);
+		//	update melee enemy4 state and behaviour
+		state_change(&melee_enemy[4], &platform[0], &player, 3.0f, 8.0f, &elapsedtime);
 
 		//	BOSS shoot when player is on platform
 		if (player.on_ground == 1 && (player.y >= platform[0].y - player.width * 2) && (player.y <= platform[0].y - player.width / 2)) {
@@ -341,9 +326,7 @@ void Levelboss_Update(void)
 			drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); 
 		}
 		//	BOSS DEFEATED
-		if (boss1.health >= 0) {
-			update_boss_healthbar(&boss_health, boss1.health);
-
+		update_boss_healthbar(&boss_health, boss1.health);
 			// If boss is defeated
 			if (boss1.health <= 0) {
 				boss1.health = 0;  // Ensure health doesn't go negative
@@ -351,7 +334,15 @@ void Levelboss_Update(void)
 				boss_dead = 1;	//	<----------ADD WIN SCREEN
 				pause_state(game_state);
 			}
-		}
+		
+	}
+	//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	GOAL INSTRUCTIONS
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	player reach goal point	-	print instructions.
+	if (AreC_RIntersecting(player.x, player.y, 40, goal_start.x, goal_start.y, goal_start.width, goal_start.height)) {
+		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+		CP_Font_DrawTextBox("Defeat the boss to win!", 50, 630, 100);
 	}
 
 	//	draw player
@@ -368,8 +359,8 @@ void Levelboss_Update(void)
 	//	UI
 	//-----------------------------------------------------------------------------------------------------------------------------------------//
 	//	PLAYER HEALTHBAR	(player_health_background);
-	draw_healthbar(player_health_background);
-	draw_healthbar(player_health);
+	// Draw hearts
+	draw_hearts(player_healthbar, player.HP);
 	//	BOSS HEALTHBAR
 	draw_healthbar(boss_health);
 	draw_healthbar(boss_health_background);
@@ -399,5 +390,9 @@ void Levelboss_Update(void)
 
 void Levelboss_Exit(void)
 {
+	// Free heart images
+	for (int i = 0; i < MAX_HEALTH; ++i) {
+		CP_Image_Free(&player_healthbar[i].heart);
+	}
 
 }

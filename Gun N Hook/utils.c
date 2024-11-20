@@ -13,6 +13,7 @@
 #define BOSS_MAX_HEALTH 50
 #define BOSS_HEALTHBAR_MAX_WIDTH 1400.00f
 
+
 int IsAreaClicked(float area_center_x, float area_center_y, float area_width, float area_height, float click_x, float click_y)
 {
 	//Calculate the half width and height of rectangle
@@ -401,15 +402,6 @@ void win_menu(int* game_state, FunctionPtr currentlevel_init, FunctionPtr curren
 		CP_Settings_TextSize(50.00f); // set text size to 50.0f
 		textwrite("You win!", CP_System_GetWindowWidth() / 2, 400, Black);
 		CP_Settings_TextSize(25.00f); // set text size to 25.0f
-		//// restart button
-		//buttoncreate(xRect, yRect2, rectW, rectH, Blue);
-		//textwrite("Restart", xRect, yRect2, Black);
-
-		//if (CP_Input_MouseClicked()) {
-		//	if (IsAreaClicked(xRect, yRect2, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
-		//		CP_Engine_SetNextGameStateForced(currentlevel_init, currentlevel_update, currentlevel_exit);
-		//	};
-		//};
 
 
 		// exit button
@@ -458,3 +450,13 @@ void update_boss_healthbar(Healthbar* health_bar, int current_health) {
 		current_health, health_percentage, health_bar->width);
 }
 
+void draw_hearts(heart heart[], int current_hp) {
+	float spacing = 50.f;
+	for (int i = 0; i < MAX_HEALTH; ++i) {
+		float gap = spacing * i;
+		// Only draw hearts up to current HP
+		if (i < current_hp) {
+			CP_Image_Draw(heart[i].heart, heart[i].x + gap, heart[i].y, heart[i].width, heart[i].height, 255);
+		}
+	}
+}

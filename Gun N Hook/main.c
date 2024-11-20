@@ -14,7 +14,7 @@
 //#include "game.h"
 //#include "enemy.h"
 #include "levelboss.h"
-//#include "leveltwo.h"
+#include "leveltwo.h"
 #include "levelthree.h"
 #include "InitialSplash.h"
 
@@ -27,7 +27,7 @@ int main(void)
 	//CP_Engine_SetNextGameState(Enemy_Init, Enemy_Update, Enemy_Exit);
 	//CP_Engine_SetNextGameState(Levelboss_Init, Levelboss_Update, Levelboss_Exit);
 	//CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
-	//CP_Engine_SetNextGameState(Levelthree_Init, Levelthree_Update, Levelthree_Exit);
+	//CP_Engine_SetNextGameState(Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit);
 	CP_Engine_SetNextGameState(InitialSplash_Init, InitialSplash_Update, InitialSplash_Exit);
 	CP_System_SetWindowSize(1600, 900);
 	CP_Engine_Run(0);

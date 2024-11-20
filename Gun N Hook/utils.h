@@ -1,6 +1,8 @@
 #pragma once
 #define NUM_BOSS_PARTS 9
+#define MAX_HEALTH 5
 #include "structs.h"
+
 
 
 
@@ -39,3 +41,6 @@ void ApplyElasticCollision(Player* player, MELEE_Enemy hazard, float restitution
 int check_collision_rect(float proj_x, float proj_y, float proj_diameter, float player_x, float player_y, float player_width, float player_height);
 void update_projectile(Projectile* projectile, float player_x, float player_y, float player_width, float player_height, int* player_hp);
 void update_boss_healthbar(Healthbar* health_bar, int current_health);
+
+void draw_hearts(heart heart[], int current_hp);
+
