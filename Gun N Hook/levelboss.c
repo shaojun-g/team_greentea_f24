@@ -40,7 +40,7 @@ Bullet turret_projectiles[MAX_TURRET_PROJECTILE];
 
 CP_Font my_awesome_font;
 int is_paused;
-float dt, elapsedtime;
+float dt, elapsedtime; float iframe_cd, iframe_dur;
 int* game_state;
 
 void Levelboss_Init(void)
@@ -171,7 +171,7 @@ void Levelboss_Init(void)
 	//initialize player
 	player = (Player){ 100, 785, 30, 30, 5, 1, {0, 0} };
 	grapple = (Grapple){ 0, 0, 0 };
-	elapsedtime = 0;
+	elapsedtime = 0;  iframe_dur = 0.5f, iframe_cd = 0.0f;
 	//pea-shooter init
 	pea_shooter_init(bullets, &player.x, &player.y);
 
@@ -270,7 +270,8 @@ void Levelboss_Update(void)
 
 		//	deal damage to player when hit by enemy projectile.
 		for (int i = 0; i < MAX_TURRET_PROJECTILE; i++)
-			deal_damage_to_player(&turret_projectiles[i], &boss_turrets[i], &player);
+			if (deal_damage_to_player(&turret_projectiles[i], &boss_turrets[i], &player))
+				iframe_cd = iframe_dur;
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------//
 		//	ENEMY AI
@@ -308,12 +309,24 @@ void Levelboss_Update(void)
 		//	KNOCKBACK COLLISION
 		//-----------------------------------------------------------------------------------------------------------------------------------------//
 		//	collision between melee enemy and player
-		for (int i = 0; i < NUM_MAX_MELEE; i++) {
-			if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy[i].x, melee_enemy[i].y, melee_enemy[i].width, melee_enemy[i].height)) {
-				ApplyElasticCollision(&player, melee_enemy[i], 1.f);
-				player.on_ground = 0;
-				player.HP -= 1;
-				collisionCooldown = collisionCooldownDuration;  // Set cooldown timer
+		if (iframe_cd == 0) {
+			for (int i = 0; i < NUM_MAX_MELEE; i++) {
+				if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy[i].x, melee_enemy[i].y, melee_enemy[i].width, melee_enemy[i].height)) {
+					// Apply elastic collision
+					ApplyElasticCollision(&player, melee_enemy[i], 1.f);
+					player.on_ground = 0;
+					player.HP -= 1;
+
+					//	iframes
+					iframe_cd = iframe_dur;
+				}
+			}
+		}
+
+		if (iframe_cd > 0.0f) {
+			iframe_cd -= CP_System_GetDt();
+			if (iframe_cd < 0.0f) {
+				iframe_cd = 0;
 			}
 		}
 
@@ -341,6 +354,9 @@ void Levelboss_Update(void)
 
 	//	draw player
 	CP_Settings_Fill(CP_Color_Create(250, 250, 250, 255));
+	if (iframe_cd > 0)
+		//	flashing player during iframe
+		CP_Settings_Fill(CP_Color_Create(50, 50, 50, 255));
 	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);
 
 	//	draw boss

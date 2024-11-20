@@ -117,10 +117,55 @@ void draw_boss(Boss* boss) {
 	}
 }
 
-
-void goal_function() {
-
-}
+//void ApplyElasticCollision(Player* player, MELEE_Enemy hazard, float restitution) {
+//	// Calculate the edges of the centered hazard rectangle
+//	float hazard_left = hazard.x - hazard.width / 2;
+//	float hazard_right = hazard.x + hazard.width / 2;
+//	float hazard_top = hazard.y - hazard.height / 2;
+//	float hazard_bottom = hazard.y + hazard.height / 2;
+//
+//	// Calculate the edges of the player rectangle 
+//	float player_left = player->x - player->width / 2;
+//	float player_right = player->x + player->width / 2;
+//	float player_top = player->y - player->height / 2;
+//	float player_bottom = player->y + player->height / 2;
+//
+//	float bounce_back_distance = 1.50; //change this to determine distaance of bounceback
+//	float knockback_x = 0;
+//
+//	if (c_rect_rect(player->x, player->y, player->width, player->height, hazard.x, hazard.y, hazard.width, hazard.height)) {
+//		// Check which side the collision occurred and adjust player position and velocity
+//		if (player_right > hazard_left && player_left < hazard_right) {
+//			// Check if the player is moving right and collides with the left side of the hazard
+//			if (player->velocity.x >= 0 && player_right > hazard_left && player_left < hazard_left) {
+//				// Collision on the left side of the hazard
+//				player->x = hazard_left - player->width * bounce_back_distance;  // Adjust position to prevent overlap
+//				player->velocity.x = -knockback_x;  // Reverse the horizontal velocity (bounce)
+//			}
+//			// Check if the player is moving left and collides with the right side of the hazard
+//			else if (player->velocity.x <= 0 && hazard_right - player_left < player->width) {
+//				// Collision on the right side of the hazard
+//				player->x = hazard_right + player->width * bounce_back_distance;
+//				player->velocity.x = knockback_x;
+//			}
+//		}
+//
+//		if (player_bottom > hazard_top && player_top < hazard_bottom) {
+//			if (player->velocity.y > 0 && player_bottom - hazard_top < player->height) {
+//				// Collision on the top
+//				player->y = hazard_top - player->height * bounce_back_distance;
+//				player->velocity.y *= -restitution; // Bounce back vertically
+//			}
+//			else if (player->velocity.y < 0 && hazard_bottom - player_top < player->height) {
+//				// Collision on the bottom
+//				player->y = hazard_bottom;
+//				player->velocity.y *= -restitution;
+//			}
+//		}
+//		player->HP -= 1;
+//		//printf("player hp : %i", player->HP);
+//	}
+//}
 
 void ApplyElasticCollision(Player* player, MELEE_Enemy hazard, float restitution) {
 	// Calculate the edges of the centered hazard rectangle
@@ -135,7 +180,7 @@ void ApplyElasticCollision(Player* player, MELEE_Enemy hazard, float restitution
 	float player_top = player->y - player->height / 2;
 	float player_bottom = player->y + player->height / 2;
 
-	float bounce_back_distance = 3.00; //change this to determine distaance of bounceback
+	float bounce_back_distance = 2.0; //change this to determine distaance of bounceback
 
 	// Check which side the collision occurred and adjust player position and velocity
 	if (player_right > hazard_left && player_left < hazard_right) {

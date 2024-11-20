@@ -1,7 +1,7 @@
 #include <math.h>
 #include "cprocessing.h"
 
-// rect-line
+// rect-line	-	DIVIDES LINE IN 5 POINTS: THEN RECT-POINT FOR EACH.
 int c_rect_line(float rect_x, float rect_y, float rect_width, float rect_height, float line_x1, float line_y1, float line_x2, float line_y2) {
 	//	define rect edges
 	float rectleft	= rect_x - rect_width	/ 2;

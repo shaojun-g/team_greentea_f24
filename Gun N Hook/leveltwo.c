@@ -9,6 +9,7 @@
 #include "movement.h"
 #include "enemy.h"
 #include "levelthree.h"
+#include "collisionlib.h"
 
 
 #define PLATFORM_SIZE 5
@@ -25,7 +26,7 @@ int is_paused;
 int* game_state;
 
 float dt;
-float elapsedtime;
+float elapsedtime; float iframe_cd, iframe_dur;
 
 void Leveltwo_Init(void)
 {
@@ -112,7 +113,7 @@ void Leveltwo_Init(void)
 	grapple = (Grapple){ 0, 0, 0 };
 
 	//elapsed time
-	elapsedtime = 0;
+	elapsedtime = 0; iframe_dur = 0.5f, iframe_cd = 0.0f;
 
 	//pea-shooter init
 	pea_shooter_init(bullets, &player.x, &player.y);
@@ -192,46 +193,41 @@ void Leveltwo_Update(void)
 		//	KNOCKBACK COLLISION
 		//-----------------------------------------------------------------------------------------------------------------------------------------//
 		//	collision between melee enemy and player
-		if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy.x, melee_enemy.y, melee_enemy.width, melee_enemy.height)) {
-			// Apply elastic collision
+		if (iframe_cd == 0) {
+			if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy.x, melee_enemy.y, melee_enemy.width, melee_enemy.height)) {
+				//	Apply elastic collision
+				ApplyElasticCollision(&player, melee_enemy, 1.f);
+				player.on_ground = 0;
+				player.HP -= 1;
 
-			ApplyElasticCollision(&player, melee_enemy, 1.f);
-			player.on_ground = 0;
-			player.HP -= 1;
-			collisionCooldown = collisionCooldownDuration;  // Set cooldown timer
-			printf("player hp : %i", player.HP);
-			if (player.HP == 0) {
-				player.HP = 5;
-				CP_Engine_SetNextGameStateForced(Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit);
-				printf("next state updated");
+				//	iframes
+				iframe_cd = iframe_dur;
 			}
+			if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy2.x, melee_enemy2.y, melee_enemy2.width, melee_enemy2.height)) {
+				// Apply elastic collision
+				ApplyElasticCollision(&player, melee_enemy2, 1.f);
+				player.on_ground = 0;
+				player.HP -= 1;
 
+				//	iframes
+				iframe_cd = iframe_dur;
+			}
+			if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy3.x, melee_enemy3.y, melee_enemy3.width, melee_enemy3.height)) {
+				// Apply elastic collision
+				ApplyElasticCollision(&player, melee_enemy3, 1.f);
+				player.on_ground = 0;
+				player.HP -= 1;
+
+				//	iframes
+				iframe_cd = iframe_dur;
+			}
 		}
-		if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy2.x, melee_enemy2.y, melee_enemy2.width, melee_enemy2.height)) {
-			// Apply elastic collision
-			ApplyElasticCollision(&player, melee_enemy2, 1.f);
-			player.on_ground = 0;
-			player.HP -= 1;
-			collisionCooldown = collisionCooldownDuration;  // Set cooldown timer
-			if (player.HP == 0) {
-				player.HP = 5;
-				CP_Engine_SetNextGameStateForced(Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit);
-				printf("next state updated");
-			}
 
-		}
-		if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy3.x, melee_enemy3.y, melee_enemy3.width, melee_enemy3.height)) {
-			// Apply elastic collision
-			ApplyElasticCollision(&player, melee_enemy3, 1.f);
-			player.on_ground = 0;
-			player.HP -= 1;
-			collisionCooldown = collisionCooldownDuration;  // Set cooldown timer
-			if (player.HP == 0) {
-				player.HP = 5;
-				CP_Engine_SetNextGameStateForced(Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit);
-				printf("next state updated");
+		if (iframe_cd > 0.0f) {
+			iframe_cd -= CP_System_GetDt();
+			if (iframe_cd < 0.0f) {
+				iframe_cd = 0;
 			}
-
 		}
 
 
@@ -278,6 +274,9 @@ void Leveltwo_Update(void)
 
 	//	draw player
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+	if (iframe_cd > 0)
+		//	flashing player during iframe
+		CP_Settings_Fill(CP_Color_Create(50, 50, 50, 255));
 	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
 
 	//-----------------------------------------------------------------------------------------------------------------------------------------//

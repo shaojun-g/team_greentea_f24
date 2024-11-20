@@ -12,6 +12,7 @@
 #include "enemy.h"
 #include "levelthree.h"
 #include "utils.h"
+#include "collisionlib.h"
 
 #define PLATFORM_SIZE 9
 Platform platform[PLATFORM_SIZE];
@@ -25,7 +26,7 @@ MELEE_Enemy melee_enemy, melee_enemy2, melee_enemy3, melee_enemy4;
 enum{MAX_RANGE_Enemy = 3};
 RANGE_Enemy range_enemies[MAX_RANGE_Enemy];
 Bullet enemy_projectiles[MAX_RANGE_Enemy];
-float dt, elapsedtime;
+float dt, elapsedtime; float iframe_cd, iframe_dur;
 int is_paused;
 int* game_state;
 
@@ -184,7 +185,7 @@ void Levelthree_Init(void)
 
 	player = (Player){ 100, 785, 30, 30, 5, 1, {0, 0} };
 	grapple = (Grapple){ 0, 0, 0 };
-	elapsedtime = 0;
+	elapsedtime = 0; iframe_dur = 0.5f, iframe_cd = 0.0f;
 
 	//pea-shooter init
 	pea_shooter_init(bullets, &player.x, &player.y);
@@ -284,9 +285,12 @@ void Levelthree_Update(void)
 			gravity(&player.velocity.y);
 		
 		//	deal damage to player when hit by enemy projectile.
-		deal_damage_to_player(&enemy_projectiles[0], &range_enemies[0], &player);
-		deal_damage_to_player(&enemy_projectiles[1], &range_enemies[1], &player);
-		deal_damage_to_player(&enemy_projectiles[2], &range_enemies[2], &player);
+		if (deal_damage_to_player(&enemy_projectiles[0], &range_enemies[0], &player))
+			iframe_cd = iframe_dur;
+		if (deal_damage_to_player(&enemy_projectiles[1], &range_enemies[1], &player))
+			iframe_cd = iframe_dur;
+		if (deal_damage_to_player(&enemy_projectiles[2], &range_enemies[2], &player))
+			iframe_cd = iframe_dur;
 
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------//
@@ -310,37 +314,51 @@ void Levelthree_Update(void)
 		//	KNOCKBACK COLLISION
 		//-----------------------------------------------------------------------------------------------------------------------------------------//
 		//	collision between melee enemy and player
-		if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy.x, melee_enemy.y, melee_enemy.width, melee_enemy.height)) {
-			// Apply elastic collision
-			ApplyElasticCollision(&player, melee_enemy, 1.f);
-			player.HP -= 1;
-			collisionCooldown = collisionCooldownDuration;	// Set cooldown timer
-			player.on_ground = 0;
-			printf("player hp : %i", player.HP);
-		}
-		if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy2.x, melee_enemy2.y, melee_enemy2.width, melee_enemy2.height)) {
-			// Apply elastic collision
-			ApplyElasticCollision(&player, melee_enemy2, 1.f);
-			player.on_ground = 0;
-			player.HP -= 1;
-			collisionCooldown = collisionCooldownDuration;  // Set cooldown timer
-		}
-		if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy3.x, melee_enemy3.y, melee_enemy3.width, melee_enemy3.height)) {
-			// Apply elastic collision
-			ApplyElasticCollision(&player, melee_enemy3, 1.f);
-			player.on_ground = 0;
-			player.HP -= 1;
-			collisionCooldown = collisionCooldownDuration;  // Set cooldown timer
+		if (iframe_cd == 0) {
+			if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy.x, melee_enemy.y, melee_enemy.width, melee_enemy.height)) {
+				//	Apply elastic collision
+				ApplyElasticCollision(&player, melee_enemy, 1.f);
+				player.on_ground = 0;
+				player.HP -= 1;
 
-		}
-		if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy4.x, melee_enemy4.y, melee_enemy4.width, melee_enemy4.height)) {
-			// Apply elastic collision
-			ApplyElasticCollision(&player, melee_enemy4, 1.f);
-			player.on_ground = 0;
-			player.HP -= 1;
-			collisionCooldown = collisionCooldownDuration;  // Set cooldown timer
-		}
+				//	iframes
+				iframe_cd = iframe_dur;
+			}
+			if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy2.x, melee_enemy2.y, melee_enemy2.width, melee_enemy2.height)) {
+				// Apply elastic collision
+				ApplyElasticCollision(&player, melee_enemy2, 1.f);
+				player.on_ground = 0;
+				player.HP -= 1;
 
+				//	iframes
+				iframe_cd = iframe_dur;
+			}
+			if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy3.x, melee_enemy3.y, melee_enemy3.width, melee_enemy3.height)) {
+				// Apply elastic collision
+				ApplyElasticCollision(&player, melee_enemy3, 1.f);
+				player.on_ground = 0;
+				player.HP -= 1;
+				
+				//	iframes
+				iframe_cd = iframe_dur;
+			}
+			if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy4.x, melee_enemy4.y, melee_enemy4.width, melee_enemy4.height)) {
+				// Apply elastic collision
+				ApplyElasticCollision(&player, melee_enemy4, 1.f);
+				player.on_ground = 0;
+				player.HP -= 1;
+				
+				//	iframes
+				iframe_cd = iframe_dur;
+			}
+		}
+		//	invulnerable frames
+		if (iframe_cd > 0.0f) {
+			iframe_cd -= CP_System_GetDt();
+			if (iframe_cd < 0.0f) {
+				iframe_cd = 0;
+			}
+		}
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------//
 		//	HP of melee enemies and player
@@ -391,6 +409,9 @@ void Levelthree_Update(void)
 	
 	//	draw player
 	CP_Settings_Fill(CP_Color_Create(250, 250, 250, 255));
+	if (iframe_cd > 0)
+		//	flashing player during iframe
+		CP_Settings_Fill(CP_Color_Create(50, 50, 50, 255));
 	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
 
 	//-----------------------------------------------------------------------------------------------------------------------------------------//

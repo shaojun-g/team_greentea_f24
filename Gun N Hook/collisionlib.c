@@ -33,7 +33,7 @@ void deal_damage(Bullet bullets[], float *char_x, float* char_y, float* char_wid
 }
 
 // function that causes enemies to take damage when colliding with player projectiles.
-void deal_damage_to_player(Bullet *projectile,RANGE_Enemy* rangenemy,Player* player) {
+int deal_damage_to_player(Bullet *projectile,RANGE_Enemy* rangenemy,Player* player) {
 		if (c_rect_rect(projectile->x, projectile->y, projectile->diameter, projectile->diameter, player->x, player->y, player->width, player->height) && projectile->live == 1) {
 			printf("player hit detected\n");
 			projectile->live = 2;		
@@ -43,7 +43,9 @@ void deal_damage_to_player(Bullet *projectile,RANGE_Enemy* rangenemy,Player* pla
 			printf("projectile x?:%f\n", projectile->x);
 			printf("projectile y?:%f\n", projectile->y);
 			printf("projectile live?:%d\n",projectile->live);
+			return 1;
 		}
+		return 0;
 }
 
 //	initialize pea_shooter bullets.
