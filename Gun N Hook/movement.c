@@ -36,21 +36,19 @@ void basic_movement(float* player_x, float* player_y, float* speed_x, float* spe
 	if (CP_Input_KeyDown(KEY_W) || CP_Input_KeyDown(KEY_SPACE) && !(*on_ground)) {
 		*speed_y += -10;
 	}
-	/*else if (CP_Input_KeyReleased(KEY_W) || CP_Input_KeyReleased(KEY_SPACE)) {
-		*speed_y += 200;
-	}*/
+	*player_x += *speed_x * CP_System_GetDt();
+	*player_y += *speed_y * CP_System_GetDt();
 
-	////	translate player coordinates based on speed computed.
-	//if ((*player_x > 30 && *speed_x > 0) || (*player_x < 1570 && *speed_x < 0)) {
-		*player_x += *speed_x * CP_System_GetDt();
-	
-	//if ((*player_y > 30 && *speed_y > 0) || (*player_y < 870 && *speed_y < 0)) {
-		*player_y += *speed_y * CP_System_GetDt();
-	
-		if (*player_y > 800) {
-			*player_y = 780;
-			*speed_y = 0;
-		}
+	//	add hard limits for left and right movement.
+	if (*player_x < 10)
+		*player_x = 10;
+	if (*player_x > 1590)
+		*player_x = 1590;
+	//	ensure player doesnt fall into the abyss downwards.
+	if (*player_y > 800) {
+		*player_y = 780;
+		*speed_y = 0;
+	}
 }
 
 void gravity(float* speed_y) {
@@ -58,51 +56,12 @@ void gravity(float* speed_y) {
 	if (*speed_y < 1000 )	{
 		*speed_y += 1600 * CP_System_GetDt(); 
 	}
-	//	set max speed.
+	//	set max falling speed.
 	else				
 	{ 
 		*speed_y = 1400; 
 	}
 }
-
-/*void basic_movement(float* player_x, float* player_y, float* speed_x, float* speed_y, int* on_ground, float dt) {
-	if (CP_Input_KeyDown(KEY_D)) {
-		*speed_x = 300;
-		*player_x += *speed_x * dt;
-	}
-
-	if (CP_Input_KeyDown(KEY_A)) {
-		*speed_x = -300;
-		*player_x += *speed_x * dt;
-	}
-	else {
-		*speed_x = 0;
-	}
-
-	if (*on_ground == 1) {
-		float starting_x = *player_x;
-		float max_jump = 200;
-		if (CP_Input_KeyDown(KEY_W) || CP_Input_KeyDown(KEY_SPACE)) {
-			if (*speed_y < 1500)  { // change this to change max height original is 1000
-				*speed_y += 100;
-				*player_y -= *speed_y * dt;
-			}
-			else {
-				*on_ground = 0;
-			}
-		}
-		if (CP_Input_KeyReleased(KEY_W) || CP_Input_KeyReleased(KEY_SPACE)) {
-			*on_ground = 0;
-			*speed_y = 500;
-			*player_y += *speed_y * dt;
-		}
-	}
-}
-
-void gravity(float* player_y, float *speed_y, float dt) {
-	*speed_y = 500;
-	*player_y += *speed_y * dt;
-}*/
 
 int grapple_extending = 0;
 float grapple_distance = 0;
@@ -224,6 +183,7 @@ void drawGrapple(Player *player, float* grapple_x, float* grapple_y, Platform* p
 		CP_Graphics_DrawRect(player->x - cd_width / 2, player->y - 50.0f, cd_width * cd_fraction, cd_height);
 	
 	}
+
 	CP_Settings_Stroke(CP_Color_Create(255, 255, 255, 0));
 	CP_Settings_RectMode(CP_POSITION_CENTER);
 }

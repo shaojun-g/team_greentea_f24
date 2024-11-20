@@ -20,15 +20,6 @@ void collide_platform(Player* player, Platform* platform) {
 	}
 }
 
-//// function that causes player to take damage when colliding with enemies or enemy projectiles.
-//void player_damage(float* player_x, float* player_y, float* player_width, float* player_height, float* enemy_x, float* enemy_y, float* enemy_width, float* enemy_height, int* player_HP, int* projectile_Live) {
-//	if (c_rect_rect(*player_x, *player_y, *player_width, *player_height, *enemy_x, *enemy_y, *enemy_width, *enemy_height))
-//		if (*projectile_Live) {
-//			*player_HP -= 1;
-//			*projectile_Live = 0;
-//		}
-//}
-
 // function that causes enemies to take damage when colliding with player projectiles.
 void deal_damage(Bullet bullets[], float *char_x, float* char_y, float* char_width, float* char_height, int* char_HP) {
 	for (int i = 0; i < 50; ++i) {

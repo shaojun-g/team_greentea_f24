@@ -1,4 +1,3 @@
-//written by stanley
 #include "stdio.h"
 #include "mainmenu.h"
 #include "cprocessing.h"
@@ -217,93 +216,106 @@ void Levelthree_Init(void)
 
 }
 
-
 void Levelthree_Update(void)
 {
-	dt = CP_System_GetDt();//date time function
-	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255)); // clear background to gray
-	//draw goals
+	dt = CP_System_GetDt();												//	date time function
+	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255));	//	clear background to gray
+
+	//-----------------------------------------------------------------------------------------------------------------------------------------//
+	//	DRAW
+	//-----------------------------------------------------------------------------------------------------------------------------------------//
+	//	draw goals
 	draw_goal(goal_start);
 	draw_goal(goal_end);
-	//draw all platforms
-	for (int i = 0; i < PLATFORM_SIZE; i++) {
-		draw_platform(platform[i]);
-		collide_platform(&player, &platform[i]);	
-	}
-	// Draw melee enemy
+	
+	//	Draw melee enemy
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255)); // Red color
 	CP_Graphics_DrawRect(melee_enemy.x, melee_enemy.y, melee_enemy.width, melee_enemy.height);
-	// Draw melee enemy2
+	//	Draw melee enemy2
 	CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255)); // Blue color
 	CP_Graphics_DrawRect(melee_enemy2.x, melee_enemy2.y, melee_enemy2.width, melee_enemy2.height);
-	// Draw melee enemy3
+	//	Draw melee enemy3
 	CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255)); // Blue color
 	CP_Graphics_DrawRect(melee_enemy3.x, melee_enemy3.y, melee_enemy3.width, melee_enemy3.height);
-	// Draw melee enemy4
+	//	Draw melee enemy4
 	CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255)); // Blue color
 	CP_Graphics_DrawRect(melee_enemy4.x, melee_enemy4.y, melee_enemy4.width, melee_enemy4.height);
 
-	//draw range enemy projectiles
+	//	draw range enemy projectiles
 	for (int i = 0; i < MAX_RANGE_Enemy; i++) {
 		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 		CP_Graphics_DrawCircle(enemy_projectiles[i].x, enemy_projectiles[i].y, enemy_projectiles[i].diameter);
 	}
-	//draw range enemy
+	//	draw range enemy
 	for (int i = 0; i < MAX_RANGE_Enemy; i++) {
 		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
 		CP_Graphics_DrawRect(range_enemies[i].x, range_enemies[i].y, range_enemies[i].width, range_enemies[i].height);
 	}
 
-	//draw player
-	CP_Settings_Fill(CP_Color_Create(250, 250, 250, 255));
+	//	GRAPPLING HOOK FUNCTION
+	drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); //draw grapple
 
-	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
-	
-	
-	if (!is_paused) {
-		//shoot projectile
-		enemy_shoot_projectile(&enemy_projectiles[0], &range_enemies[0], 200);
-		enemy_shoot_projectile(&enemy_projectiles[1], &range_enemies[1], 200);
-		enemy_shoot_projectile(&enemy_projectiles[2], &range_enemies[2], 200);
-		//pea shooter function
+	//	draw all platforms
+	for (int i = 0; i < PLATFORM_SIZE; i++) {
+		draw_platform(platform[i]);
+		collide_platform(&player, &platform[i]);	
+	}
+
+	if (!is_paused) {	
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	PLAYER FUNCTIONS
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		
+		//	pea shooter function
 		pea_shooter(bullets, &player.x, &player.y);
-		//deal damage to melee enemies
+
+		//	deal damage to melee enemies
 		deal_damage(bullets, &melee_enemy.x, &melee_enemy.y, &melee_enemy.width, &melee_enemy.height, &melee_enemy.health);
 		deal_damage(bullets, &melee_enemy2.x, &melee_enemy2.y, &melee_enemy2.width, &melee_enemy2.height, &melee_enemy2.health);
 		deal_damage(bullets, &melee_enemy3.x, &melee_enemy3.y, &melee_enemy3.width, &melee_enemy3.height, &melee_enemy3.health);
 		deal_damage(bullets, &melee_enemy4.x, &melee_enemy4.y, &melee_enemy4.width, &melee_enemy4.height, &melee_enemy4.health);
-		//deal damage to player
+
+		//	player basic movement		-	WASD and jump
+		basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement
+		//	When player not on ground	-	GRAVITY
+		if (!(player.on_ground))
+			gravity(&player.velocity.y);
+		
+		//	deal damage to player when hit by enemy projectile.
 		deal_damage_to_player(&enemy_projectiles[0], &range_enemies[0], &player);
 		deal_damage_to_player(&enemy_projectiles[1], &range_enemies[1], &player);
 		deal_damage_to_player(&enemy_projectiles[2], &range_enemies[2], &player);
 
-		basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement
-		if (!(player.on_ground))
-			gravity(&player.velocity.y);
-		drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); //draw grapple
-		
-		// Update melee enemy state and behavior
+
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	ENEMY AI
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	Update melee enemy state and behavior
 		state_change(&melee_enemy, &platform[1], &player, 3.0f, 8.0f, &elapsedtime);
-
-		//update melee enemy2 state and behaviour
+		//	update melee enemy2 state and behaviour
 		state_change(&melee_enemy2, &platform[2], &player, 3.0f, 8.0f, &elapsedtime);
-
-		//update melee enemy3 state and behaviour
+		//	update melee enemy3 state and behaviour
 		state_change(&melee_enemy3, &platform[3], &player, 3.0f, 8.0f, &elapsedtime);
-
-		//update melee enemy4 state and behaviour
+		//	update melee enemy4 state and behaviour
 		state_change(&melee_enemy4, &platform[4], &player, 3.0f, 8.0f, &elapsedtime);
 
-		//collision between melee enemy and player
+		// ranged enemy shoot projectile
+		enemy_shoot_projectile(&enemy_projectiles[0], &range_enemies[0], 200);
+		enemy_shoot_projectile(&enemy_projectiles[1], &range_enemies[1], 200);
+		enemy_shoot_projectile(&enemy_projectiles[2], &range_enemies[2], 200);
+
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	KNOCKBACK COLLISION
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	collision between melee enemy and player
 		if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy.x, melee_enemy.y, melee_enemy.width, melee_enemy.height)) {
 			// Apply elastic collision
 			ApplyElasticCollision(&player, melee_enemy, 1.f);
 			player.HP -= 1;
-			collisionCooldown = collisionCooldownDuration;// Set cooldown timer
+			collisionCooldown = collisionCooldownDuration;	// Set cooldown timer
 			player.on_ground = 0;
 			printf("player hp : %i", player.HP);
 		}
-
 		if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy2.x, melee_enemy2.y, melee_enemy2.width, melee_enemy2.height)) {
 			// Apply elastic collision
 			ApplyElasticCollision(&player, melee_enemy2, 1.f);
@@ -311,7 +323,6 @@ void Levelthree_Update(void)
 			player.HP -= 1;
 			collisionCooldown = collisionCooldownDuration;  // Set cooldown timer
 		}
-
 		if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy3.x, melee_enemy3.y, melee_enemy3.width, melee_enemy3.height)) {
 			// Apply elastic collision
 			ApplyElasticCollision(&player, melee_enemy3, 1.f);
@@ -320,7 +331,6 @@ void Levelthree_Update(void)
 			collisionCooldown = collisionCooldownDuration;  // Set cooldown timer
 
 		}
-
 		if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy4.x, melee_enemy4.y, melee_enemy4.width, melee_enemy4.height)) {
 			// Apply elastic collision
 			ApplyElasticCollision(&player, melee_enemy4, 1.f);
@@ -328,19 +338,24 @@ void Levelthree_Update(void)
 			player.HP -= 1;
 			collisionCooldown = collisionCooldownDuration;  // Set cooldown timer
 		}
-		//--------------------------------------------------------------------------------------
-		//for hp of melee enemies and player
+
+
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	HP of melee enemies and player
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	PLAYER DIES
 		if (player.HP == 0) {
-			player.HP = 5;
+			//	clear grapple
+			drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); //draw grapple
+
 			CP_Engine_SetNextGameStateForced(Levelthree_Init, Levelthree_Update, Levelthree_Exit);
 			printf("next state updated");
 		}
-
+		//	ENEMY DIES
 		if (melee_enemy.health <= 0) {
 			melee_enemy.x = -1000; // A position far off the screen
 			melee_enemy.y = -1000; // A position far off the screen
 		}
-
 		if (melee_enemy2.health <= 0) {
 			melee_enemy2.x = -1000; // A position far off the screen
 			melee_enemy2.y = -1000; // A position far off the screen
@@ -353,25 +368,15 @@ void Levelthree_Update(void)
 			melee_enemy4.x = -1000; // A position far off the screen
 			melee_enemy4.y = -1000; // A position far off the screen
 		}
-		//-----------------------------------------------------------------------------------------
 
-
-
-		if (player.HP == 0) {
-			player.HP = 5;
-			CP_Engine_SetNextGameStateForced(Levelthree_Init, Levelthree_Update, Levelthree_Exit);
-			printf("next state updated");
-		}
-
-		//draw_healthbar(player_health_background);
-		draw_healthbar(player_health_background);
-		draw_healthbar(player_health);
-
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	GOAL INSTRUCTIONS
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	player reach goal point	-	print instructions.
 		if (AreC_RIntersecting(player.x, player.y, 40, goal_start.x, goal_start.y, goal_start.width, goal_start.height)) {
 			//printf("touching start");
 			CP_Font_DrawTextBox("Get to the Goal!", 50, 675, 100);
 		}
-
 		if (AreC_RIntersecting(player.x, player.y, 40, goal_end.x, goal_end.y, goal_end.width, goal_end.height)) {
 			printf("intersect good");
 			CP_Font_DrawTextBox("Press N to head to next level!", 1500, 200, 100);
@@ -381,11 +386,22 @@ void Levelthree_Update(void)
 			}
 		}
 	}
+	
+	//	draw player
+	CP_Settings_Fill(CP_Color_Create(250, 250, 250, 255));
+	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
+
+	//-----------------------------------------------------------------------------------------------------------------------------------------//
+	//	UI
+	//-----------------------------------------------------------------------------------------------------------------------------------------//
+	//	draw_healthbar(player_health_background);
+	draw_healthbar(player_health_background);
+	draw_healthbar(player_health);
+	//	pause menu
 	if (is_paused) {
 		pause_menu(game_state, Levelthree_Init, Levelthree_Update, Levelthree_Exit);
 	}
-
-	// esc to pause game
+	//	esc to pause game
 	if (CP_Input_KeyTriggered(KEY_ESCAPE))
 	{
 		pause_state(game_state);

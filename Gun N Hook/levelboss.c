@@ -28,6 +28,8 @@
 Platform platform[PLATFORM_SIZE];
 Goal goal_start;
 Healthbar player_health, player_health_background, boss_health, boss_health_background;
+Player player;
+Grapple grapple;
 Boss boss1;
 enum {NUM_MAX_MELEE = 4};
 MELEE_Enemy melee_enemy[NUM_MAX_MELEE];
@@ -35,10 +37,11 @@ enum { NUM_BOSS_TURRETS = 4 };
 RANGE_Enemy boss_turrets[NUM_BOSS_TURRETS];
 enum { MAX_TURRET_PROJECTILE = 4 };
 Bullet turret_projectiles[MAX_TURRET_PROJECTILE];
-Player player;
-Grapple grapple;
+
 CP_Font my_awesome_font;
+int is_paused;
 float dt, elapsedtime;
+int* game_state;
 
 void Levelboss_Init(void)
 {
@@ -169,6 +172,10 @@ void Levelboss_Init(void)
 	elapsedtime = 0;
 	//pea-shooter init
 	pea_shooter_init(bullets, &player.x, &player.y);
+
+	//pause state
+	is_paused = 0;
+	game_state = &is_paused;
 	
 }
 
@@ -214,129 +221,152 @@ void Levelboss_Update(void)
 {
 	dt = CP_System_GetDt();//date time function
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255)); // clear background to gray
-	//draw goals
-	draw_goal(goal_start);
-	//draw all platforms
-	for (int i = 0; i < PLATFORM_SIZE; i++) {
-		draw_platform(platform[i]);
-		collide_platform(&player, &platform[i]);
-	}
-	//draw boss
-	draw_boss(&boss1);
 
-	//draw melee enemy
+	//-----------------------------------------------------------------------------------------------------------------------------------------//
+	//	DRAW
+	//-----------------------------------------------------------------------------------------------------------------------------------------//
+	//	draw goal
+	draw_goal(goal_start);
+
+	//	draw melee enemy
 	for (int i = 0; i < NUM_MAX_MELEE; i++) {
 		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 		CP_Graphics_DrawRect(melee_enemy[i].x, melee_enemy[i].y, melee_enemy[i].width, melee_enemy[i].height);
 	}
 
-	//draw player
-	CP_Settings_Fill(CP_Color_Create(250, 250, 250, 255));
-	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);
-
-	//draw healthbar (with background)
-	//draw in update and update values of health during combat
-	draw_healthbar(player_health_background);
-	draw_healthbar(player_health);
-	draw_healthbar(boss_health);
-	draw_healthbar(boss_health_background);
-
-	//start basic movement
-	basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);
-	//draw grapple
-	if (!(player.on_ground))
-		gravity(&player.velocity.y);
-	drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); 
-
-	//pea shooter function for player
-	pea_shooter(bullets, &player.x, &player.y);
-
-	//draw projectile
+	//	draw enemy projectiles
 	for (int i = 0; i < MAX_TURRET_PROJECTILE; i++) {
 		CP_Settings_EllipseMode(CP_POSITION_CENTER);
 		CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
 		CP_Graphics_DrawCircle(turret_projectiles[i].x, turret_projectiles[i].y, turret_projectiles[i].diameter);
 	}
+	//	GRAPPLING HOOK FUNCTION
+	drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); //draw grapple
 
-	if (player.on_ground == 1 && (player.y >= platform[0].y - player.width * 2) && (player.y <= platform[0].y - player.width / 2)) {
-		turret_projectiles[0].live = 1;
-	}
-	if (player.on_ground == 1 && (player.y >= platform[1].y - player.width * 2) && (player.y <= platform[1].y - player.width / 2)) {
-		turret_projectiles[1].live = 1;
-	}
-	if (player.on_ground == 1 && (player.y >= platform[2].y - player.width * 2) && (player.y <= platform[2].y - player.width / 2)) {
-		turret_projectiles[2].live = 1;
-	}
-	if (player.on_ground == 1 && (player.y >= platform[3].y - player.width * 2) && (player.y <= platform[3].y - player.width / 2)) {
-		turret_projectiles[3].live = 1;
+	//	draw all platforms
+	for (int i = 0; i < PLATFORM_SIZE; i++) {
+		draw_platform(platform[i]);
+		collide_platform(&player, &platform[i]);
 	}
 
-	//shoot projectile
-	for (int i = 0; i < MAX_TURRET_PROJECTILE; i++) {
-		if (turret_projectiles[i].live == 1) {
-			enemy_shoot_projectile(&turret_projectiles[i], &boss_turrets[i], 500);
+	if (!is_paused) {
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	PLAYER FUNCTIONS
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+
+		//	pea shooter function
+		pea_shooter(bullets, &player.x, &player.y);
+
+		//	deal damage to enemies
+		deal_damage(bullets, &boss1.parts->x, &boss1.parts->y, &boss1.parts->width, &boss1.parts->height, &boss1.health);
+
+		//	player basic movement		-	WASD and jump
+		basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);
+		//	When player not on ground	-	GRAVITY
+		if (!(player.on_ground))
+			gravity(&player.velocity.y);
+
+		//	deal damage to player when hit by enemy projectile.
+		for (int i = 0; i < MAX_TURRET_PROJECTILE; i++)
+			deal_damage_to_player(&turret_projectiles[i], &boss_turrets[i], &player);
+
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	ENEMY AI
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	Update melee enemy state and behavior
+		state_change(&melee_enemy[0], &platform[0], &player, 3.0f, 8.0f, &elapsedtime);
+		//	update melee enemy2 state and behaviour
+		state_change(&melee_enemy[1], &platform[1], &player, 3.0f, 8.0f, &elapsedtime);
+		//	update melee enemy3 state and behaviour
+		state_change(&melee_enemy[2], &platform[2], &player, 3.0f, 8.0f, &elapsedtime);
+		//	update melee enemy4 state and behaviour
+		state_change(&melee_enemy[3], &platform[3], &player, 3.0f, 8.0f, &elapsedtime);
+
+		//	BOSS shoot when player is on platform
+		if (player.on_ground == 1 && (player.y >= platform[0].y - player.width * 2) && (player.y <= platform[0].y - player.width / 2)) {
+			turret_projectiles[0].live = 1;
 		}
-	}
-
-	// Update melee enemy state and behavior
-	state_change(&melee_enemy[0], &platform[0], &player, 3.0f, 8.0f, &elapsedtime);
-
-	//update melee enemy2 state and behaviour
-	state_change(&melee_enemy[1], &platform[1], &player, 3.0f, 8.0f, &elapsedtime);
-
-	//update melee enemy3 state and behaviour
-	state_change(&melee_enemy[2], &platform[2], &player, 3.0f, 8.0f, &elapsedtime);
-
-	//update melee enemy4 state and behaviour
-	state_change(&melee_enemy[3], &platform[3], &player, 3.0f, 8.0f, &elapsedtime);
-
-
-	//melee enemy damages player
-	for (int i = 0; i < NUM_MAX_MELEE; i++) {
-		if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy[i].x, melee_enemy[i].y, melee_enemy[i].width, melee_enemy[i].height)) {
-			ApplyElasticCollision(&player, melee_enemy[i], 1.f);
-			player.on_ground = 0;
-			player.HP -= 1;
-			collisionCooldown = collisionCooldownDuration;  // Set cooldown timer
+		if (player.on_ground == 1 && (player.y >= platform[1].y - player.width * 2) && (player.y <= platform[1].y - player.width / 2)) {
+			turret_projectiles[1].live = 1;
 		}
-	}
-	//turret damages player
-	
-	for (int i = 0; i < MAX_TURRET_PROJECTILE; i++)
-		deal_damage_to_player(&turret_projectiles[i], &boss_turrets[i], &player);
-	
-	//--------------------------------------------------------------------------------------
-	//for hp of melee enemies and player
-	if (player.HP == 0) {
-		player.HP = 5;
-		CP_Engine_SetNextGameStateForced(Levelboss_Init, Levelboss_Update, Levelboss_Exit);
-		printf("next state updated");
-	}
+		if (player.on_ground == 1 && (player.y >= platform[2].y - player.width * 2) && (player.y <= platform[2].y - player.width / 2)) {
+			turret_projectiles[2].live = 1;
+		}
+		if (player.on_ground == 1 && (player.y >= platform[3].y - player.width * 2) && (player.y <= platform[3].y - player.width / 2)) {
+			turret_projectiles[3].live = 1;
+		}
 
-	//when bullet colides with boss, minus health
-	deal_damage(bullets, &boss1.parts->x, &boss1.parts->y, &boss1.parts->width, &boss1.parts->height, &boss1.health);
-	if (boss1.health >= 0) {
-		update_boss_healthbar(&boss_health, boss1.health);
+		for (int i = 0; i < MAX_TURRET_PROJECTILE; i++) {
+			if (turret_projectiles[i].live == 1) {
+				enemy_shoot_projectile(&turret_projectiles[i], &boss_turrets[i], 500);
+			}
+		}
 
-		// If boss is defeated
-		if (boss1.health <= 0) {
-			boss1.health = 0;  // Ensure health doesn't go negative
-			update_boss_healthbar(&boss_health, 0);  // Update health bar one final time
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	KNOCKBACK COLLISION
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	collision between melee enemy and player
+		for (int i = 0; i < NUM_MAX_MELEE; i++) {
+			if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy[i].x, melee_enemy[i].y, melee_enemy[i].width, melee_enemy[i].height)) {
+				ApplyElasticCollision(&player, melee_enemy[i], 1.f);
+				player.on_ground = 0;
+				player.HP -= 1;
+				collisionCooldown = collisionCooldownDuration;  // Set cooldown timer
+			}
+		}
+
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	HP of melee enemies and player
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	PLAYER DIES
+		if (player.HP == 0) {
+			player.HP = 5;
 			CP_Engine_SetNextGameStateForced(Levelboss_Init, Levelboss_Update, Levelboss_Exit);
+			printf("next state updated");
+		}
+		//	BOSS DEFEATED
+		if (boss1.health >= 0) {
+			update_boss_healthbar(&boss_health, boss1.health);
+
+			// If boss is defeated
+			if (boss1.health <= 0) {
+				boss1.health = 0;  // Ensure health doesn't go negative
+				update_boss_healthbar(&boss_health, 0);  // Update health bar one final time
+				CP_Engine_SetNextGameStateForced(Levelboss_Init, Levelboss_Update, Levelboss_Exit);	//	<----------ADD WIN SCREEN
+			}
 		}
 	}
+
+	//	draw player
+	CP_Settings_Fill(CP_Color_Create(250, 250, 250, 255));
+	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);
+
+	//	draw boss
+	draw_boss(&boss1);
+
+	//-----------------------------------------------------------------------------------------------------------------------------------------//
+	//	UI
+	//-----------------------------------------------------------------------------------------------------------------------------------------//
+	//	PLAYER HEALTHBAR	(player_health_background);
+	draw_healthbar(player_health_background);
+	draw_healthbar(player_health);
+	//	BOSS HEALTHBAR
+	draw_healthbar(boss_health);
+	draw_healthbar(boss_health_background);
 	
 	if (CP_Input_KeyTriggered(KEY_Q))
 	{
 		CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit); // exit using Q
 	}
-	//test for next level (this will be for goal function)
-	if (CP_Input_KeyTriggered(KEY_N))
-	{
-		CP_Engine_SetNextGameState(Levelthree_Init, Levelthree_Update, Levelthree_Exit); // next level using N
+	//	pause menu
+	if (is_paused) {
+		pause_menu(game_state, Levelboss_Init, Levelboss_Update, Levelboss_Exit);
 	}
-	//when boss is defeated, set a game over and credit scene
-
+	//	esc to pause game
+	if (CP_Input_KeyTriggered(KEY_ESCAPE))
+	{
+		pause_state(game_state);
+	}
 }
 
 void Levelboss_Exit(void)

@@ -127,73 +127,69 @@ void Leveltwo_Update(void)
 
 	dt = CP_System_GetDt();//date time function
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255)); // clear background to gray
-	// Decrease cooldown time
-	if (collisionCooldown > 0.0f) {
-		collisionCooldown -= dt;
-	}
 
-	
-	
-	//draw goals
+	//-----------------------------------------------------------------------------------------------------------------------------------------//
+	//	DRAW
+	//-----------------------------------------------------------------------------------------------------------------------------------------//
+	//	draw goals
 	draw_goal(goal_start);
 	draw_goal(goal_end);
 
+	//	Draw melee enemy
+	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255)); // Red color
+	CP_Graphics_DrawRect(melee_enemy.x, melee_enemy.y, melee_enemy.width, melee_enemy.height);
+	//	Draw melee enemy2
+	CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255)); // Blue color
+	CP_Graphics_DrawRect(melee_enemy2.x, melee_enemy2.y, melee_enemy2.width, melee_enemy2.height);
+	//	Draw melee enemy3
+	CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255)); // Blue color
+	CP_Graphics_DrawRect(melee_enemy3.x, melee_enemy3.y, melee_enemy3.width, melee_enemy3.height);
+
+	//	DRAW GRAPPLING HOOK
 	drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); //draw grapple
 
-	//draw all platforms
+	//	draw all platforms
 	for (int i = 0; i < PLATFORM_SIZE; i++) {
 		draw_platform(platform[i]);
 		collide_platform(&player, &platform[i]);
 	}
 
-	//pea shooter function
-	pea_shooter(bullets, &player.x, &player.y);
-
-	// Draw melee enemy
-	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255)); // Red color
-	CP_Graphics_DrawRect(melee_enemy.x, melee_enemy.y, melee_enemy.width, melee_enemy.height);
-
-	// Draw melee enemy2
-	CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255)); // Blue color
-	CP_Graphics_DrawRect(melee_enemy2.x, melee_enemy2.y, melee_enemy2.width, melee_enemy2.height);
-
-
-	// Draw melee enemy3
-	CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255)); // Blue color
-	CP_Graphics_DrawRect(melee_enemy3.x, melee_enemy3.y, melee_enemy3.width, melee_enemy3.height);
-
-	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
-	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
 	
 	if (!is_paused) {
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	PLAYER FUNCTIONS
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		
+		//	pea shooter function
+		pea_shooter(bullets, &player.x, &player.y);
 
+		//	pea-shooter damage to melee enemy
+		deal_damage(bullets, &melee_enemy.x, &melee_enemy.y, &melee_enemy.width, &melee_enemy.height, &melee_enemy.health);
+		deal_damage(bullets, &melee_enemy2.x, &melee_enemy2.y, &melee_enemy2.width, &melee_enemy2.height, &melee_enemy2.health);
+		deal_damage(bullets, &melee_enemy3.x, &melee_enemy3.y, &melee_enemy3.width, &melee_enemy3.height, &melee_enemy3.health);
+
+		//	player basic movement		-	WASD and jump
 		basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement
+		//	When player not on ground	-	GRAVITY
 		if (!(player.on_ground))
 			gravity(&player.velocity.y);
 
-		//draw healthbar (with background)
-		//draw_healthbar(player_health_background);
-		draw_healthbar(player_health_background);
-		draw_healthbar(player_health);
 
-
-		// Update melee enemy state and behavior
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	ENEMY AI
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	Update melee enemy state and behavior
 		state_change(&melee_enemy, &platform[1], &player, 3.0f, 8.0f, &elapsedtime);
-
-		//update melee enemy2 state and behaviour
+		//	update melee enemy2 state and behaviour
 		state_change(&melee_enemy2, &platform[2], &player, 3.0f, 8.0f, &elapsedtime);
-
-		//update melee enemy2 state and behaviour
+		//	update melee enemy2 state and behaviour
 		state_change(&melee_enemy3, &platform[3], &player, 3.0f, 8.0f, &elapsedtime);
+		
 
-		//damage for melee enemy
-		deal_damage(bullets, &melee_enemy.x, &melee_enemy.y, &melee_enemy.width, &melee_enemy.height, &melee_enemy.health);
-
-		deal_damage(bullets, &melee_enemy2.x, &melee_enemy2.y, &melee_enemy2.width, &melee_enemy2.height, &melee_enemy2.health);
-
-		deal_damage(bullets, &melee_enemy3.x, &melee_enemy3.y, &melee_enemy3.width, &melee_enemy3.height, &melee_enemy3.health);
-
-		//collision between melee enemy and player
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	KNOCKBACK COLLISION
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	collision between melee enemy and player
 		if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy.x, melee_enemy.y, melee_enemy.width, melee_enemy.height)) {
 			// Apply elastic collision
 
@@ -209,7 +205,6 @@ void Leveltwo_Update(void)
 			}
 
 		}
-
 		if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy2.x, melee_enemy2.y, melee_enemy2.width, melee_enemy2.height)) {
 			// Apply elastic collision
 			ApplyElasticCollision(&player, melee_enemy2, 1.f);
@@ -223,7 +218,6 @@ void Leveltwo_Update(void)
 			}
 
 		}
-
 		if (c_rect_rect(player.x, player.y, player.width, player.height, melee_enemy3.x, melee_enemy3.y, melee_enemy3.width, melee_enemy3.height)) {
 			// Apply elastic collision
 			ApplyElasticCollision(&player, melee_enemy3, 1.f);
@@ -237,18 +231,21 @@ void Leveltwo_Update(void)
 			}
 
 		}
-		//for hp of melee enemies and player
+
+
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	HP of melee enemies and player
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	player die
 		if (player.HP == 0) {
-			player.HP = 5;
 			CP_Engine_SetNextGameStateForced(Levelthree_Init, Levelthree_Update, Levelthree_Exit);
 			printf("next state updated");
 		}
-
+		//	enemy die
 		if (melee_enemy.health <= 0) {
 			melee_enemy.x = -1000; // A position far off the screen
 			melee_enemy.y = -1000; // A position far off the screen
 		}
-
 		if (melee_enemy2.health <= 0) {
 			melee_enemy2.x = -1000; // A position far off the screen
 			melee_enemy2.y = -1000; // A position far off the screen
@@ -258,13 +255,15 @@ void Leveltwo_Update(void)
 			melee_enemy3.y = -1000; // A position far off the screen
 		}
 
-		//-----------------------------------------------------------------------------------------
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	GOAL INSTRUCTIONS
+		//-----------------------------------------------------------------------------------------------------------------------------------------//
+		//	player reach goal point	-	print instructions.
 		if (AreC_RIntersecting(player.x, player.y, 40, goal_start.x, goal_start.y, goal_start.width, goal_start.height)) {
 
 			CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255)); // Blue color
 			CP_Font_DrawTextBox("Get to the Goal!", 50, 675, 100);
 		}
-
 		if (AreC_RIntersecting(player.x, player.y, 40, goal_end.x, goal_end.y, goal_end.width, goal_end.height)) {
 			printf("intersect good");
 			CP_Font_DrawTextBox("Press N to head to next level!", 1500, 200, 100);
@@ -275,14 +274,23 @@ void Leveltwo_Update(void)
 		}
 	}
 
+	//	draw player
+	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
+
+	//-----------------------------------------------------------------------------------------------------------------------------------------//
+	//	UI
+	//-----------------------------------------------------------------------------------------------------------------------------------------//
+	//	draw_healthbar(player_health_background);
+	draw_healthbar(player_health_background);
+	draw_healthbar(player_health);
+	//	pause menu
 	if (is_paused) {
 		pause_menu(game_state, Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit);
 	}
-
-
+	//	esc to pause game
 	if (CP_Input_KeyTriggered(KEY_ESCAPE)) {
 		pause_state(game_state);
-
 	}
 }
 
