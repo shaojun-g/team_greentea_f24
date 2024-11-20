@@ -10,8 +10,8 @@
 #include "mainmenu.h"
 #include "structs.h"
 
-int current_level = 0;
-
+#define BOSS_MAX_HEALTH 50
+#define BOSS_HEALTHBAR_MAX_WIDTH 1400.00f
 
 int IsAreaClicked(float area_center_x, float area_center_y, float area_width, float area_height, float click_x, float click_y)
 {
@@ -117,23 +117,6 @@ void draw_boss(Boss* boss) {
 	}
 }
 
-void Restart_Level() {
-	switch (current_level) {
-	case 1:
-		CP_Engine_SetNextGameState(Levelone_Init, Levelone_Update, Levelone_Exit);
-		break;
-	case 2:
-		CP_Engine_SetNextGameState(Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit);
-		break;
-	case 3:
-		CP_Engine_SetNextGameState(Levelthree_Init, Levelthree_Update, Levelthree_Exit);
-		break;
-		// Add more cases if you have additional levels
-	default:
-		CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
-		break;
-	}
-}
 
 void goal_function() {
 
@@ -317,3 +300,20 @@ void update_projectile(Projectile* projectile, float player_x, float player_y, f
 			printf("collison");
 		}
 }
+
+// Modified boss health bar update function
+void update_boss_healthbar(Healthbar* health_bar, int current_health) {
+	// Ensure health doesn't go below 0
+	if (current_health < 0) current_health = 0;
+
+	// Calculate health percentage (0.0 to 1.0)
+	float health_percentage = (float)current_health / (float)BOSS_MAX_HEALTH;
+
+	// Update health bar width
+	health_bar->width = BOSS_HEALTHBAR_MAX_WIDTH * health_percentage;
+
+	// For debugging - print values to see what's happening
+	printf("Current Health: %d, Health Percentage: %.2f, Bar Width: %.2f\n",
+		current_health, health_percentage, health_bar->width);
+}
+

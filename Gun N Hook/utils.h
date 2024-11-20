@@ -38,3 +38,4 @@ void ApplyElasticCollision(Player* player, MELEE_Enemy hazard, float restitution
 
 int check_collision_rect(float proj_x, float proj_y, float proj_diameter, float player_x, float player_y, float player_width, float player_height);
 void update_projectile(Projectile* projectile, float player_x, float player_y, float player_width, float player_height, int* player_hp);
+void update_boss_healthbar(Healthbar* health_bar, int current_health);

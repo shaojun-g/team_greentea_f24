@@ -15,9 +15,7 @@
 #include "utils.h"
 
 #define PLATFORM_SIZE 9
-Platform platform_base, platform1, platform2, platform3, platform4, platform_goal;
 Platform platform[PLATFORM_SIZE];
-Platform platform_enemy1, platform_enemy2, platform_enemy3;
 Goal goal_start, goal_end;
 Healthbar player_health, player_health_background;
 Player player;
@@ -41,7 +39,7 @@ void Levelthree_Init(void)
 	CP_Settings_TextAlignment(h_text, v_text);
 	//game window size is (1600, 900)
 	//set all platform color as the same(dark red)
-	platform_base.platform_color = CP_Color_Create(255, 128, 128, 255);
+	/*platform_base.platform_color = CP_Color_Create(255, 128, 128, 255);
 	platform1.platform_color = CP_Color_Create(255, 128, 128, 255);
 	platform2.platform_color = CP_Color_Create(255, 128, 128, 255);
 	platform3.platform_color = CP_Color_Create(255, 128, 128, 255);
@@ -49,7 +47,7 @@ void Levelthree_Init(void)
 	platform_enemy1.platform_color = CP_Color_Create(255, 128, 128, 255);
 	platform_enemy2.platform_color = CP_Color_Create(255, 128, 128, 255);
 	platform_enemy3.platform_color = CP_Color_Create(255, 128, 128, 255);
-	platform_goal.platform_color = CP_Color_Create(255, 128, 128, 255);
+	platform_goal.platform_color = CP_Color_Create(255, 128, 128, 255);*/
 	//set healthbar color 
 	player_health.rect_color = CP_Color_Create(255, 0, 0, 255);
 	player_health_background.rect_color = CP_Color_Create(255, 0, 0, 100);
@@ -245,7 +243,7 @@ void Levelthree_Update(void)
 	CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255)); // Blue color
 	CP_Graphics_DrawRect(melee_enemy4.x, melee_enemy4.y, melee_enemy4.width, melee_enemy4.height);
 
-	//draw
+	//draw range enemy projectiles
 	for (int i = 0; i < MAX_RANGE_Enemy; i++) {
 		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 		CP_Graphics_DrawCircle(enemy_projectiles[i].x, enemy_projectiles[i].y, enemy_projectiles[i].diameter);
@@ -260,13 +258,10 @@ void Levelthree_Update(void)
 	CP_Settings_Fill(CP_Color_Create(250, 250, 250, 255));
 
 	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
-	//shoot enemy
-	/*for (int i = 0; i < MAX_RANGE_Enemy; i++) {
-		enemy_shoot_projectile(&enemy_projectiles[i], &range_enemies[i], 200);
-	}*/
+	
 	
 	if (!is_paused) {
-
+		//shoot projectile
 		enemy_shoot_projectile(&enemy_projectiles[0], &range_enemies[0], 200);
 		enemy_shoot_projectile(&enemy_projectiles[1], &range_enemies[1], 200);
 		enemy_shoot_projectile(&enemy_projectiles[2], &range_enemies[2], 200);
@@ -282,19 +277,11 @@ void Levelthree_Update(void)
 		deal_damage_to_player(&enemy_projectiles[1], &range_enemies[1], &player);
 		deal_damage_to_player(&enemy_projectiles[2], &range_enemies[2], &player);
 
-
-		//
-		//deal_damage_to_player(&enemy_projectile, &player.x, &player.y, &player.width, &player.height, &player.HP);
-		//deal_damage_to_player(&enemy_projectile2, &player.x, &player.y, &player.width, &player.height, &player.HP);
-		//deal_damage_to_player(&enemy_projectile3, &player.x, &player.y, &player.width, &player.height, &player.HP);
-
 		basic_movement(&player.x, &player.y, &player.velocity.x, &player.velocity.y, &player.on_ground);//start basic movement
 		if (!(player.on_ground))
 			gravity(&player.velocity.y);
 		drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); //draw grapple
 		
-
-
 		// Update melee enemy state and behavior
 		state_change(&melee_enemy, &platform[1], &player, 3.0f, 8.0f, &elapsedtime);
 
@@ -376,13 +363,9 @@ void Levelthree_Update(void)
 			printf("next state updated");
 		}
 
-
-
 		//draw_healthbar(player_health_background);
 		draw_healthbar(player_health_background);
 		draw_healthbar(player_health);
-
-
 
 		if (AreC_RIntersecting(player.x, player.y, 40, goal_start.x, goal_start.y, goal_start.width, goal_start.height)) {
 			//printf("touching start");
