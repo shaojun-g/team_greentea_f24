@@ -236,8 +236,8 @@ void textwrite(const char* text, float x_position, float y_position, CP_Color co
 //}
 
 void pause_state(int *game_state) {
-	if (*game_state == 0) {
-		*game_state = 1;
+	if (game_state == 0) {
+		*game_state = !*game_state;
 	} else
 	{
 		*game_state = !*game_state;
@@ -271,7 +271,8 @@ void pause_menu(int *game_state,FunctionPtr currentlevel_init, FunctionPtr curre
 
 		if (CP_Input_MouseClicked()) {
 			if (IsAreaClicked(xRect, yRect1, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
-				pause_state(*game_state);
+				*game_state = 0;
+
 
 			}
 		}
