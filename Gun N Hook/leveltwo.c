@@ -132,16 +132,23 @@ void Leveltwo_Update(void)
 		collisionCooldown -= dt;
 	}
 
-	drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); //draw grapple
+	
 	
 	//draw goals
 	draw_goal(goal_start);
 	draw_goal(goal_end);
+
+	drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); //draw grapple
+
 	//draw all platforms
 	for (int i = 0; i < PLATFORM_SIZE; i++) {
 		draw_platform(platform[i]);
 		collide_platform(&player, &platform[i]);
 	}
+
+	//pea shooter function
+	pea_shooter(bullets, &player.x, &player.y);
+
 	// Draw melee enemy
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255)); // Red color
 	CP_Graphics_DrawRect(melee_enemy.x, melee_enemy.y, melee_enemy.width, melee_enemy.height);
@@ -155,6 +162,7 @@ void Leveltwo_Update(void)
 	CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255)); // Blue color
 	CP_Graphics_DrawRect(melee_enemy3.x, melee_enemy3.y, melee_enemy3.width, melee_enemy3.height);
 
+	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 	CP_Graphics_DrawRect(player.x, player.y, player.width, player.height);//draw player
 	
 	if (!is_paused) {
@@ -178,9 +186,6 @@ void Leveltwo_Update(void)
 		//update melee enemy2 state and behaviour
 		state_change(&melee_enemy3, &platform[3], &player, 3.0f, 8.0f, &elapsedtime);
 
-
-		//pea shooter function
-		pea_shooter(bullets, &player.x, &player.y);
 		//damage for melee enemy
 		deal_damage(bullets, &melee_enemy.x, &melee_enemy.y, &melee_enemy.width, &melee_enemy.height, &melee_enemy.health);
 

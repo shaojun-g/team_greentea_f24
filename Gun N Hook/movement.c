@@ -28,7 +28,7 @@ void basic_movement(float* player_x, float* player_y, float* speed_x, float* spe
 	}
 
 	//	initial upward speed when jump.
-	if ((CP_Input_KeyDown(KEY_W) || CP_Input_KeyDown(KEY_SPACE)) && *on_ground) {
+	if ((CP_Input_KeyDown(KEY_W) || CP_Input_KeyDown(KEY_SPACE)) && *on_ground == 1) {
 		*speed_y = -400;
 		*on_ground = 0;
 	}
@@ -47,6 +47,10 @@ void basic_movement(float* player_x, float* player_y, float* speed_x, float* spe
 	//if ((*player_y > 30 && *speed_y > 0) || (*player_y < 870 && *speed_y < 0)) {
 		*player_y += *speed_y * CP_System_GetDt();
 	
+		if (*player_y > 800) {
+			*player_y = 780;
+			*speed_y = 0;
+		}
 }
 
 void gravity(float* speed_y) {
@@ -57,7 +61,7 @@ void gravity(float* speed_y) {
 	//	set max speed.
 	else				
 	{ 
-		*speed_y = 1500; 
+		*speed_y = 1400; 
 	}
 }
 
@@ -108,8 +112,8 @@ CP_Vector grapple_target;
 float hook_x = 0.0;
 float hook_y = 9.0;
 float player_pulling = 0;
-float player_grapple_speed = 500.0;// max grapple pulling speed
-float cd_time = 1.0f; // cooldown tiimer
+float player_grapple_speed = 800.0;// max grapple pulling speed
+float cd_time = 0.5f; // cooldown tiimer
 float cd_remaining = 0.0f;
 
 void drawGrapple(Player *player, float* grapple_x, float* grapple_y, Platform* platforms, int num_of_platforms, float dt) {
@@ -174,7 +178,8 @@ void drawGrapple(Player *player, float* grapple_x, float* grapple_y, Platform* p
 	if (player_pulling) {
 		float distance_x = hook_x - player->x;
 		float distance_y = hook_y - player->y;
-		float distance = sqrt(distance_x * distance_x + distance_y * distance_y);
+		float distance = (float)(sqrt(distance_x * distance_x + distance_y * distance_y));
+		player->on_ground = 2;
 
 		if (distance <= player->width) {
 			float pull_back_x = (distance_x / distance) * player->width;
@@ -189,7 +194,7 @@ void drawGrapple(Player *player, float* grapple_x, float* grapple_y, Platform* p
 			//*grapple_y = 0;
 			grapple_extending = 0;
 			// make player go up platform with some nice accel.
-			player->velocity.y += -400;
+			player->velocity.y = -400;
 
 			cd_remaining = cd_time;
 		}
@@ -210,12 +215,12 @@ void drawGrapple(Player *player, float* grapple_x, float* grapple_y, Platform* p
 		float cd_fraction = 1.0f - (cd_remaining/cd_time);
 
 		//cd background
-		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+		CP_Settings_Fill(CP_Color_Create(0, 80, 0, 255));
 		CP_Settings_RectMode(CP_POSITION_CORNER);
 		CP_Graphics_DrawRect(player->x - cd_width / 2, player->y - 50.0f, cd_width, cd_height);
 	
 		//cd progress bar
-		CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
+		CP_Settings_Fill(CP_Color_Create(120, 200, 100, 255));
 		CP_Graphics_DrawRect(player->x - cd_width / 2, player->y - 50.0f, cd_width * cd_fraction, cd_height);
 	
 	}
