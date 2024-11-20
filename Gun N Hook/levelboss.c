@@ -45,6 +45,8 @@ int* game_state;
 
 void Levelboss_Init(void)
 {
+	CP_System_SetFrameRate(60.0f);		//	limit to 60fps
+
 	int current_level = 4;
 	//game window size is (1600, 900)
 	boss1.num_parts = NUM_BOSS_PARTS;

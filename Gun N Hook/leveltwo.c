@@ -29,6 +29,8 @@ float elapsedtime;
 
 void Leveltwo_Init(void)
 {
+	CP_System_SetFrameRate(60.0f);		//	limit to 60fps
+
 	CP_Settings_TextSize(25.00f);
 	//game window size is (1600, 900)
 	//set all platform color as the same(dark red)

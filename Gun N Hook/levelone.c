@@ -28,6 +28,8 @@ int* game_state;
 
 void Levelone_Init(void)
 {
+	CP_System_SetFrameRate(60.0f);		//	limit to 60fps
+
 	CP_TEXT_ALIGN_HORIZONTAL h_text = CP_TEXT_ALIGN_H_CENTER;
 	CP_TEXT_ALIGN_VERTICAL v_text = CP_TEXT_ALIGN_V_MIDDLE;
 	elapsed_time = 0;
