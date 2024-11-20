@@ -23,11 +23,13 @@
 #include "structs.h"
 MELEE_Enemy enemy1;
 RANGE_Enemy enemy2;
+RANGE_Enemy enemy3;
 //struct Platform platform1;
 //struct Player player1;
 Player player1;
 Platform platform1;
 Bullet bullet1;
+Bullet bullet2;
 CP_Font my_awesome_font;
 float elapsedTime;
 //enemy state
@@ -60,7 +62,15 @@ void Enemy_Init(void)
 	enemy2.height = 40;
 	enemy2.shoot_posX = enemy2.x;
 	enemy2.shoot_posY = enemy2.y+(enemy2.height/2);
-	enemy2.dir = RIGHT;
+	enemy2.dir = LEFT;
+	// range enemy
+	enemy3.x = 800;
+	enemy3.y = 100;
+	enemy3.width = 100;
+	enemy3.height = 40;
+	enemy3.shoot_posX = enemy3.x+enemy3.width;
+	enemy3.shoot_posY = enemy3.y + (enemy3.height / 2);
+	enemy3.dir = RIGHT;
 	//player
 	player1.x = 860;
 	player1.y = 560;
@@ -73,6 +83,11 @@ void Enemy_Init(void)
 	bullet1.y = enemy2.shoot_posY;
 	bullet1.diameter = 15;
 	bullet1.live = 1;
+	//projectile
+	bullet2.x = enemy3.shoot_posX;
+	bullet2.y = enemy3.shoot_posY;
+	bullet2.diameter = 15;
+	bullet2.live = 1;
 
 	elapsedTime = 0;
 }
@@ -180,6 +195,7 @@ void Enemy_Update(void) {
 	state_change(&enemy1, &platform1,&player1,3, 8, &elapsedTime);
 	//void enemy_shoot_projectile(struct Projectile* projectile, struct RANGE_Enemy* enemy, float speed);
 	enemy_shoot_projectile(&bullet1, &enemy2, 200);
+	enemy_shoot_projectile(&bullet2, &enemy3, 200);
 	
 	if (CP_Input_KeyDown(KEY_A)) { //move left when move left x--
 		//movement
@@ -201,20 +217,18 @@ void Enemy_Update(void) {
 	//range_enemy
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
 	CP_Graphics_DrawRect(enemy2.x, enemy2.y, enemy2.width, enemy2.height);
+	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
+	CP_Graphics_DrawRect(enemy3.x, enemy3.y, enemy3.width, enemy3.height);
 	//player
 	CP_Settings_EllipseMode(CP_POSITION_CORNER);
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 	CP_Graphics_DrawRect(player1.x, player1.y, player1.width, player1.height);
-
+	//draw projectile
 	CP_Settings_EllipseMode(CP_POSITION_CENTER);
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 	CP_Graphics_DrawCircle(bullet1.x, bullet1.y, bullet1.diameter);
-	enemy_shoot_projectile(&bullet1, &enemy2, 200);
-	//collision
-	//if (enemy.hit == 1) {
-	//	enemy1.health -= 1;
-	//}
-
+	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+	CP_Graphics_DrawCircle(bullet2.x, bullet2.y, bullet2.diameter);
 		// Create an array of characters (aka a string) that can store up to 256 characters.
 	char buffer[256];
 	// Fill the buffer with the text we want.

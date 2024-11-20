@@ -27,7 +27,7 @@ Boss boss1;
 enum { NUM_BOSS_TURRETS = 4 };
 RANGE_Enemy boss_turrets[NUM_BOSS_TURRETS];
 enum { MAX_TURRET_PROJECTILE = 4 };
-Projectile turret_projectiles[MAX_TURRET_PROJECTILE];
+Bullet turret_projectiles[MAX_TURRET_PROJECTILE];
 Player player;
 CP_Font my_awesome_font;
 float elaspedTime;
@@ -72,7 +72,7 @@ void Levelboss_Init(void)
 		turret_projectiles[i].x = boss_turrets[i].shoot_posX;
 		turret_projectiles[i].y = boss_turrets[i].shoot_posY;
 		turret_projectiles[i].diameter = 15;
-		turret_projectiles[i].travelling = 0;
+		turret_projectiles[i].live = 0;
 	}// end of for-loop
 	//set healthbar color 
 	player_health.rect_color = CP_Color_Create(255, 0, 0, 255);
@@ -135,12 +135,7 @@ void Levelboss_Init(void)
 	boss_health.y = 850;
 	boss_health.width = 1400.00;
 	boss_health.height = 75.00;
-	//background of boss health
-	boss_health.x = 800.00;
-	boss_health.y = 850;
-	boss_health.width = 1400.00;
-	boss_health.height = 75.00;
-	player = (Player){ 100, 785, 30, 30, 3, 1, {0, 0} };
+	//player = (Player){ 100, 785, 30, 30, 3, 1, {0, 0} };
 	
 }
 
@@ -214,21 +209,21 @@ void Levelboss_Update(void)
 	}
 
 	if (player.on_ground == 1 && (player.y >= platform_base.y - player.width * 2) && (player.y <= platform_base.y - player.width / 2)) {
-		turret_projectiles[0].travelling = 1;
+		turret_projectiles[0].live = 1;
 	}
 	if (player.on_ground == 1 && (player.y >= platform1.y - player.width * 2) && (player.y <= platform1.y - player.width / 2)) {
-		turret_projectiles[1].travelling = 1;
+		turret_projectiles[1].live = 1;
 	}
 	if (player.on_ground == 1 && (player.y >= platform2.y - player.width * 2) && (player.y <= platform2.y - player.width / 2)) {
-		turret_projectiles[2].travelling = 1;
+		turret_projectiles[2].live = 1;
 	}
 	if (player.on_ground == 1 && (player.y >= platform3.y - player.width * 2) && (player.y <= platform3.y - player.width / 2)) {
-		turret_projectiles[3].travelling = 1;
+		turret_projectiles[3].live = 1;
 	}
 
 	//shoot projectile
 	for (int i = 0; i < MAX_TURRET_PROJECTILE; i++) {
-		if (turret_projectiles[i].travelling == 1) {
+		if (turret_projectiles[i].live == 1) {
 			enemy_shoot_projectile(&turret_projectiles[i], &boss_turrets[i], 300);
 		}
 	}
