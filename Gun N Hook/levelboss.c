@@ -175,7 +175,7 @@ void Levelboss_Init(void)
 	melee_enemy[4].y = platform[0].y - platform[0].height / 2 - melee_enemy[0].height / 2; // Place enemy just above platform
 	melee_enemy[4].state = PATROL; // Start in patrol state
 	melee_enemy[4].dir = RIGHT;
-	melee_enemy[4].speed = 130;
+	melee_enemy[4].speed = 170;
 	melee_enemy[4].health = 5;
 	//initialize player
 	player = (Player){ 100, 785, 30, 30, 5, 1, {0, 0} };
@@ -192,6 +192,8 @@ void Levelboss_Init(void)
 	//pea-shooter init
 	pea_shooter_init(bullets, &player.x, &player.y);
 
+	//win state
+	boss_dead = 0;
 	//death state
 	is_dead = 0;
 	//pause state
@@ -286,7 +288,7 @@ void Levelboss_Update(void)
 
 		for (int i = 0; i < MAX_TURRET_PROJECTILE; i++) {
 			if (turret_projectiles[i].live == 1) {
-				enemy_shoot_projectile(&turret_projectiles[i], &boss_turrets[i], 500);
+				enemy_shoot_projectile(&turret_projectiles[i], &boss_turrets[i], 1000);
 			}
 		}
 
@@ -354,6 +356,9 @@ void Levelboss_Update(void)
 
 	//	draw boss
 	draw_boss(&boss1);
+
+	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+	CP_Font_DrawTextBox("Boss", 1500, 400, 100);
 
 	//-----------------------------------------------------------------------------------------------------------------------------------------//
 	//	UI
