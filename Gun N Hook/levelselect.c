@@ -28,8 +28,7 @@ struct Button
 };
 
 float timer;
-int level_1 = 0, level_2 = 0, level_3 = 0, level_4 = 0;
-int 
+int level_1 = 0, level_2 = 0, level_3 = 0, level_4 = 0; 
 
 
 void Level_Select_Init(void)
@@ -39,7 +38,10 @@ void Level_Select_Init(void)
 	timer = 0;
 
 	level_1 = level_progress("Assets/Save_File/level_1.txt");
-	level_2
+	level_2 = level_progress("Assets/Save_File/level_2.txt");
+	level_3 = level_progress("Assets/Save_File/level_3.txt");
+	level_4 = level_progress("Assets/Save_File/level_4.txt");
+	
 
 }
 
@@ -48,7 +50,7 @@ void Level_Select_Update(void) {
 
 	//colors used
 	CP_Color Blue = CP_Color_Create(0, 200, 255, 255);
-	CP_Color White = CP_Color_Create(255, 255, 255, 255);
+	//CP_Color White = CP_Color_Create(255, 255, 255, 255);
 	CP_Color Black = CP_Color_Create(0, 0, 0, 255);
 	CP_Color Green = CP_Color_Create(255, 200, 255, 255);
 	CP_Color Red = CP_Color_Create(255, 200, 200, 255);
@@ -133,6 +135,18 @@ void Level_Select_Update(void) {
 			CP_Graphics_DrawRect(10, 10, 10, 10);
 		}
 		
+		if (level_2 == 1) {
+			Leveltwo = Green;
+			CP_Graphics_DrawRect(10, 10, 10, 10);
+		}
+		if (level_3 == 1) {
+			Levelthree = Green;
+			CP_Graphics_DrawRect(10, 10, 10, 10);
+		}
+		if (level_4 == 1) {
+			Levelfour = Green;
+			CP_Graphics_DrawRect(10, 10, 10, 10);
+		}
 	//}
 	
 	

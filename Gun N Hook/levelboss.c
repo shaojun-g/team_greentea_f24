@@ -380,6 +380,7 @@ void Levelboss_Update(void)
 			restart_menu(game_state, Levelboss_Init, Levelboss_Update, Levelboss_Exit);
 		}
 		else if (boss_dead) {
+			level_clear("Assets/Save_File/level_4.txt");
 			win_menu(game_state, Levelboss_Init, Levelboss_Update, Levelboss_Exit);
 		}
 		else {

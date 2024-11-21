@@ -369,7 +369,7 @@ void Levelthree_Update(void)
 			melee_enemy3.x = -1000; // A position far off the screen
 			melee_enemy3.y = -1000; // A position far off the screen
 		}
-		if (melee_enemy4.health <= 0) {
+		if (melee_enemy4.health <= 0) {w
 			melee_enemy4.x = -1000; // A position far off the screen
 			melee_enemy4.y = -1000; // A position far off the screen
 		}
@@ -387,6 +387,7 @@ void Levelthree_Update(void)
 			CP_Font_DrawTextBox("Press N to head to next level!", 1500, 50, 100);
 			if (CP_Input_KeyTriggered(KEY_N))
 			{
+				level_clear("Assets/Save_File/level_3.txt");
 				CP_Engine_SetNextGameState(Levelboss_Init, Levelboss_Update, Levelboss_Exit); // next level using N
 			}
 		}

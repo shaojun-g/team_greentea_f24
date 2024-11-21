@@ -278,6 +278,7 @@ void Leveltwo_Update(void)
 			CP_Font_DrawTextBox("Press N to head to next level!", 1500, 50, 100);
 			if (CP_Input_KeyTriggered(KEY_N))
 			{
+				level_clear("Assets/Save_File/level_2.txt");
 				CP_Engine_SetNextGameState(Levelthree_Init, Levelthree_Update, Levelthree_Exit); // next level using N
 			}
 		}

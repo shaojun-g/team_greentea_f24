@@ -11,9 +11,8 @@
 
 bool file_check(const char *level) {
 	FILE *check = fopen( level, "r");
-	char letter;
-	CP_Color Black = CP_Color_Create(0, 0, 0, 255);
-	CP_Color Red = CP_Color_Create(255, 200, 200, 255);
+	//CP_Color Black = CP_Color_Create(0, 0, 0, 255);
+	//CP_Color Red = CP_Color_Create(255, 200, 200, 255);
 
 	if (!check) {
 		/*CP_Settings_Fill(Red);
@@ -21,7 +20,6 @@ bool file_check(const char *level) {
 		CP_Graphics_DrawRect(CP_System_GetWindowHeight() / 1.13f, CP_System_GetWindowHeight() / 1.98f, CP_System_GetWindowWidth() / 2.8f, CP_System_GetWindowHeight() / 8.0f );
 		CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255));*/
 		perror("file does not exist/cannot be accessed");
-		fclose(check);
 /*		textwrite("Save File could not be read", CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f, Black)*/;
 		return false;
 	}
@@ -35,7 +33,7 @@ bool file_check(const char *level) {
 		fclose(check);
 		return true;
 	}
-	
+	return false;
 }
 
 int level_progress(const char *level) {
@@ -47,9 +45,9 @@ int level_progress(const char *level) {
 		return 0;
 	}
 
-	char num;
-	num = fgetc(check);
-	if (num == '1') {
+	int num;
+	fscanf_s(check, "%d", &num);
+	if (num == 1) {
 		return 1;
 	}
 	/*while ((num = (char)fgetc(open)) != EOF) {
@@ -63,15 +61,21 @@ int level_progress(const char *level) {
 
 
 
-bool level_clear(char const *goal) {
-	FILE *open = fopen(goal, "r");
+void level_clear(char const *goal) {
+	FILE *open = fopen(goal, "w");
 	
 	if (!open) {
 		perror("file does not exist/cannot be accessed");
-		return false;
+		exit(EXIT_FAILURE);
 	}
 
-	
+	fprintf(open, "%d", 1);
+	fclose(open);
+
+}
+
+void level_reset(char const* check) {
 
 
 }
+

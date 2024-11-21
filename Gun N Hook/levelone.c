@@ -9,6 +9,7 @@
 #include "collisionlib.h"
 #include "movement.h"
 #include "enemy.h"
+#include "save.h"
 
 #define PLATFORM_SIZE 4
 
@@ -26,6 +27,7 @@ float dt;
 float elapsed_time; 
 int is_paused;
 int* game_state;
+char const* str[100];
 
 void Levelone_Init(void)
 {
@@ -48,7 +50,7 @@ void Levelone_Init(void)
 	//set all platform color as the same(dark red)
 	
 	//platform_base is the ground 
-	platform[0] = (Platform){ CP_System_GetWindowWidth() / 2.0 , 800.00, CP_System_GetWindowWidth(), 15.00,CP_Color_Create(255, 128, 128, 255) };
+	platform[0] = (Platform){ CP_System_GetWindowWidth() / 2.0f , 800.00, CP_System_GetWindowWidth(), 15.00f,CP_Color_Create(255, 128, 128, 255) };
 	//platform1 is first platform
 	//all platforms increment at y coordinates by 150.00f
 	//all platforms increment at x coordinates by minimum 200.00f
@@ -81,6 +83,8 @@ void Levelone_Init(void)
 	//init pause state
 	is_paused = 0;
 	game_state = &is_paused;
+
+	*str = "Assets/Save_File/level_1.txt";
 }
 
 
@@ -138,6 +142,7 @@ void Levelone_Update(void)
 			CP_Font_DrawTextBox("Press N to head to next level!", 1500, 200, 100);
 			if (CP_Input_KeyTriggered(KEY_N))
 			{
+				level_clear("Assets/Save_File/level_1.txt");
 				CP_Engine_SetNextGameState(Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit); // next level using N
 			}
 		}
@@ -171,5 +176,6 @@ void Levelone_Exit(void)
 	for (int i = 0; i < MAX_HEALTH; ++i) {
 		CP_Image_Free(&player_healthbar[i].heart);
 	}
+	
 
 }
