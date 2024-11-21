@@ -26,13 +26,13 @@ void Main_Menu_Init(void)
 void Main_Menu_Update(void)
 {
     
-    double xRect = CP_System_GetWindowWidth() / 3.8f;
-    double xRect1 = CP_System_GetWindowWidth() / 2.0f;
-    double xRect2 =  CP_System_GetWindowWidth() / 1.35f;
-    double yRect = CP_System_GetWindowHeight() / 1.2f;
-    double yRect1 = CP_System_GetWindowHeight() / 3.f;
-    double rectW = CP_System_GetWindowWidth() / 6.4f;
-    double rectH = CP_System_GetWindowHeight() / 6.4f;
+    float xRect = CP_System_GetWindowWidth() / 3.8f;
+    float xRect1 = CP_System_GetWindowWidth() / 2.0f;
+    float xRect2 =  CP_System_GetWindowWidth() / 1.35f;
+    float yRect = CP_System_GetWindowHeight() / 1.2f;
+    float yRect1 = CP_System_GetWindowHeight() / 3.f;
+    float rectW = CP_System_GetWindowWidth() / 6.4f;
+    float rectH = CP_System_GetWindowHeight() / 6.4f;
 
     //colors used
     CP_Color Blue = CP_Color_Create(0, 200, 255, 255);

@@ -43,7 +43,6 @@ int level_progress(const char *level) {
 	if (!check) {
 		// Handle error if file cannot be opened
 		fprintf(stderr, "file could not be opened");
-		fclose(check);
 		exit(EXIT_FAILURE);
 		return 0;
 	}

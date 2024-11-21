@@ -6,7 +6,7 @@
 
 //hi :3
 CP_Font MenuFont;
-double textSize;
+float textSize;
 int state;
 
 
@@ -21,18 +21,18 @@ void Credit_Update(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255));
 
 	//ellipse Settings
-	double xelli = 100.f;
-	double xelli2 = 1500.f;
-	double yelli = 800.f;
+	float xelli = 100.f;
+	float xelli2 = 1500.f;
+	float yelli = 800.f;
 
 	// Color Pool
 	CP_Color Black = CP_Color_Create(0, 0, 0, 255);
 	CP_Color White = CP_Color_Create(255, 255, 255, 255);
 
 	//center for Credit
-	double xRect1 = CP_System_GetWindowWidth() / 3.f;
-	double xRect2 = CP_System_GetWindowWidth() / 3.4f;
-	double yRect1 = CP_System_GetWindowHeight() / 4.0f;
+	float xRect1 = CP_System_GetWindowWidth() / 3.f;
+	float xRect2 = CP_System_GetWindowWidth() / 3.4f;
+	float yRect1 = CP_System_GetWindowHeight() / 4.0f;
 
 	//textwrite("Game Made By:\n Amzar\n Shao Jun \n Ben \n Kwan \n Stanley ",xRect1 , yRect1,);
 	CP_Settings_Fill(White);
@@ -85,7 +85,7 @@ void Credit_Update(void) {
 		state = 2;
 	}
 
-	if (CP_Input_KeyTriggered(KEY_Q))
+	if (CP_Input_KeyTriggered(KEY_Q) || CP_Input_KeyTriggered(KEY_ESCAPE))
 	{
 		CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
 	}

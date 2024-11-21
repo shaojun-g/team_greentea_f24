@@ -28,8 +28,8 @@ struct Button
 };
 
 float timer;
-bool level_2, level_3, level_4, level_5;
-int level_1 = 0;
+int level_1 = 0, level_2 = 0, level_3 = 0, level_4 = 0;
+int 
 
 
 void Level_Select_Init(void)
@@ -39,6 +39,7 @@ void Level_Select_Init(void)
 	timer = 0;
 
 	level_1 = level_progress("Assets/Save_File/level_1.txt");
+	level_2
 
 }
 
@@ -111,19 +112,19 @@ void Level_Select_Update(void) {
 
 
 	//rectangle x coordinates
-	double xRect3 = CP_System_GetWindowWidth() / 1.2f;
-	double xRect2 = CP_System_GetWindowWidth() / 2.0f;
-	double xRect1 = CP_System_GetWindowWidth() / 5.8f;
-	double xRect4 = CP_System_GetWindowWidth() / 2.0f;
-	double xRect5 = CP_System_GetWindowWidth() / 1.5f;
+	float xRect3 = CP_System_GetWindowWidth() / 1.2f;
+	float xRect2 = CP_System_GetWindowWidth() / 2.0f;
+	float xRect1 = CP_System_GetWindowWidth() / 5.8f;
+	float xRect4 = CP_System_GetWindowWidth() / 2.0f;
+	float xRect5 = CP_System_GetWindowWidth() / 1.5f;
 
 	//rectangle y coordinates
-	double yRect1 = CP_System_GetWindowHeight() / 4.0f;
-	double yRect2 = CP_System_GetWindowHeight() / 1.4f;
+	float yRect1 = CP_System_GetWindowHeight() / 4.0f;
+	float yRect2 = CP_System_GetWindowHeight() / 1.4f;
 
 	//rectangle width and height
-	double rectW = CP_System_GetWindowWidth() / 4.4f;
-	double rectH = CP_System_GetWindowHeight() / 4.4f;
+	float rectW = CP_System_GetWindowWidth() / 4.4f;
+	float rectH = CP_System_GetWindowHeight() / 4.4f;
 
 
 	//if ((IsAreaClicked(xRect1, yRect1, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY()))) {
@@ -196,10 +197,15 @@ void Level_Select_Update(void) {
 
 
 		//return to main menu
-	if (CP_Input_KeyTriggered(KEY_Q))
+	if (CP_Input_KeyTriggered(KEY_ESCAPE))
 		{
 			CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
 		}
+
+	if (CP_Input_KeyTriggered(KEY_Q))
+	{
+		CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
+	}
 		//end program
 	if (CP_Input_KeyTriggered(KEY_R))
 		{

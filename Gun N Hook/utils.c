@@ -265,36 +265,36 @@ void textwrite(const char* text, float x_position, float y_position, CP_Color co
 //}
 
 void pause_state(int *game_state) {
-	if (game_state == 0) {
-		*game_state = !*game_state;
+	if (*game_state == 0) {
+		*game_state = (int)1;
 	} else
 	{
-		*game_state = !*game_state;
+		*game_state = (int)0;
 	}
 }
 
 void pause_menu(int *game_state,FunctionPtr currentlevel_init, FunctionPtr currentlevel_update, FunctionPtr currentlevel_exit) {
 
 	//width and height of the window
-	int width = CP_System_GetWindowWidth();
-	int height = CP_System_GetWindowHeight();
+	float width = CP_System_GetWindowWidth()/ 1.0f;
+	float height = CP_System_GetWindowHeight()/ 1.0f;
 
-	double xRect = CP_System_GetWindowWidth() / 2.0f;
-	double yRect1 = CP_System_GetWindowHeight() / 4.6f;
-	double yRect2 = CP_System_GetWindowHeight() / 1.9f;
-	double yRect3 = CP_System_GetWindowHeight() / 1.2f;
-	double rectW = CP_System_GetWindowWidth() / 4.4f;
-	double rectH = CP_System_GetWindowHeight() / 4.4f;
+	float xRect = CP_System_GetWindowWidth() / 2.0f;
+	float yRect1 = CP_System_GetWindowHeight() / 4.6f;
+	float yRect2 = CP_System_GetWindowHeight() / 1.9f;
+	float yRect3 = CP_System_GetWindowHeight() / 1.2f;
+	float rectW = CP_System_GetWindowWidth() / 4.4f;
+	float rectH = CP_System_GetWindowHeight() / 4.4f;
 
 	CP_Color Blue = CP_Color_Create(0, 200, 255, 255);
-	CP_Color White = CP_Color_Create(255, 255, 255, 255);
+	//CP_Color White = CP_Color_Create(255, 255, 255, 255);
 	CP_Color Black = CP_Color_Create(0, 0, 0, 255);
 	//font size
 	CP_Settings_TextSize(50.f);
 
 	if (game_state) {
 		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 100));
-		CP_Graphics_DrawRect(width / 2.0, height / 2.0, width, height);
+		CP_Graphics_DrawRect(width / 2.0f, height / 2.0f, width, height);
 
 		//continue button
 		buttoncreate(xRect, yRect1, rectW, rectH, Blue);
@@ -331,7 +331,6 @@ void pause_menu(int *game_state,FunctionPtr currentlevel_init, FunctionPtr curre
 
 		CP_Settings_TextSize(25.00f);
 	}
-
 }
 
 void restart_menu(int* game_state, FunctionPtr currentlevel_init, FunctionPtr currentlevel_update, FunctionPtr currentlevel_exit) {
@@ -340,21 +339,21 @@ void restart_menu(int* game_state, FunctionPtr currentlevel_init, FunctionPtr cu
 	int width = CP_System_GetWindowWidth();
 	int height = CP_System_GetWindowHeight();
 
-	double xRect = CP_System_GetWindowWidth() / 2.0f;
-	//double yRect1 = CP_System_GetWindowHeight() / 4.6f;
-	double yRect2 = CP_System_GetWindowHeight() / 1.9f;
-	double yRect3 = CP_System_GetWindowHeight() / 1.2f;
-	double rectW = CP_System_GetWindowWidth() / 4.4f;
-	double rectH = CP_System_GetWindowHeight() / 4.4f;
+	float xRect = CP_System_GetWindowWidth() / 2.0f;
+	//float yRect1 = CP_System_GetWindowHeight() / 4.6f;
+	float yRect2 = CP_System_GetWindowHeight() / 1.9f;
+	float yRect3 = CP_System_GetWindowHeight() / 1.2f;
+	float rectW = CP_System_GetWindowWidth() / 4.4f;
+	float rectH = CP_System_GetWindowHeight() / 4.4f;
 
 	CP_Color Blue = CP_Color_Create(0, 200, 255, 255);
-	CP_Color White = CP_Color_Create(255, 255, 255, 255);
+	//CP_Color White = CP_Color_Create(255, 255, 255, 255);
 	CP_Color Black = CP_Color_Create(0, 0, 0, 255);
 
 	if (game_state) {
 		//gameover text
 		CP_Settings_TextSize(50.00f); // set text size to 50.0f
-		textwrite("Game Over", CP_System_GetWindowWidth()/2, 300, Black);
+		textwrite("Game Over", CP_System_GetWindowWidth()/2.0f, 300, Black);
 		CP_Settings_TextSize(25.00f); // set text size to 25.0f
 		// restart button
 		buttoncreate(xRect, yRect2, rectW, rectH, Blue);
@@ -388,21 +387,21 @@ void win_menu(int* game_state, FunctionPtr currentlevel_init, FunctionPtr curren
 	int width = CP_System_GetWindowWidth();
 	int height = CP_System_GetWindowHeight();
 
-	double xRect = CP_System_GetWindowWidth() / 2.0f;
-	//double yRect1 = CP_System_GetWindowHeight() / 4.6f;
-	double yRect2 = CP_System_GetWindowHeight() / 1.9f;
-	double yRect3 = CP_System_GetWindowHeight() / 1.6f;
-	double rectW = CP_System_GetWindowWidth() / 4.4f;
-	double rectH = CP_System_GetWindowHeight() / 4.4f;
+	float xRect = CP_System_GetWindowWidth() / 2.0f;
+	//float yRect1 = CP_System_GetWindowHeight() / 4.6f;
+	float yRect2 = CP_System_GetWindowHeight() / 1.9f;
+	float yRect3 = CP_System_GetWindowHeight() / 1.6f;
+	float rectW = CP_System_GetWindowWidth() / 4.4f;
+	float rectH = CP_System_GetWindowHeight() / 4.4f;
 
 	CP_Color Blue = CP_Color_Create(0, 200, 255, 255);
-	CP_Color White = CP_Color_Create(255, 255, 255, 255);
+	//CP_Color White = CP_Color_Create(255, 255, 255, 255);
 	CP_Color Black = CP_Color_Create(0, 0, 0, 255);
 
 	if (game_state) {
 		//gameover text
 		CP_Settings_TextSize(50.00f); // set text size to 50.0f
-		textwrite("You win!", CP_System_GetWindowWidth() / 2, 400, Black);
+		textwrite("You win!", CP_System_GetWindowWidth() / 2.0f, 400, Black);
 		CP_Settings_TextSize(25.00f); // set text size to 25.0f
 
 

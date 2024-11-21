@@ -1,5 +1,4 @@
 #include "cprocessing.h" // Must have
-#include "InitialSplash.h"
 #include "mainmenu.h"
 
 float LogoOpacity;
