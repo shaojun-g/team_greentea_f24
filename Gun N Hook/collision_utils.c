@@ -1,13 +1,33 @@
 #include <math.h>
 #include "cprocessing.h"
 
-// rect-plane		probably don't need
-int c_rect_line(float rect_x, float rect_y, float rect_width, float rect_height, float plane_x1, float plane_y1, float plane_x2, float plane_y2) {
-	if (((plane_x1 <= (rect_x + rect_width / 2) && plane_x1 >= (rect_x - rect_width / 2)) && (plane_y1 <= (rect_y + rect_height / 2) && plane_y1 >= (rect_y - rect_height / 2))) ||
-		((plane_x2 <= (rect_x + rect_width / 2) && plane_x2 >= (rect_x - rect_width / 2)) && (plane_y2 <= (rect_y + rect_height / 2) && plane_y2 >= (rect_y - rect_height / 2))))
-		return 1;
-	else
-		return 0;
+// rect-line	-	DIVIDES LINE IN 5 POINTS: THEN RECT-POINT FOR EACH.
+int c_rect_line(float rect_x, float rect_y, float rect_width, float rect_height, float line_x1, float line_y1, float line_x2, float line_y2) {
+	//	define rect edges
+	float rectleft	= rect_x - rect_width	/ 2;
+	float rectright	= rect_x + rect_width	/ 2;
+	float recttop	= rect_y - rect_height	/ 2;
+	float rectbot	= rect_y + rect_height	/ 2;
+
+	//	divide into many points: X
+	float linexQUART	= (line_x1 + line_x2) / 2;
+	float linexHALF		= (line_x1 + linexQUART) / 2;
+	float linex3QUART	=	(line_x2 + linexQUART) / 2;
+	//	divide into many points: Y
+	float lineyQUART = (line_y1 + line_y2) / 2;
+	float lineyHALF = (line_y1 + lineyQUART) / 2;
+	float liney3QUART = (line_y2 + lineyQUART) / 2;
+	//	arrays for loop.
+	float lineArrX[5] = { line_x1, linexQUART, linexHALF, linex3QUART, line_x2 };
+	float lineArrY[5] = { line_y1, lineyQUART, lineyHALF, liney3QUART, line_y2 };
+
+	for (int i = 0; i < 5; ++i) {
+		if ((lineArrX[i] >= rectleft) && (lineArrX[i] <= rectright) &&
+			(lineArrY[i] >= recttop) && (lineArrY[i] <= rectbot))
+			return 1;
+	}
+
+	return 0;
 }
 
 // rect-rect		player collide boss || player collide e_projectile || boss p_projectile		WORKS!!

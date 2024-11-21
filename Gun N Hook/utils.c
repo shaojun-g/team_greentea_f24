@@ -10,7 +10,8 @@
 #include "mainmenu.h"
 #include "structs.h"
 
-int current_level = 0;
+#define BOSS_MAX_HEALTH 50
+#define BOSS_HEALTHBAR_MAX_WIDTH 1400.00f
 
 
 int IsAreaClicked(float area_center_x, float area_center_y, float area_width, float area_height, float click_x, float click_y)
@@ -117,27 +118,55 @@ void draw_boss(Boss* boss) {
 	}
 }
 
-void Restart_Level() {
-	switch (current_level) {
-	case 1:
-		CP_Engine_SetNextGameState(Levelone_Init, Levelone_Update, Levelone_Exit);
-		break;
-	case 2:
-		CP_Engine_SetNextGameState(Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit);
-		break;
-	case 3:
-		CP_Engine_SetNextGameState(Levelthree_Init, Levelthree_Update, Levelthree_Exit);
-		break;
-		// Add more cases if you have additional levels
-	default:
-		CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
-		break;
-	}
-}
-
-void goal_function() {
-
-}
+//void ApplyElasticCollision(Player* player, MELEE_Enemy hazard, float restitution) {
+//	// Calculate the edges of the centered hazard rectangle
+//	float hazard_left = hazard.x - hazard.width / 2;
+//	float hazard_right = hazard.x + hazard.width / 2;
+//	float hazard_top = hazard.y - hazard.height / 2;
+//	float hazard_bottom = hazard.y + hazard.height / 2;
+//
+//	// Calculate the edges of the player rectangle 
+//	float player_left = player->x - player->width / 2;
+//	float player_right = player->x + player->width / 2;
+//	float player_top = player->y - player->height / 2;
+//	float player_bottom = player->y + player->height / 2;
+//
+//	float bounce_back_distance = 1.50; //change this to determine distaance of bounceback
+//	float knockback_x = 0;
+//
+//	if (c_rect_rect(player->x, player->y, player->width, player->height, hazard.x, hazard.y, hazard.width, hazard.height)) {
+//		// Check which side the collision occurred and adjust player position and velocity
+//		if (player_right > hazard_left && player_left < hazard_right) {
+//			// Check if the player is moving right and collides with the left side of the hazard
+//			if (player->velocity.x >= 0 && player_right > hazard_left && player_left < hazard_left) {
+//				// Collision on the left side of the hazard
+//				player->x = hazard_left - player->width * bounce_back_distance;  // Adjust position to prevent overlap
+//				player->velocity.x = -knockback_x;  // Reverse the horizontal velocity (bounce)
+//			}
+//			// Check if the player is moving left and collides with the right side of the hazard
+//			else if (player->velocity.x <= 0 && hazard_right - player_left < player->width) {
+//				// Collision on the right side of the hazard
+//				player->x = hazard_right + player->width * bounce_back_distance;
+//				player->velocity.x = knockback_x;
+//			}
+//		}
+//
+//		if (player_bottom > hazard_top && player_top < hazard_bottom) {
+//			if (player->velocity.y > 0 && player_bottom - hazard_top < player->height) {
+//				// Collision on the top
+//				player->y = hazard_top - player->height * bounce_back_distance;
+//				player->velocity.y *= -restitution; // Bounce back vertically
+//			}
+//			else if (player->velocity.y < 0 && hazard_bottom - player_top < player->height) {
+//				// Collision on the bottom
+//				player->y = hazard_bottom;
+//				player->velocity.y *= -restitution;
+//			}
+//		}
+//		player->HP -= 1;
+//		//printf("player hp : %i", player->HP);
+//	}
+//}
 
 void ApplyElasticCollision(Player* player, MELEE_Enemy hazard, float restitution) {
 	// Calculate the edges of the centered hazard rectangle
@@ -152,7 +181,7 @@ void ApplyElasticCollision(Player* player, MELEE_Enemy hazard, float restitution
 	float player_top = player->y - player->height / 2;
 	float player_bottom = player->y + player->height / 2;
 
-	float bounce_back_distance = 3.00; //change this to determine distaance of bounceback
+	float bounce_back_distance = 2.0; //change this to determine distaance of bounceback
 
 	// Check which side the collision occurred and adjust player position and velocity
 	if (player_right > hazard_left && player_left < hazard_right) {
@@ -177,7 +206,7 @@ void ApplyElasticCollision(Player* player, MELEE_Enemy hazard, float restitution
 			// Collision on the top
 			player->y = hazard_top - player->height * bounce_back_distance;
 			player->velocity.y *= -restitution; // Bounce back vertically
-			player->on_ground = 1;  // Optional, mark as grounded after landing
+			player->on_ground = 1;  //mark as grounded after landing
 		}
 		else if (player->velocity.y < 0 && hazard_bottom - player_top < player->height) { 
 			// Collision on the bottom
@@ -304,6 +333,93 @@ void pause_menu(int *game_state,FunctionPtr currentlevel_init, FunctionPtr curre
 	}
 
 }
+
+void restart_menu(int* game_state, FunctionPtr currentlevel_init, FunctionPtr currentlevel_update, FunctionPtr currentlevel_exit) {
+
+	//width and height of the window
+	int width = CP_System_GetWindowWidth();
+	int height = CP_System_GetWindowHeight();
+
+	double xRect = CP_System_GetWindowWidth() / 2.0f;
+	//double yRect1 = CP_System_GetWindowHeight() / 4.6f;
+	double yRect2 = CP_System_GetWindowHeight() / 1.9f;
+	double yRect3 = CP_System_GetWindowHeight() / 1.2f;
+	double rectW = CP_System_GetWindowWidth() / 4.4f;
+	double rectH = CP_System_GetWindowHeight() / 4.4f;
+
+	CP_Color Blue = CP_Color_Create(0, 200, 255, 255);
+	CP_Color White = CP_Color_Create(255, 255, 255, 255);
+	CP_Color Black = CP_Color_Create(0, 0, 0, 255);
+
+	if (game_state) {
+		//gameover text
+		CP_Settings_TextSize(50.00f); // set text size to 50.0f
+		textwrite("Game Over", CP_System_GetWindowWidth()/2, 300, Black);
+		CP_Settings_TextSize(25.00f); // set text size to 25.0f
+		// restart button
+		buttoncreate(xRect, yRect2, rectW, rectH, Blue);
+		textwrite("Restart", xRect, yRect2, Black);
+
+		if (CP_Input_MouseClicked()) {
+			if (IsAreaClicked(xRect, yRect2, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+				CP_Engine_SetNextGameStateForced(currentlevel_init, currentlevel_update, currentlevel_exit);
+			};
+		};
+
+
+		// exit button
+		buttoncreate(xRect, yRect3, rectW, rectH, Blue);
+		textwrite("Exit to main menu", xRect, yRect3, Black);
+
+		if (CP_Input_MouseClicked()) {
+			if (IsAreaClicked(xRect, yRect3, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+				CP_Engine_SetNextGameStateForced(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
+			};
+		};
+
+
+	}
+
+}
+
+void win_menu(int* game_state, FunctionPtr currentlevel_init, FunctionPtr currentlevel_update, FunctionPtr currentlevel_exit) {
+
+	//width and height of the window
+	int width = CP_System_GetWindowWidth();
+	int height = CP_System_GetWindowHeight();
+
+	double xRect = CP_System_GetWindowWidth() / 2.0f;
+	//double yRect1 = CP_System_GetWindowHeight() / 4.6f;
+	double yRect2 = CP_System_GetWindowHeight() / 1.9f;
+	double yRect3 = CP_System_GetWindowHeight() / 1.6f;
+	double rectW = CP_System_GetWindowWidth() / 4.4f;
+	double rectH = CP_System_GetWindowHeight() / 4.4f;
+
+	CP_Color Blue = CP_Color_Create(0, 200, 255, 255);
+	CP_Color White = CP_Color_Create(255, 255, 255, 255);
+	CP_Color Black = CP_Color_Create(0, 0, 0, 255);
+
+	if (game_state) {
+		//gameover text
+		CP_Settings_TextSize(50.00f); // set text size to 50.0f
+		textwrite("You win!", CP_System_GetWindowWidth() / 2, 400, Black);
+		CP_Settings_TextSize(25.00f); // set text size to 25.0f
+
+
+		// exit button
+		buttoncreate(xRect, yRect3, rectW, rectH, Blue);
+		textwrite("Exit to main menu", xRect, yRect3, Black);
+
+		if (CP_Input_MouseClicked()) {
+			if (IsAreaClicked(xRect, yRect3, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+				CP_Engine_SetNextGameStateForced(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
+			};
+		};
+
+
+	}
+
+}
 int check_collision_rect(float proj_x, float proj_y, float proj_diameter,
 	float player_x, float player_y, float player_width, float player_height) {
 	return (proj_x + proj_diameter / 2 >= player_x &&
@@ -318,4 +434,31 @@ void update_projectile(Projectile* projectile, float player_x, float player_y, f
 			(*player_hp)--;
 			printf("collison");
 		}
+}
+
+//boss health bar update function
+void update_boss_healthbar(Healthbar* health_bar, int current_health) {
+	// Ensure health doesn't go below 0
+	if (current_health < 0) current_health = 0;
+
+	// Calculate health percentage (0.0 to 1.0)
+	float health_percentage = (float)current_health / (float)BOSS_MAX_HEALTH;
+
+	// Update health bar width
+	health_bar->width = BOSS_HEALTHBAR_MAX_WIDTH * health_percentage;
+
+	// For debugging - print values to see what's happening
+	printf("Current Health: %d, Health Percentage: %.2f, Bar Width: %.2f\n",
+		current_health, health_percentage, health_bar->width);
+}
+
+void draw_hearts(heart heart[], int current_hp) {
+	float spacing = 50.f;
+	for (int i = 0; i < MAX_HEALTH; ++i) {
+		float gap = spacing * i;
+		// Only draw hearts up to current HP
+		if (i < current_hp) {
+			CP_Image_Draw(heart[i].heart, heart[i].x + gap, heart[i].y, heart[i].width, heart[i].height, 255);
+		}
+	}
 }
