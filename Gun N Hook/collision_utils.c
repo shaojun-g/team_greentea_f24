@@ -2,7 +2,7 @@
 #include "cprocessing.h"
 
 // rect-line	-	DIVIDES LINE IN 5 POINTS: THEN RECT-POINT FOR EACH.
-int c_rect_line(float rect_x, float rect_y, float rect_width, float rect_height, float line_x1, float line_y1, float line_x2, float line_y2) {
+int c_rect_line(float rect_x, float rect_y, float rect_width, float rect_height, float line_x1, float line_y1, float *line_x2, float *line_y2) {
 	//	define rect edges
 	float rectleft	= rect_x - rect_width	/ 2;
 	float rectright	= rect_x + rect_width	/ 2;
@@ -10,21 +10,24 @@ int c_rect_line(float rect_x, float rect_y, float rect_width, float rect_height,
 	float rectbot	= rect_y + rect_height	/ 2;
 
 	//	divide into many points: X
-	float linexQUART	= (line_x1 + line_x2) / 2;
+	float linexQUART	= (line_x1 + *line_x2) / 2;
 	float linexHALF		= (line_x1 + linexQUART) / 2;
-	float linex3QUART	=	(line_x2 + linexQUART) / 2;
+	float linex3QUART	=	(*line_x2 + linexQUART) / 2;
 	//	divide into many points: Y
-	float lineyQUART = (line_y1 + line_y2) / 2;
+	float lineyQUART = (line_y1 + *line_y2) / 2;
 	float lineyHALF = (line_y1 + lineyQUART) / 2;
-	float liney3QUART = (line_y2 + lineyQUART) / 2;
+	float liney3QUART = (*line_y2 + lineyQUART) / 2;
 	//	arrays for loop.
-	float lineArrX[5] = { line_x1, linexQUART, linexHALF, linex3QUART, line_x2 };
-	float lineArrY[5] = { line_y1, lineyQUART, lineyHALF, liney3QUART, line_y2 };
+	float lineArrX[5] = { line_x1, linexQUART, linexHALF, linex3QUART, *line_x2 };
+	float lineArrY[5] = { line_y1, lineyQUART, lineyHALF, liney3QUART, *line_y2 };
 
 	for (int i = 0; i < 5; ++i) {
 		if ((lineArrX[i] >= rectleft) && (lineArrX[i] <= rectright) &&
-			(lineArrY[i] >= recttop) && (lineArrY[i] <= rectbot))
+			(lineArrY[i] >= recttop) && (lineArrY[i] <= rectbot)) {
+
+			*line_x2 = lineArrX[i]; *line_y2 = lineArrY[i];
 			return 1;
+		}
 	}
 
 	return 0;

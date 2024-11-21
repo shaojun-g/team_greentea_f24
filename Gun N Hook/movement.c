@@ -71,7 +71,7 @@ CP_Vector grapple_target;
 float hook_x = 0.0;
 float hook_y = 9.0;
 float player_pulling = 0;
-float player_grapple_speed = 800.0;// max grapple pulling speed
+float player_grapple_speed = 1000.0;// max grapple pulling speed
 float cd_time = 0.5f; // cooldown tiimer
 float cd_remaining = 0.0f;
 
@@ -108,7 +108,7 @@ void drawGrapple(Player *player, float* grapple_x, float* grapple_y, Platform* p
 
 		int hit_platforms = 0;
 		for (int i = 0; i < num_of_platforms; i++) {
-			if (c_rect_line(platforms[i].x, platforms[i].y, platforms[i].width, platforms[i].height, player->x, player->y, *grapple_x, *grapple_y)) {
+			if (c_rect_line(platforms[i].x, platforms[i].y, platforms[i].width, platforms[i].height, player->x, player->y, grapple_x, grapple_y)) {
 				//printf("grapple hit!\n");
 				hit_platforms = 1;
 
