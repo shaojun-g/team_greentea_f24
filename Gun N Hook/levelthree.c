@@ -13,6 +13,7 @@
 #include "levelthree.h"
 #include "utils.h"
 #include "collisionlib.h"
+#include "save.h"
 
 #define PLATFORM_SIZE 9
 Platform platform[PLATFORM_SIZE];
@@ -369,7 +370,7 @@ void Levelthree_Update(void)
 			melee_enemy3.x = -1000; // A position far off the screen
 			melee_enemy3.y = -1000; // A position far off the screen
 		}
-		if (melee_enemy4.health <= 0) {w
+		if (melee_enemy4.health <= 0) {
 			melee_enemy4.x = -1000; // A position far off the screen
 			melee_enemy4.y = -1000; // A position far off the screen
 		}

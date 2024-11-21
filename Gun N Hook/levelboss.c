@@ -22,6 +22,7 @@
 #include "collision_utils.h"
 #include "collisionlib.h"
 #include "levelboss.h"
+#include "save.h"
 
 #define PLATFORM_SIZE 4
 
@@ -88,7 +89,7 @@ void Levelboss_Init(void)
 	boss_health.rect_color = CP_Color_Create(255, 0, 0, 255);
 	boss_health_background.rect_color = CP_Color_Create(255, 0, 0, 100);
 	//platform_base is the ground 
-	platform[0] = (Platform){ CP_System_GetWindowWidth() / 2 , 800.00, CP_System_GetWindowWidth(), 10.00,CP_Color_Create(255, 128, 128, 255) };
+	platform[0] = (Platform){ CP_System_GetWindowWidth() / 2.0f , 800.00, CP_System_GetWindowWidth(), 10.00f,CP_Color_Create(255, 128, 128, 255) };
 	platform[0].left_limit = platform[0].x - platform[0].width / 2;
 	platform[0].right_limit = platform[0].x + platform[0].width / 2;
 	//platform1 is first platform

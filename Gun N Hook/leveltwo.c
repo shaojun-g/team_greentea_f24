@@ -10,6 +10,7 @@
 #include "enemy.h"
 #include "levelthree.h"
 #include "collisionlib.h"
+#include "save.h"
 
 
 #define PLATFORM_SIZE 5
