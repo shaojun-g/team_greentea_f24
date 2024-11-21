@@ -13,6 +13,7 @@
 #include "levelthree.h"
 #include "utils.h"
 #include "collisionlib.h"
+#include "save.h"
 
 #define PLATFORM_SIZE 9
 Platform platform[PLATFORM_SIZE];
