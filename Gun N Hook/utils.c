@@ -260,6 +260,8 @@ void pause_menu(int *game_state,FunctionPtr currentlevel_init, FunctionPtr curre
 	CP_Color Blue = CP_Color_Create(0, 200, 255, 255);
 	CP_Color White = CP_Color_Create(255, 255, 255, 255);
 	CP_Color Black = CP_Color_Create(0, 0, 0, 255);
+	//font size
+	CP_Settings_TextSize(50.f);
 
 	if (game_state) {
 		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 100));
@@ -298,7 +300,7 @@ void pause_menu(int *game_state,FunctionPtr currentlevel_init, FunctionPtr curre
 			};
 		};
 
-
+		CP_Settings_TextSize(25.00f);
 	}
 
 }

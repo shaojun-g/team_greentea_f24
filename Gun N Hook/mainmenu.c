@@ -30,6 +30,7 @@ void Main_Menu_Update(void)
     double xRect1 = CP_System_GetWindowWidth() / 2.0f;
     double xRect2 =  CP_System_GetWindowWidth() / 1.35f;
     double yRect = CP_System_GetWindowHeight() / 1.2f;
+    double yRect1 = CP_System_GetWindowHeight() / 3.f;
     double rectW = CP_System_GetWindowWidth() / 6.4f;
     double rectH = CP_System_GetWindowHeight() / 6.4f;
 
@@ -54,7 +55,14 @@ void Main_Menu_Update(void)
         };
     };
 
+    //Main Title Screen
+    CP_Settings_TextSize(200.f);
+    textwrite("Gun n Hook", xRect1 + 10.f, yRect1 + 10.f, Black);
+    CP_Settings_TextSize(200.f);
+    textwrite("Gun n Hook", xRect1, yRect1, White);
+
     // draw a rectangle for the credit button
+    CP_Settings_TextSize(50.f);
     buttoncreate(xRect1, yRect, rectW, rectH, Blue);
     textwrite("Controls/", xRect1, yRect- 25.f, Black);
     textwrite("Credit", xRect1, yRect + 25.f, Black);

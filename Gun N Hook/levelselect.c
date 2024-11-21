@@ -10,10 +10,12 @@
 #include "levelthree.h"
 #include "save.h"
 
-
+enum {LEVELNUM = 4};
 CP_Font MenuFont;
 CP_TEXT_ALIGN_HORIZONTAL horizontal = CP_TEXT_ALIGN_H_CENTER;
 CP_TEXT_ALIGN_VERTICAL vertical = CP_TEXT_ALIGN_V_MIDDLE;
+
+
 
 struct Button
 {
@@ -25,7 +27,8 @@ struct Button
 };
 
 float timer;
-bool level_1, level_2, level_3, level_4, level_5;
+bool level_2, level_3, level_4, level_5;
+int level_1 = 0;
 
 
 void Level_Select_Init(void)
@@ -34,24 +37,50 @@ void Level_Select_Init(void)
 	MenuFont = CP_Font_Load("Assets/Exo2-Regular.ttf");
 	timer = 0;
 
-
+	level_1 = level_progress("Assets/Save_File/level_1.txt");
 
 }
 
 
 void Level_Select_Update(void) {
-	
+
 	//colors used
 	CP_Color Blue = CP_Color_Create(0, 200, 255, 255);
 	CP_Color White = CP_Color_Create(255, 255, 255, 255);
 	CP_Color Black = CP_Color_Create(0, 0, 0, 255);
+	CP_Color Green = CP_Color_Create(255, 200, 255, 255);
 	CP_Color Red = CP_Color_Create(255, 200, 200, 255);
+
+	//level button color
+	CP_Color Levelone = Blue;
+	CP_Color Leveltwo = Blue;
+	CP_Color Levelthree = Blue;
+	CP_Color Levelfour = Blue;
+	
+	
+
+	//Level Clear State
+	/*char str[] = "save_file/level_1.txt";
+	char z = '1';
+	for (int i = 0; i < (LEVELNUM - 1); ++i) {
+		str[16] = (z + i);
+		if (level_progress(str) == '1') {
+			CP_Color temp = levels[i];
+			CP_Color temp2 = colors_clear[i];
+			temp = temp2;
+			i++;
+		}
+
+	}*/
+	
+	
+
 
 	timer += CP_System_GetDt();
 
 	//Save State Check
 	if (timer < 1.3f && timer > .3f) {
-		if (!progress_check("Assets/Save_File/level_1.txt") || !progress_check("Assets/Save_File/level_2.txt") || !progress_check("Assets/Save_File/level_3.txt") || !progress_check("Assets/Save_File/level_4.txt") || !progress_check("Assets/Save_File/level_5.txt")) {
+		if (!file_check("Assets/Save_File/level_1.txt") || !file_check("Assets/Save_File/level_2.txt") || !file_check("Assets/Save_File/level_3.txt") || !file_check("Assets/Save_File/level_4.txt") ) {
 			CP_Settings_Fill(Red);
 			CP_Settings_RectMode(CP_POSITION_CENTER);
 			CP_Graphics_DrawRect(CP_System_GetWindowHeight() / 1.13f, CP_System_GetWindowHeight() / 1.98f, CP_System_GetWindowWidth() / 2.8f, CP_System_GetWindowHeight() / 8.0f);
@@ -70,6 +99,9 @@ void Level_Select_Update(void) {
 		CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255));
 
 	}
+	
+
+	char str[] = "Documents/GitHub/team_greentea_f24/Assets/Save_File/level_1.txt";
 	
 	
 
@@ -93,25 +125,32 @@ void Level_Select_Update(void) {
 	double rectH = CP_System_GetWindowHeight() / 4.4f;
 
 
-
-	//Level Clear State
-	//if (progress_check("save_file/level_1.txt"));
+	//if ((IsAreaClicked(xRect1, yRect1, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY()))) {
+		if (level_1 == 1) {
+			Levelone = Green;
+			CP_Graphics_DrawRect(10, 10, 10, 10);
+		}
+		
+	//}
+	
+	
 
 
 	// draw a rectangle of level_1_select
-	buttoncreate(xRect1, yRect1, rectW, rectH, Blue);
+	buttoncreate(xRect1, yRect1, rectW, rectH, Levelone);
 	textwrite("Level 1", xRect1, yRect1, Black);
 
+
 	// draw a rectangle of level_2_select
-	buttoncreate(xRect2, yRect1, rectW, rectH, Blue);
+	buttoncreate(xRect2, yRect1, rectW, rectH, Leveltwo);
 	textwrite("Level 2", xRect2, yRect1, Black);
 
 	// draw a rectangle of level_3_select
-	buttoncreate(xRect3, yRect1, rectW, rectH, Blue);
+	buttoncreate(xRect3, yRect1, rectW, rectH, Levelthree);
 	textwrite("Level 3", xRect3, yRect1, Black);
 
 	// draw a rectangle of level_4_select
-	buttoncreate(xRect4, yRect2, rectW, rectH, Blue);
+	buttoncreate(xRect4, yRect2, rectW, rectH, Levelfour);
 	textwrite("Level 4", xRect4, yRect2, Black);
 
 	// draw a rectangle of level_5_select

@@ -3,7 +3,9 @@
 
 #pragma once
 
-bool progress_check(char const *level);
+bool file_check(char const *level);
+
+int level_progress(char const* level);
 
 void level_clear(char const* goal);
 
