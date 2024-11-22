@@ -90,7 +90,7 @@ void Levelthree_Init(void)
 	melee_enemy.y = platform[1].y - platform[1].height / 2 - melee_enemy.height / 2; // Place enemy just above platform
 	melee_enemy.state = PATROL; // Start in patrol state
 	melee_enemy.dir = RIGHT;
-	melee_enemy.speed = 100;
+	melee_enemy.speed = 125;
 	melee_enemy.health = 5;
 	// Initialize melee enemy 2
 	melee_enemy2.width = 40;
@@ -99,7 +99,7 @@ void Levelthree_Init(void)
 	melee_enemy2.y = platform[2].y - platform[2].height / 2 - melee_enemy2.height / 2; // Place enemy just above platform
 	melee_enemy2.state = PATROL; // Start in patrol state
 	melee_enemy2.dir = RIGHT;
-	melee_enemy2.speed = 100;
+	melee_enemy2.speed = 125;
 	melee_enemy2.health = 5;
 	// Initialize melee enemy 3
 	melee_enemy3.width = 40;
@@ -108,7 +108,7 @@ void Levelthree_Init(void)
 	melee_enemy3.y = platform[3].y - platform[3].height / 2 - melee_enemy3.height / 2; // Place enemy just above platform
 	melee_enemy3.state = PATROL; // Start in patrol state
 	melee_enemy3.dir = RIGHT;
-	melee_enemy3.speed = 100;
+	melee_enemy3.speed = 125;
 	melee_enemy3.health = 5;
 	// Initialize melee enemy 4
 	melee_enemy4.width = 40;
@@ -117,7 +117,7 @@ void Levelthree_Init(void)
 	melee_enemy4.y = platform[4].y - platform[4].height / 2 - melee_enemy4.height / 2; // Place enemy just above platform
 	melee_enemy4.state = PATROL; // Start in patrol state
 	melee_enemy4.dir = RIGHT;
-	melee_enemy4.speed = 100;
+	melee_enemy4.speed = 125;
 	melee_enemy4.health = 5;
 	// Initialize range enemy 1
 	range_enemies[0].width = platform[5].width;
@@ -181,21 +181,6 @@ void Levelthree_Init(void)
 		enemy_projectiles[i].live = 1;
 	}
 
-	for (int i = 0; i < MAX_RANGE_Enemy; i++) {
-		printf("enemy projectile x :%f\n", enemy_projectiles[i].x);
-		printf("enemy projectile y :%f\n", enemy_projectiles[i].y);
-		printf("enemy projectile diameter : %f\n", enemy_projectiles[i].diameter);
-		printf("enemy projectile live : %d\n\n\n", enemy_projectiles[i].live);
-	}
-	for (int i = 0; i < MAX_RANGE_Enemy; i++) {
-		printf("range_enemies  x :%f\n", range_enemies[i].x);
-		printf("range_enemies  y :%f\n", range_enemies[i].y);
-		printf("range_enemies  width :%f\n", range_enemies[i].width);
-		printf("range_enemies  height :%f\n", range_enemies[i].height);
-		printf("range_enemies  shoot_posX : %f\n", range_enemies[i].shoot_posX);
-		printf("range_enemies  shoot_posY : %f\n\n\n", range_enemies[i].shoot_posY);
-	}
-	printf("player hp : %d\n\n\n", player.HP);
 	
 	//pause variables
 	is_paused = 0;
@@ -290,9 +275,9 @@ void Levelthree_Update(void)
 		state_change(&melee_enemy4, &platform[4], &player, 3.0f, 8.0f, &elapsedtime);
 
 		// ranged enemy shoot projectile
-		enemy_shoot_projectile(&enemy_projectiles[0], &range_enemies[0], 200);
-		enemy_shoot_projectile(&enemy_projectiles[1], &range_enemies[1], 200);
-		enemy_shoot_projectile(&enemy_projectiles[2], &range_enemies[2], 200);
+		enemy_shoot_projectile(&enemy_projectiles[0], &range_enemies[0], 250);
+		enemy_shoot_projectile(&enemy_projectiles[1], &range_enemies[1], 250);
+		enemy_shoot_projectile(&enemy_projectiles[2], &range_enemies[2], 250);
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------//
 		//	KNOCKBACK COLLISION

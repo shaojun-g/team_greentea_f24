@@ -35,7 +35,8 @@ int AreC_RIntersecting(float circle_x, float circle_y, float radius, float rect_
 void draw_platform(Platform platform);
 void draw_goal(Goal goal);
 void draw_boss(Boss* boss);
-void ApplyElasticCollision(Player* player, MELEE_Enemy hazard, float restitution);
+void draw_healthbar(Healthbar healthbar);
+void ApplyElasticCollision(Player* player, MELEE_Enemy hazard, float speed);
 
 
 int check_collision_rect(float proj_x, float proj_y, float proj_diameter, float player_x, float player_y, float player_width, float player_height);

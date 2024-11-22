@@ -168,7 +168,7 @@ void draw_boss(Boss* boss) {
 //	}
 //}
 
-void ApplyElasticCollision(Player* player, MELEE_Enemy hazard, float restitution) {
+void ApplyElasticCollision(Player* player, MELEE_Enemy hazard, float speed) {
 	// Calculate the edges of the centered hazard rectangle
 	float hazard_left = hazard.x - hazard.width / 2;
 	float hazard_right = hazard.x + hazard.width / 2;
@@ -187,17 +187,15 @@ void ApplyElasticCollision(Player* player, MELEE_Enemy hazard, float restitution
 	if (player_right > hazard_left && player_left < hazard_right) {
 		 // Check if the player is moving right and collides with the left side of the hazard
 		if (player->velocity.x >= 0 && player_right > hazard_left && player_left < hazard_left) {
-			printf("1");
 			// Collision on the left side of the hazard
 			player->x = hazard_left - player->width * bounce_back_distance;  // Adjust position to prevent overlap
-			player->velocity.x *= -restitution;  // Reverse the horizontal velocity (bounce)
+			player->velocity.x *= -speed;  // Reverse the horizontal velocity (bounce)
 		}
 		// Check if the player is moving left and collides with the right side of the hazard
 		else if (player->velocity.x <= 0 && hazard_right - player_left < player->width) {
-			printf("2");
 			// Collision on the right side of the hazard
 			player->x = hazard_right + player->width * bounce_back_distance;
-			player->velocity.x *= restitution;
+			player->velocity.x *= speed;
 		}
 	}
 	
@@ -205,13 +203,13 @@ void ApplyElasticCollision(Player* player, MELEE_Enemy hazard, float restitution
 		if (player->velocity.y > 0 && player_bottom - hazard_top < player->height) { 
 			// Collision on the top
 			player->y = hazard_top - player->height * bounce_back_distance;
-			player->velocity.y *= -restitution; // Bounce back vertically
+			player->velocity.y *= -speed; // Bounce back vertically
 			player->on_ground = 1;  //mark as grounded after landing
 		}
 		else if (player->velocity.y < 0 && hazard_bottom - player_top < player->height) { 
 			// Collision on the bottom
 			player->y = hazard_bottom;
-			player->velocity.y *= -restitution;
+			player->velocity.y *= -speed;
 		}
 	}
 }

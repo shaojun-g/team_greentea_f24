@@ -274,6 +274,11 @@ void Leveltwo_Update(void)
 			CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255)); // Black color
 			CP_Font_DrawTextBox("Defeat the enemies!", 50, 675, 100);
 		}
+		//	instructions for player to shoot.
+		if (AreC_RIntersecting(player.x, player.y, 30, 575, goal_start.y, goal_start.width, goal_start.height)) {
+			CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255)); // Black color
+			CP_Font_DrawTextBox("Left Click to Shoot!", 500, 675, 100);
+		}
 		if (AreC_RIntersecting(player.x, player.y, 40, goal_end.x, goal_end.y, goal_end.width, goal_end.height)) {
 			CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 			CP_Font_DrawTextBox("Press N to head to next level!", 1500, 50, 100);

@@ -24,16 +24,16 @@
 #include "levelboss.h"
 #include "save.h"
 
-#define PLATFORM_SIZE 4
+#define PLATFORM_SIZE 6
 
 Platform platform[PLATFORM_SIZE];
 Goal goal_start;
-Healthbar player_health, player_health_background, boss_health, boss_health_background;
+Healthbar boss_health, boss_health_background;
 Player player;
 Grapple grapple;
 Boss boss1;
-enum {NUM_MAX_MELEE = 5};
-MELEE_Enemy melee_enemy[NUM_MAX_MELEE];
+enum {NUM_MAX_MELEE = 7};
+MELEE_Enemy melee_enemy[NUM_MAX_MELEE], bossarea;
 enum { NUM_BOSS_TURRETS = 4 };
 RANGE_Enemy boss_turrets[NUM_BOSS_TURRETS];
 enum { MAX_TURRET_PROJECTILE = 4 };
@@ -48,7 +48,6 @@ void Levelboss_Init(void)
 {
 	CP_System_SetFrameRate(60.0f);		//	limit to 60fps
 	CP_Settings_TextSize(25.00f); // set text size to 25.0f
-	int current_level = 4;
 	//game window size is (1600, 900)
 	boss1.num_parts = NUM_BOSS_PARTS;
 	//parts 0 is body of the boss
@@ -84,10 +83,8 @@ void Levelboss_Init(void)
 		turret_projectiles[i].live = 0;
 	}// end of for-loop
 	//set healthbar color 
-	player_health.rect_color = CP_Color_Create(255, 0, 0, 255);
-	player_health_background.rect_color = CP_Color_Create(255, 0, 0, 100);
-	boss_health.rect_color = CP_Color_Create(255, 0, 0, 255);
-	boss_health_background.rect_color = CP_Color_Create(255, 0, 0, 100);
+	boss_health.rect_color = CP_Color_Create(255, 30, 0, 255);
+	boss_health_background.rect_color = CP_Color_Create(255, 30, 0, 100);
 	//platform_base is the ground 
 	platform[0] = (Platform){ CP_System_GetWindowWidth() / 2.0f , 800.00, CP_System_GetWindowWidth(), 10.00f,CP_Color_Create(255, 128, 128, 255) };
 	platform[0].left_limit = platform[0].x - platform[0].width / 2;
@@ -96,43 +93,41 @@ void Levelboss_Init(void)
 	//all platforms increment at y coordinates by 150.00f
 	//all platforms increment at x coordinates by minimum 200.00f
 	//default platforms will have 150.00f as width and 15.00f as height
-	platform[1] = (Platform){ 400.00 ,  650.00, 250.00, 15.00,CP_Color_Create(255, 128, 128, 255) };
+	platform[1] = (Platform){ 300.00 ,  650.00, 250.00, 15.00,CP_Color_Create(255, 128, 128, 255) };
 	platform[1].left_limit = platform[1].x - platform[1].width / 2;
 	platform[1].right_limit = platform[1].x + platform[1].width / 2;
 	//platform2 is second platform
-	platform[2] = (Platform){ 600.00 ,  500.00, 250.00, 15.00,CP_Color_Create(255, 128, 128, 255) };
+	platform[2] = (Platform){ 600.00 , 500.00, 250.00, 15.00,CP_Color_Create(255, 128, 128, 255) };
 	platform[2].left_limit = platform[2].x - platform[2].width / 2;
 	platform[2].right_limit = platform[2].x + platform[2].width / 2;
 	//platform3 is third platform
-	platform[3] = (Platform){ 500.00 ,  350.00, 250.00, 15.00,CP_Color_Create(255, 128, 128, 255) };
+	platform[3] = (Platform){ 350.00 ,  350.00, 250.00, 15.00,CP_Color_Create(255, 128, 128, 255) };
 	platform[3].left_limit = platform[3].x - platform[3].width / 2;
 	platform[3].right_limit = platform[3].x + platform[3].width / 2;
+	//platform4 is forth platform
+	platform[4] = (Platform){ 900.00 ,650.00, 250.00, 15.00,CP_Color_Create(255, 128, 128, 255) };
+	platform[4].left_limit = platform[4].x - platform[4].width / 2;
+	platform[4].right_limit = platform[4].x + platform[4].width / 2;
+	//platform4 is fith platform
+	platform[5] = (Platform){ 850.00 ,350.00, 250.00, 15.00,CP_Color_Create(255, 128, 128, 255) };
+	platform[5].left_limit = platform[5].x - platform[5].width / 2;
+	platform[5].right_limit = platform[5].x + platform[5].width / 2;
 	//start goal will be where user spawns
 	goal_start.x = 100.00;
 	goal_start.y = 765.00;
 	goal_start.width = 40.00;
 	goal_start.height = 70.00;
 	goal_start.corner_radius = 10;
-	//player healthbar at top of map (will be rendered over everything else)
-	player_health.x = 200.00;
-	player_health.y = 50.00;
-	player_health.width = 300.00;
-	player_health.height = 20.00;
-	//background of player healthbar
-	player_health_background.x = 200.00;
-	player_health_background.y = 50.00;
-	player_health_background.width = 300.00;
-	player_health_background.height = 20.00;
-	//boss healthbar below base platform
+	//boss healthbar
 	boss_health.x = 800.00;
 	boss_health.y = 850;
 	boss_health.width = 1400.00;
 	boss_health.height = 75.00;
-	//background of boss health
-	boss_health.x = 800.00;
-	boss_health.y = 850;
-	boss_health.width = 1400.00;
-	boss_health.height = 75.00;
+	//boss healthbar background
+	boss_health_background.x = 800.00;
+	boss_health_background.y = 850;
+	boss_health_background.width = 1400.00;
+	boss_health_background.height = 75.00;
 	//initialize melee enemy 
 	melee_enemy[0].width = 40;
 	melee_enemy[0].height = 40;
@@ -140,7 +135,7 @@ void Levelboss_Init(void)
 	melee_enemy[0].y = platform[0].y - platform[0].height / 2 - melee_enemy[0].height / 2; // Place enemy just above platform
 	melee_enemy[0].state = PATROL; // Start in patrol state
 	melee_enemy[0].dir = RIGHT;
-	melee_enemy[0].speed = 100;
+	melee_enemy[0].speed = 125;
 	melee_enemy[0].health = 5;
 	//initialize melee enemy 2
 	melee_enemy[1].width = 40;
@@ -176,8 +171,31 @@ void Levelboss_Init(void)
 	melee_enemy[4].y = platform[0].y - platform[0].height / 2 - melee_enemy[0].height / 2; // Place enemy just above platform
 	melee_enemy[4].state = PATROL; // Start in patrol state
 	melee_enemy[4].dir = RIGHT;
-	melee_enemy[4].speed = 170;
+	melee_enemy[4].speed = 175;
 	melee_enemy[4].health = 5;
+	//initialize melee enemy 6 
+	melee_enemy[5].width = 40;
+	melee_enemy[5].height = 40;
+	melee_enemy[5].x = platform[4].x;
+	melee_enemy[5].y = platform[4].y - platform[4].height / 2 - melee_enemy[5].height / 2; // Place enemy just above platform
+	melee_enemy[5].state = PATROL; // Start in patrol state
+	melee_enemy[5].dir = RIGHT;
+	melee_enemy[5].speed = 100;
+	melee_enemy[5].health = 5;
+	//initialize melee enemy 7 
+	melee_enemy[6].width = 40;
+	melee_enemy[6].height = 40;
+	melee_enemy[6].x = platform[5].x;
+	melee_enemy[6].y = platform[5].y - platform[5].height / 2 - melee_enemy[6].height / 2; // Place enemy just above platform
+	melee_enemy[6].state = PATROL; // Start in patrol state
+	melee_enemy[6].dir = RIGHT;
+	melee_enemy[6].speed = 100;
+	melee_enemy[6].health = 5;
+	//initializ boss area to block off player from running into boss
+	bossarea.width = 450;
+	bossarea.height = 795;
+	bossarea.x = 1500;
+	bossarea.y = 400;
 	//initialize player
 	player = (Player){ 100, 785, 30, 30, 5, 1, {0, 0} };
 	grapple = (Grapple){ 0, 0, 0 };
@@ -272,6 +290,10 @@ void Levelboss_Update(void)
 		state_change(&melee_enemy[3], &platform[3], &player, 3.0f, 8.0f, &elapsedtime);
 		//	update melee enemy4 state and behaviour
 		state_change(&melee_enemy[4], &platform[0], &player, 3.0f, 8.0f, &elapsedtime);
+		//	update melee enemy5 state and behaviour
+		state_change(&melee_enemy[5], &platform[4], &player, 3.0f, 8.0f, &elapsedtime);
+		//	update melee enemy5 state and behaviour
+		state_change(&melee_enemy[6], &platform[5], &player, 3.0f, 8.0f, &elapsedtime);
 
 		//	BOSS shoot when player is on platform
 		if (player.on_ground == 1 && (player.y >= platform[0].y - player.width * 2) && (player.y <= platform[0].y - player.width / 2)) {
@@ -309,6 +331,10 @@ void Levelboss_Update(void)
 					iframe_cd = iframe_dur;
 				}
 			}
+		}
+		//collision between bossarea and player
+		if (c_rect_rect(player.x, player.y, player.width, player.height, bossarea.x, bossarea.y, bossarea.width, bossarea.height)) {
+			ApplyElasticCollision(&player, bossarea, 1.f);
 		}
 
 		if (iframe_cd > 0.0f) {
@@ -359,7 +385,7 @@ void Levelboss_Update(void)
 	draw_boss(&boss1);
 
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-	CP_Font_DrawTextBox("Boss", 1500, 400, 100);
+	CP_Font_DrawTextBox("Boss", 1400, 400, 200);
 
 	//-----------------------------------------------------------------------------------------------------------------------------------------//
 	//	UI
@@ -370,6 +396,7 @@ void Levelboss_Update(void)
 	//	BOSS HEALTHBAR
 	draw_healthbar(boss_health);
 	draw_healthbar(boss_health_background);
+
 	
 	if (CP_Input_KeyTriggered(KEY_Q))
 	{
