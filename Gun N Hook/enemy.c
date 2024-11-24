@@ -33,7 +33,6 @@ float elapsedTime;
 //enemy state
 void Enemy_Init(void)
 {	my_awesome_font = CP_Font_Load("Assets/Exo2-Regular.ttf");
-	printf("enemy.c called ");
 	//midpoint
 	//width
 	enemy1.width = 40;
@@ -219,8 +218,6 @@ void Enemy_Update(void) {
 	char buffer[256];
 	// Fill the buffer with the text we want.
 	// Notice that it uses a similar syntax as printf()!
-	sprintf_s(buffer, sizeof(buffer), "Player X: %.2f, Player Y: %.2f\nLeft limit:%.2f, Right Limit%.2f,elapsedTime%.2f", enemy1.x, enemy1.y,platform1.left_limit,platform1.right_limit, elapsedTime);
-	// Tells CProcessing to use the white color for anything we are drawing on the screen
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 	// Draw the text using the string stored in the buffer in the center of the screen.
 	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);

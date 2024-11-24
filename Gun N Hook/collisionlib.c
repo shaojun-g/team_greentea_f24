@@ -26,8 +26,6 @@ void deal_damage(Bullet bullets[], float *char_x, float* char_y, float* char_wid
 		if (c_rect_rect(bullets[i].x, bullets[i].y, bullets[i].diameter, bullets[i].diameter, *char_x, *char_y, *char_width, *char_height) && bullets[i].live == 1) {
 			bullets[i].live = 2;
 			*char_HP -= 1;
-			//printf("enemy bullet detected");
-			printf("enemy hit detected\n");
 		}
 	}
 }
@@ -35,14 +33,10 @@ void deal_damage(Bullet bullets[], float *char_x, float* char_y, float* char_wid
 // function that causes enemies to take damage when colliding with player projectiles.
 int deal_damage_to_player(Bullet *projectile,RANGE_Enemy* rangenemy,Player* player) {
 		if (c_rect_rect(projectile->x, projectile->y, projectile->diameter, projectile->diameter, player->x, player->y, player->width, player->height) && projectile->live == 1) {
-			printf("player hit detected\n");
 			projectile->live = 2;		
 			player->HP -=1;
 			projectile->x = rangenemy->shoot_posX;
 			projectile->y = rangenemy->shoot_posY;
-			printf("projectile x?:%f\n", projectile->x);
-			printf("projectile y?:%f\n", projectile->y);
-			printf("projectile live?:%d\n",projectile->live);
 			return 1;
 		}
 		return 0;

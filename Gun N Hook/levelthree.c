@@ -339,8 +339,6 @@ void Levelthree_Update(void)
 			//	clear grapple
 			drawGrapple(&player, &grapple.x, &grapple.y, platform, PLATFORM_SIZE, dt); //draw grapple
 
-			/*CP_Engine_SetNextGameStateForced(Levelthree_Init, Levelthree_Update, Levelthree_Exit);
-			printf("next state updated");*/
 		}
 		//	ENEMY DIES
 		if (melee_enemy.health <= 0) {
