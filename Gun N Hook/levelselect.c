@@ -41,7 +41,7 @@ void Level_Select_Init(void)
 	level_2 = level_progress("Assets/Save_File/level_2.txt");
 	level_3 = level_progress("Assets/Save_File/level_3.txt");
 	level_4 = level_progress("Assets/Save_File/level_4.txt");
-	
+	char str[] = "Assets/Save_File/level_1.txt";
 
 }
 
@@ -105,7 +105,7 @@ void Level_Select_Update(void) {
 	}
 	
 
-	char str[] = "Documents/GitHub/team_greentea_f24/Assets/Save_File/level_1.txt";
+	
 	
 	
 
@@ -181,26 +181,26 @@ void Level_Select_Update(void) {
 				CP_Engine_SetNextGameState(Levelone_Init, Levelone_Update, Levelone_Exit);
 			};
 		};
-		//level 2
-		if (CP_Input_MouseClicked()) {
-			if (IsAreaClicked(xRect2, yRect1, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
-				CP_Engine_SetNextGameState(Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit);
+	//level 2
+	if (CP_Input_MouseClicked()) {
+		if (IsAreaClicked(xRect2, yRect1, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+			CP_Engine_SetNextGameState(Leveltwo_Init, Leveltwo_Update, Leveltwo_Exit);
 
 				
-			};
 		};
-		//level 3
-		if (CP_Input_MouseClicked()) {
-			if (IsAreaClicked(xRect3, yRect1, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
-				CP_Engine_SetNextGameState(Levelthree_Init, Levelthree_Update, Levelthree_Exit);
-			};
+	};
+	//level 3
+	if (CP_Input_MouseClicked()) {
+		if (IsAreaClicked(xRect3, yRect1, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+			CP_Engine_SetNextGameState(Levelthree_Init, Levelthree_Update, Levelthree_Exit);
 		};
-		//level 4
-		if (CP_Input_MouseClicked()) {
-			if (IsAreaClicked(xRect4, yRect2, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
-				CP_Engine_SetNextGameState(Levelboss_Init, Levelboss_Update, Levelboss_Exit);
-			};
+	};
+	//level 4
+	if (CP_Input_MouseClicked()) {
+		if (IsAreaClicked(xRect4, yRect2, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+			CP_Engine_SetNextGameState(Levelboss_Init, Levelboss_Update, Levelboss_Exit);
 		};
+	};
 		//level 5
 		//if (CP_Input_MouseClicked()) {
 		//	if (IsAreaClicked(xRect5, yRect2, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {

@@ -36,7 +36,7 @@ bool file_check(const char *level) {
 	return false;
 }
 
-int level_progress(const char *level) {
+int level_progress(const char* level) {
 	FILE* check = fopen(level, "r");
 	if (!check) {
 		// Handle error if file cannot be opened
@@ -75,7 +75,16 @@ void level_clear(char const *goal) {
 }
 
 void level_reset(char const* check) {
+	FILE *open = fopen(check, "w");
 
+	if (!open) {
+		perror("file does not exist/cannot be accessed");
+		exit(EXIT_FAILURE);
+	}
 
+	fprintf(open, "%d", 0);
+	fclose(open);
+
+	
 }
 

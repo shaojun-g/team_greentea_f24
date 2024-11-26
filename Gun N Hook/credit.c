@@ -1,8 +1,8 @@
 ﻿#include "cprocessing.h"
-#include <stdio.h>;
-#include "utils.h";
-#include "mainmenu.h";
-#include "credit.h";
+#include <stdio.h>
+#include "utils.h"
+#include "mainmenu.h"
+#include "credit.h"
 
 //hi :3
 CP_Font MenuFont;
@@ -48,7 +48,7 @@ void Credit_Update(void) {
 	
 	
 	
-	if (state == 2) {
+	if (state == 1) {
 		CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
 		CP_Settings_TextSize(70.f);
 		CP_Settings_Fill(Black);
@@ -57,12 +57,12 @@ void Credit_Update(void) {
 		if (IsCircleClicked(xelli, yelli, 100.f, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
 			if (CP_Input_MouseClicked()) {
 
-				state = 1;
+				state = 0;
 			}
 		}
 	}
 
-	if (state == 1) {
+	if (state == 0) {
 		CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
 		CP_Settings_TextSize(70.f);
 		CP_Settings_Fill(Black);
@@ -71,18 +71,18 @@ void Credit_Update(void) {
 		if (IsCircleClicked(xelli2, yelli, 100.f, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
 			if (CP_Input_MouseClicked()) {
 
-				state = 2;
+				state = 1;
 			}
 		}
 
 	}
 
 	if (CP_Input_KeyTriggered(KEY_RIGHT) || CP_Input_KeyTriggered(KEY_D)) {
-		state = 1;
+		state = !state;
 	}
 
 	if (CP_Input_KeyTriggered(KEY_LEFT) || CP_Input_KeyTriggered(KEY_A)) {
-		state = 2;
+		state = !state;
 	}
 
 	if (CP_Input_KeyTriggered(KEY_Q) || CP_Input_KeyTriggered(KEY_ESCAPE))

@@ -299,12 +299,17 @@ void restart_menu(int* game_state, FunctionPtr currentlevel_init, FunctionPtr cu
 	CP_Color Blue = CP_Color_Create(0, 200, 255, 255);
 	//CP_Color White = CP_Color_Create(255, 255, 255, 255);
 	CP_Color Black = CP_Color_Create(0, 0, 0, 255);
+	CP_Settings_TextSize(50.f);
 
 	if (game_state) {
+		//white background
+		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 100));
+		CP_Graphics_DrawRect(width / 2.0f, height / 2.0f, width, height);
+
 		//gameover text
-		CP_Settings_TextSize(50.00f); // set text size to 50.0f
-		textwrite("Game Over", CP_System_GetWindowWidth()/2.0f, 300, Black);
-		CP_Settings_TextSize(25.00f); // set text size to 25.0f
+		CP_Settings_TextSize(100.00f); // set text size to 50.0f
+		textwrite("Game Over", CP_System_GetWindowWidth()/2.0f, 200, Black);
+		CP_Settings_TextSize(50.00f); // set text size to 25.0f
 		// restart button
 		buttoncreate(xRect, yRect2, rectW, rectH, Blue);
 		textwrite("Restart", xRect, yRect2, Black);
@@ -328,7 +333,7 @@ void restart_menu(int* game_state, FunctionPtr currentlevel_init, FunctionPtr cu
 
 
 	}
-
+	CP_Settings_TextSize(25.00f);
 }
 
 void win_menu(int* game_state, FunctionPtr currentlevel_init, FunctionPtr currentlevel_update, FunctionPtr currentlevel_exit) {
@@ -347,12 +352,17 @@ void win_menu(int* game_state, FunctionPtr currentlevel_init, FunctionPtr curren
 	CP_Color Blue = CP_Color_Create(0, 200, 255, 255);
 	//CP_Color White = CP_Color_Create(255, 255, 255, 255);
 	CP_Color Black = CP_Color_Create(0, 0, 0, 255);
+	CP_Settings_TextSize(50.f);
 
 	if (game_state) {
+		//white background
+		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 100));
+		CP_Graphics_DrawRect(width / 2.0f, height / 2.0f, width, height);
+
 		//gameover text
-		CP_Settings_TextSize(50.00f); // set text size to 50.0f
-		textwrite("You win!", CP_System_GetWindowWidth() / 2.0f, 400, Black);
-		CP_Settings_TextSize(25.00f); // set text size to 25.0f
+		CP_Settings_TextSize(100.00f); // set text size to 50.0f
+		textwrite("You win!", CP_System_GetWindowWidth() / 2.0f, 300, Black);
+		CP_Settings_TextSize(50.00f); // set text size to 25.0f
 
 
 		// exit button
@@ -367,7 +377,7 @@ void win_menu(int* game_state, FunctionPtr currentlevel_init, FunctionPtr curren
 
 
 	}
-
+	CP_Settings_TextSize(25.00f);
 }
 //int check_collision_rect(float proj_x, float proj_y, float proj_diameter,
 //	float player_x, float player_y, float player_width, float player_height) {

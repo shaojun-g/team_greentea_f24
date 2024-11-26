@@ -1,12 +1,12 @@
-#include "cprocessing.h" // Must have
+#include "cprocessing.h" 
 #include "mainmenu.h"
 
-float LogoOpacity;
+int LogoOpacity;
 float fadespeed_outwards;
 CP_Image digipen_logo;
 
 void InitialSplash_Init(void) {
-    LogoOpacity = 255.0f;
+    LogoOpacity = 255;
     fadespeed_outwards = 85.0f;
     digipen_logo = CP_Image_Load("Assets/DigiPen_BLACK.png");
 }
@@ -21,10 +21,10 @@ void InitialSplash_Update(void) {
         762.5f, 222.5f, LogoOpacity);
 
     // Fade out logo after 3 seconds
-    if (LogoOpacity > 0.0f) {
+    if (LogoOpacity > 0) {
         LogoOpacity -= fadespeed_outwards * CP_System_GetDt();
-        if (LogoOpacity < 0.0f) {
-            LogoOpacity = 0.0f;
+        if (LogoOpacity <= 0) {
+            LogoOpacity = 0;
             CP_Engine_SetNextGameState(Main_Menu_Init ,Main_Menu_Update, Main_Menu_Exit);
         }
     }
