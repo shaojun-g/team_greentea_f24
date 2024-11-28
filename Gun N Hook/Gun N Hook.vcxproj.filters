@@ -3,37 +3,37 @@
   <ItemGroup>
     <ClCompile Include="collision_utils.c" />
     <ClCompile Include="game.c" />
-    <ClCompile Include="levelboss.c" />
-    <ClCompile Include="levelone.c" />
-    <ClCompile Include="levelthree.c" />
-    <ClCompile Include="leveltwo.c" />
     <ClCompile Include="main.c" />
-    <ClCompile Include="mainmenu.c" />
     <ClCompile Include="movement.c" />
     <ClCompile Include="utils.c" />
     <ClCompile Include="enemy.c" />
     <ClCompile Include="collisionlib.c" />
-    <ClCompile Include="credit.c" />
     <ClCompile Include="InitialSplash.h" />
     <ClCompile Include="InitialSplash.c" />
     <ClCompile Include="save.c" />
+    <ClCompile Include="levelboss.c" />
+    <ClCompile Include="levelone.c" />
+    <ClCompile Include="levelthree.c" />
+    <ClCompile Include="leveltwo.c" />
+    <ClCompile Include="credit.c" />
     <ClCompile Include="levelselect.c" />
+    <ClCompile Include="mainmenu.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="collision_utils.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="levelboss.h" />
     <ClInclude Include="movement.h" />
-    <ClInclude Include="levelone.h" />
-    <ClInclude Include="levelthree.h" />
-    <ClInclude Include="mainmenu.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="structs.h" />
     <ClInclude Include="collisionlib.h" />
-    <ClInclude Include="credit.h" />
     <ClInclude Include="save.h" />
-    <ClInclude Include="levelselect.h" />
+    <ClInclude Include="levelboss.h" />
+    <ClInclude Include="levelone.h" />
+    <ClInclude Include="levelthree.h" />
     <ClInclude Include="leveltwo.h" />
+    <ClInclude Include="credit.h" />
+    <ClInclude Include="levelselect.h" />
+    <ClInclude Include="mainmenu.h" />
   </ItemGroup>
 </Project>

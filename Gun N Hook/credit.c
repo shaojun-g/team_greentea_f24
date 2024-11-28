@@ -1,12 +1,12 @@
 ﻿#include "cprocessing.h"
-#include <stdio.h>;
-#include "utils.h";
-#include "mainmenu.h";
-#include "credit.h";
+#include <stdio.h>
+#include "utils.h"
+#include "mainmenu.h"
+#include "credit.h"
 
 //hi :3
 CP_Font MenuFont;
-double textSize;
+float textSize;
 int state;
 
 
@@ -21,18 +21,18 @@ void Credit_Update(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255));
 
 	//ellipse Settings
-	double xelli = 100.f;
-	double xelli2 = 1500.f;
-	double yelli = 800.f;
+	float xelli = 100.f;
+	float xelli2 = 1500.f;
+	float yelli = 800.f;
 
 	// Color Pool
 	CP_Color Black = CP_Color_Create(0, 0, 0, 255);
 	CP_Color White = CP_Color_Create(255, 255, 255, 255);
 
 	//center for Credit
-	double xRect1 = CP_System_GetWindowWidth() / 3.f;
-	double xRect2 = CP_System_GetWindowWidth() / 3.4f;
-	double yRect1 = CP_System_GetWindowHeight() / 4.0f;
+	float xRect1 = CP_System_GetWindowWidth() / 3.f;
+	float xRect2 = CP_System_GetWindowWidth() / 3.4f;
+	float yRect1 = CP_System_GetWindowHeight() / 4.0f;
 
 	//textwrite("Game Made By:\n Amzar\n Shao Jun \n Ben \n Kwan \n Stanley ",xRect1 , yRect1,);
 	CP_Settings_Fill(White);
@@ -48,7 +48,7 @@ void Credit_Update(void) {
 	
 	
 	
-	if (state == 2) {
+	if (state == 1) {
 		CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
 		CP_Settings_TextSize(70.f);
 		CP_Settings_Fill(Black);
@@ -57,12 +57,12 @@ void Credit_Update(void) {
 		if (IsCircleClicked(xelli, yelli, 100.f, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
 			if (CP_Input_MouseClicked()) {
 
-				state = 1;
+				state = 0;
 			}
 		}
 	}
 
-	if (state == 1) {
+	if (state == 0) {
 		CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
 		CP_Settings_TextSize(70.f);
 		CP_Settings_Fill(Black);
@@ -71,21 +71,21 @@ void Credit_Update(void) {
 		if (IsCircleClicked(xelli2, yelli, 100.f, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
 			if (CP_Input_MouseClicked()) {
 
-				state = 2;
+				state = 1;
 			}
 		}
 
 	}
 
 	if (CP_Input_KeyTriggered(KEY_RIGHT) || CP_Input_KeyTriggered(KEY_D)) {
-		state = 1;
+		state = !state;
 	}
 
 	if (CP_Input_KeyTriggered(KEY_LEFT) || CP_Input_KeyTriggered(KEY_A)) {
-		state = 2;
+		state = !state;
 	}
 
-	if (CP_Input_KeyTriggered(KEY_Q))
+	if (CP_Input_KeyTriggered(KEY_Q) || CP_Input_KeyTriggered(KEY_ESCAPE))
 	{
 		CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
 	}

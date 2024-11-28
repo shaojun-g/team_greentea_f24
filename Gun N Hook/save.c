@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #include "cprocessing.h"
 #include "utils.h"
@@ -8,11 +9,10 @@
 //CP_Color White = CP_Color_Create(255, 255, 255, 255);
 //CP_Color Black = CP_Color_Create(0, 0, 0, 255);
 
-bool progress_check(const char *level) {
+bool file_check(const char *level) {
 	FILE *check = fopen( level, "r");
-	char letter;
-	CP_Color Black = CP_Color_Create(0, 0, 0, 255);
-	CP_Color Red = CP_Color_Create(255, 200, 200, 255);
+	//CP_Color Black = CP_Color_Create(0, 0, 0, 255);
+	//CP_Color Red = CP_Color_Create(255, 200, 200, 255);
 
 	if (!check) {
 		/*CP_Settings_Fill(Red);
@@ -25,36 +25,66 @@ bool progress_check(const char *level) {
 	}
 	
 	if (check) {
-		CP_Settings_Fill(Red);
+		/*CP_Settings_Fill(Red);
 		CP_Settings_RectMode(CP_POSITION_CENTER);
 		CP_Graphics_DrawRect(CP_System_GetWindowHeight() / 1.13f, CP_System_GetWindowHeight() / 1.98f, CP_System_GetWindowWidth() / 4.3f, CP_System_GetWindowHeight() / 8.0f);
 		CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255));
-		textwrite("Save File loaded", CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f, Black);
+		textwrite("Save File loaded", CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f, Black);*/
+		fclose(check);
 		return true;
+	}
+	return false;
+}
 
+int level_progress(const char* level) {
+	FILE* check = fopen(level, "r");
+	if (!check) {
+		// Handle error if file cannot be opened
+		fprintf(stderr, "file could not be opened");
+		exit(EXIT_FAILURE);
+		return 0;
 	}
 
-	if (letter = fgetc(check) != EOF) {
-		if (letter == 1);
+	int num;
+	fscanf_s(check, "%d", &num);
+	if (num == 1) {
+		return 1;
+	}
+	/*while ((num = (char)fgetc(open)) != EOF) {
+		if (num == 1) {
 			return true;
-	}
-	else {
-		return false;
-	}
-	
+		}
+	}*/
+	fclose(check);
+	return 0;
 }
 
 
 
-bool level_clear(char const *goal) {
-	FILE *open = fopen(goal, "r");
+void level_clear(char const *goal) {
+	FILE *open = fopen(goal, "w");
 	
 	if (!open) {
 		perror("file does not exist/cannot be accessed");
-		return false;
+		exit(EXIT_FAILURE);
 	}
 
-	
-
+	fprintf(open, "%d", 1);
+	fclose(open);
 
 }
+
+void level_reset(char const* check) {
+	FILE *open = fopen(check, "w");
+
+	if (!open) {
+		perror("file does not exist/cannot be accessed");
+		exit(EXIT_FAILURE);
+	}
+
+	fprintf(open, "%d", 0);
+	fclose(open);
+
+	
+}
+

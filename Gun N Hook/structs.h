@@ -128,5 +128,15 @@ typedef struct Healthbar {
 typedef struct Boss {
 	Platform parts[9];
 	int num_parts;
+	int health;
 
 }Boss;
+
+typedef struct Health {
+	CP_Image heart;
+	float x;
+	float y;
+	float width;
+	float height;
+} heart;
+
