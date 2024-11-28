@@ -1,9 +1,10 @@
-// file:	enemy.c
+// file:	levelboss.c
 // author:	Stanley
 // email:	
 // co-author: Benjamin Ban
 // email: k.ban@digipen.edu
-// brief:	
+// 
+// brief: boss level	
 // 
 // Copyright ? 2020 DigiPen, All rights reserved.
 //---------------------------------------------------------
