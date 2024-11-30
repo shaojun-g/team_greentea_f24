@@ -11,7 +11,7 @@
 // Range Enemy States - no states only shoot
 // -have a shooting point where projectile spawn
 // 
-// Copyright ? 2020 DigiPen, All rights reserved
+// Copyright @ 2020 DigiPen, All rights reserved
 //---------------------------------------------------------
 #pragma once
 #include "structs.h"

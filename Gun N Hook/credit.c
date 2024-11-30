@@ -4,7 +4,6 @@
 #include "mainmenu.h"
 #include "credit.h"
 
-//hi :3
 CP_Font MenuFont;
 float textSize;
 int state;

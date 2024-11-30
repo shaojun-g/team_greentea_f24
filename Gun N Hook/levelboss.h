@@ -1,6 +1,6 @@
 // file:	levelboss.h
-// author:	Stanley
-// email:
+// author:	Stanley Lur
+// email:	peihaostanley.lur@digipen.edu
 // 	
 // co-author: Benjamin Ban
 // email: k.ban@digipen.edu
@@ -12,7 +12,7 @@
 // 
 // brief: boss level	
 // 
-// Copyright ? 2020 DigiPen, All rights reserved.
+// Copyright @ 2020 DigiPen, All rights reserved.
 //---------------------------------------------------------
 #pragma once
 void Levelboss_Init(void);

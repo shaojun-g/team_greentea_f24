@@ -1,3 +1,15 @@
+// file:	collisionlib.h
+// author:	Chewn Thing Kwan
+// email:	Kwan.c@digipen.edu
+// co-author: Benjamin Ban
+// email:	k.ban@digipen.edu
+// 
+// brief: declarations of intersection functions to be used for
+// collision functions in collisionlib.c.
+// 
+// Copyright @ 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #pragma once
 
 // rect-plane		player platforming (prob remove)

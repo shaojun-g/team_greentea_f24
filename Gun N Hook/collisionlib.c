@@ -1,17 +1,16 @@
 // file:	collisionlib.c
-// author:	Kwan
-// email:
-// 	
+// author:	Chewn Thing Kwan
+// email:	kwan.c@digipen.edu
+// //
 // co-author: Benjamin Ban
-// email: k.ban@digipen.edu
+// email:	k.ban@digipen.edu
 // work done : modified Kwan's deal_damage function to work for enemy projectiles
 // returns value 0 or 1(depending on if player is "damaged")
 // parameters to be taken in Bullet,RANGE_Enemy,Player objects
 // 
 // brief: definition of functions from collisionlib.h
 // 
-// 
-// Copyright ? 2020 DigiPen, All rights reserved.
+// Copyright @ 2020 DigiPen, All rights reserved.
 //---------------------------------------------------------
 
 #include "collision_utils.h"
@@ -111,6 +110,4 @@ void pea_shooter(Bullet bullets[], float* player_x, float* player_y) {
 				bullets[i].live = 0;
 		}
 	}
-
-	
 }

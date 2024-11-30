@@ -1,8 +1,8 @@
 /* file:	utils.c
 // author:	Stanley Lur
-// email: peihaostanley.lur@digipen.edu
+// email:	peihaostanley.lur@digipen.edu
 // co-author: Amzar
-// email:
+// email:	muhamadamzar.b@digipen.edu
 // brief:	This c file contains functions definitions
 // used in collision detection, drawing, UI management,
 // and gameplay mechanics for the game.These utilities

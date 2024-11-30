@@ -1,8 +1,7 @@
 /* file:	leveltwo.c
 // author:	Stanley Lur
-// email: peihaostanley.lur@digipen.edu
-// co-author:
-// email:
+// email:	peihaostanley.lur@digipen.edu
+// 
 // brief: This file implements Level two, including player movement,
 // platform collisions, goal interactions, grappling mechanics, and UI elements
 // like the pause menu and instructions. The file also incorporates 

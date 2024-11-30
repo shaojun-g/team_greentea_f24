@@ -1,8 +1,8 @@
 /* file:	utils.h
 // author:	Stanley Lur
-// email: peihaostanley.lur@digipen.edu
+// email:	peihaostanley.lur@digipen.edu
 // co-author: Amzar
-// email: 
+// email:	muhamadamzar.b@digipen.edu
 // brief:	This header file contains declarations for functions 
 // used in collision detection, drawing, UI management,
 // and gameplay mechanics for the game.These utilities

@@ -1,3 +1,13 @@
+// file:	movement.h
+// author:	Shao Jun
+// email:	shaojun.g@digipen.edu
+// 
+// brief: declaration of functions that affect player movement
+// using WASD, gravity as well as definition of grapple function.	
+// 
+// Copyright @ 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #pragma once
 #include "cprocessing.h"
 

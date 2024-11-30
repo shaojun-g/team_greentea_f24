@@ -1,8 +1,7 @@
 /* file:	levelthree.c
 // author:	Stanley Lur
-// email: peihaostanley.lur@digipen.edu
-// co-author:
-// email:
+// email:	peihaostanley.lur@digipen.edu
+// 
 // brief: This file implements Level three, including player movement,
 // platform collisions, goal interactions, grappling mechanics, and UI elements
 // like the pause menu and instructions. Additionally, it also adds a new enemy

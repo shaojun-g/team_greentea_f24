@@ -11,7 +11,6 @@
 // Copyright @ 2020 DigiPen, All rights reserved.
 //--------------------------------------------------------- */
 
-
 #include "stdio.h"
 #include "mainmenu.h"
 #include "cprocessing.h"
