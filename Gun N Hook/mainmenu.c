@@ -1,31 +1,37 @@
 #include "cprocessing.h"
 
-
+#include <stdio.h>
+#include <stdlib.h>
 #include "levelselect.h"
 #include "credit.h"
-//hi
-#include <stdio.h>
 #include "utils.h"
 #include "levelthree.h"
 #include "structs.h"
 #include "levelone.h"
+#include "save.h"
+
+#define MAX_LEVEL 4
 
 CP_Font myFont;
 float textSize;
 
 
+
+
+
 void Main_Menu_Init(void)
 {
     // set rectangle x & y position 
-
     textSize = 50.0f;
     myFont = CP_Font_Load("Assets/Exo2-Regular.ttf");
     CP_Settings_TextSize(textSize);
+    
 }
 
 void Main_Menu_Update(void)
 {
-    
+    float width = CP_System_GetWindowWidth() / 1.0f;
+    float height = CP_System_GetWindowHeight()/ 1.0f;
     float xRect = CP_System_GetWindowWidth() / 3.8f;
     float xRect1 = CP_System_GetWindowWidth() / 2.0f;
     float xRect2 =  CP_System_GetWindowWidth() / 1.35f;
@@ -45,9 +51,21 @@ void Main_Menu_Update(void)
     // set the rectangle drawing mode to CENTER
     CP_Settings_RectMode(CP_POSITION_CENTER);
 
+    //Main Title Screen
+    CP_Settings_TextSize(200.f);
+    textwrite("Gun n Hook", xRect1 + 10.f, yRect1 + 10.f, Black);
+    CP_Settings_TextSize(200.f);
+    textwrite("Gun n Hook", xRect1, yRect1, White);
+
+    //file name allocation
+    char str[100] = "Assets/Save_File/level_1.txt";
+
+
     // draw a rectangle for the play button
+    CP_Settings_TextSize(50.f);
     buttoncreate(xRect, yRect, rectW, rectH,Blue);
     textwrite("Play", xRect, yRect, Black);
+
     
     if (CP_Input_MouseClicked()) {
         if (IsAreaClicked(xRect, yRect, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
@@ -55,11 +73,7 @@ void Main_Menu_Update(void)
         };
     };
 
-    //Main Title Screen
-    CP_Settings_TextSize(200.f);
-    textwrite("Gun n Hook", xRect1 + 10.f, yRect1 + 10.f, Black);
-    CP_Settings_TextSize(200.f);
-    textwrite("Gun n Hook", xRect1, yRect1, White);
+   
 
     // draw a rectangle for the credit button
     CP_Settings_TextSize(50.f);
@@ -70,6 +84,7 @@ void Main_Menu_Update(void)
 
     if (CP_Input_MouseClicked()) {
         if (IsAreaClicked(xRect1, yRect, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+           
             CP_Engine_SetNextGameState(Credit_Init, Credit_Update, Credit_Exit);
         };
     };
@@ -82,14 +97,35 @@ void Main_Menu_Update(void)
 
     if (CP_Input_MouseClicked()) {
         if (IsAreaClicked(xRect2, yRect, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+            for (int i = 0; i < MAX_LEVEL; ++i) {
+                str[23] = '1' + i;
+                level_reset(str);
+            }
             CP_Engine_Terminate();
         };
     };
 
-    
+    // draw a rectangle for the reset button
+    CP_Settings_TextSize(35.f);
+    buttoncreate(width - 100.f, height - 30.f, rectW - 50.f, rectH - 50.f, Blue);
+    textwrite("Reset Save", width - 100.f, height - 30.f, Black);
+
+
+    if (CP_Input_MouseClicked()) {
+        if (IsAreaClicked(width - 100.f, height - 30.f, rectW - 50.f, rectH - 50.f, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+            for (int i = 0; i < MAX_LEVEL; ++i) {
+                str[23] = '1' + i;
+                level_reset(str);
+            }
+        };
+    };
+
+    CP_Settings_TextSize(50.f);
+  
 }
 
 void Main_Menu_Exit(void)
-{
+{   
+    
 
 }

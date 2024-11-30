@@ -1,3 +1,15 @@
+// file:	collisionlib.h
+// author:	Kwan
+// email:	
+// co-author: Benjamin Ban
+// email: k.ban@digipen.edu
+// 
+// brief: declaration of functions to be used in collisionlib.c
+// these functions enables collision between drawn objects in the game
+// and enables player to fire his pea shooter	
+// 
+// Copyright ? 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
 #pragma once
 #include "utils.h"
 

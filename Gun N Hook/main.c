@@ -9,7 +9,6 @@
 // Copyright � 2020 DigiPen, All rights reserved.
 //---------------------------------------------------------
 
-
 #include "InitialSplash.h"
 
 // main() the starting point for the program
