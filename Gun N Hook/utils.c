@@ -1,3 +1,16 @@
+/* file:	utils.c
+// author:	Stanley Lur
+// email: peihaostanley.lur@digipen.edu
+// co-author: Amzar
+// email:
+// brief:	This c file contains functions definitions
+// used in collision detection, drawing, UI management,
+// and gameplay mechanics for the game.These utilities
+// provide core functionality for handling player
+// interactions, rendering, and physics - based calculations.
+//
+// Copyright @ 2020 DigiPen, All rights reserved.
+//--------------------------------------------------------- */
 #include <math.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -198,21 +211,6 @@ void textwrite(const char* text, float x_position, float y_position, CP_Color co
 
 }
 
-//void draw_platform(Platform platform) {
-//	//draw platforms
-//	CP_Settings_RectMode(CP_POSITION_CENTER);
-//	CP_Settings_Fill(platform.platform_color);
-//	CP_Settings_NoStroke();
-//	CP_Graphics_DrawRect(platform.x, platform.y, platform.width, platform.height);
-//
-//}
-
-//void draw_goal(Goal goal) {
-//	//draw goals
-//	goal.goal_color = CP_Color_Create(0, 0, 0, 255);
-//	CP_Settings_Fill(goal.goal_color);
-//	CP_Graphics_DrawRectAdvanced(goal.x, goal.y, goal.width, goal.height, goal.degrees, goal.corner_radius);
-//}
 
 void pause_state(int *game_state) {
 	if (*game_state == 0) {
@@ -369,21 +367,6 @@ void win_menu(int* game_state, FunctionPtr currentlevel_init, FunctionPtr curren
 	}
 
 }
-//int check_collision_rect(float proj_x, float proj_y, float proj_diameter,
-//	float player_x, float player_y, float player_width, float player_height) {
-//	return (proj_x + proj_diameter / 2 >= player_x &&
-//		proj_x - proj_diameter / 2 <= player_x + player_width &&
-//		proj_y + proj_diameter / 2 >= player_y &&
-//		proj_y - proj_diameter / 2 <= player_y + player_height);
-//}
-
-//void update_projectile(Projectile* projectile, float player_x, float player_y, float player_width, float player_height, int* player_hp) {
-//
-//		if (check_collision_rect(projectile->x, projectile->y, projectile->diameter, player_x,  player_y,  player_width,  player_height)) {
-//			(*player_hp)--;
-//			printf("collison");
-//		}
-//}
 
 //boss health bar update function
 void update_boss_healthbar(Healthbar* health_bar, int current_health) {
@@ -395,9 +378,6 @@ void update_boss_healthbar(Healthbar* health_bar, int current_health) {
 
 	// Update health bar width
 	health_bar->width = BOSS_HEALTHBAR_MAX_WIDTH * health_percentage;
-
-	// For debugging - print values to see what's happening
-	
 }
 
 void draw_hearts(heart heart[], int current_hp) {

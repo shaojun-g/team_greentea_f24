@@ -1,15 +1,16 @@
-// file:	enemy.c
-// author:	Stanley
-// email:	
+/* file:	levelboss.c
+// author:	Stanley Lur
+// email: peihaostanley.lur@digipen.edu
 // co-author: Benjamin Ban
 // email: k.ban@digipen.edu
-// brief:	
-// 
-// Copyright ? 2020 DigiPen, All rights reserved.
-//---------------------------------------------------------
+// brief: This file implements the Level Boss, including player movement, 
+// platform collisions, goal interactions, grappling mechanics, and UI elements 
+// such as the pause menu and instructions. Additionally, it introduces the 
+// boss of the game, which has its own health bar and other unique features.
+//
+// Copyright @ 2020 DigiPen, All rights reserved.
+//--------------------------------------------------------- */
 
-//increase projecctile size diameter++
-//burst fire shoot 3x projectile
 
 #include "stdio.h"
 #include "mainmenu.h"

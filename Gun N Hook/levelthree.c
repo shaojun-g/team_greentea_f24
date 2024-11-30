@@ -1,3 +1,16 @@
+/* file:	levelthree.c
+// author:	Stanley Lur
+// email: peihaostanley.lur@digipen.edu
+// co-author:
+// email:
+// brief: This file implements Level three, including player movement,
+// platform collisions, goal interactions, grappling mechanics, and UI elements
+// like the pause menu and instructions. Additionally, it also adds a new enemy
+// which shoots at the player.It handles level initialization, updates,
+// and transitions to Level boss.
+//
+// Copyright @ 2020 DigiPen, All rights reserved.
+//--------------------------------------------------------- */
 #include "stdio.h"
 #include "mainmenu.h"
 #include "cprocessing.h"

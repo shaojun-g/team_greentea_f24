@@ -1,3 +1,15 @@
+/* file:	levelone.c
+// author:	Stanley Lur
+// email: peihaostanley.lur@digipen.edu
+// co-author: 
+// email:
+// brief: This file implements Level One, including player movement, 
+// platform collisions, goal interactions, grappling mechanics, and UI elements 
+// like the pause menu and instructions. It handles level initialization, updates, 
+// and transitions to Level Two.
+//
+// Copyright @ 2020 DigiPen, All rights reserved.
+//--------------------------------------------------------- */
 #include "stdio.h"
 #include "stdbool.h"
 #include "mainmenu.h"
