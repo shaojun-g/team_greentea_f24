@@ -9,7 +9,7 @@
 // provide core functionality for handling player
 // interactions, rendering, and physics - based calculations.
 // 
-// Copyright ? 2020 DigiPen, All rights reserved.
+// Copyright @ 2020 DigiPen, All rights reserved.
 //--------------------------------------------------------- */
 
 #pragma once
