@@ -258,7 +258,7 @@ void pause_menu(int *game_state,FunctionPtr currentlevel_init, FunctionPtr curre
 
 		// restart button
 		buttoncreate(xRect, yRect2, rectW, rectH, Blue);
-		textwrite("Restart", xRect, yRect2, Black);
+		textwrite("Restart Game", xRect, yRect2, Black);
 
 		if (CP_Input_MouseClicked()) {
 			if (IsAreaClicked(xRect, yRect2, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
@@ -310,7 +310,7 @@ void restart_menu(int* game_state, FunctionPtr currentlevel_init, FunctionPtr cu
 		CP_Settings_TextSize(50.00f); // set text size to 25.0f
 		// restart button
 		buttoncreate(xRect, yRect2, rectW, rectH, Blue);
-		textwrite("Restart", xRect, yRect2, Black);
+		textwrite("Restart Game", xRect, yRect2, Black);
 
 		if (CP_Input_MouseClicked()) {
 			if (IsAreaClicked(xRect, yRect2, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {

@@ -1,13 +1,27 @@
+/* file:	InitialSplash.c
+// author:	Muhamad Amzar Bin Mohamad Zamre
+// email:	muhamadamzar.b@digipen.edu
+// work done: using the alpha value of the image function,
+// made it so that the logo appeared and faded out
+// made it skippable if you left clicked
+//
+// brief:	This file implements the Splash Screen. 
+// 
+//
+// Copyright @ 2020 DigiPen, All rights reserved.
+//--------------------------------------------------------- */
+
 #include "cprocessing.h" 
 #include "mainmenu.h"
 
-int LogoOpacity;
+float LogoOpacity;
 float fadespeed_outwards;
 CP_Image digipen_logo;
 
+
 void InitialSplash_Init(void) {
-    LogoOpacity = 255;
-    fadespeed_outwards = 85.0f;
+    LogoOpacity = 255.f;
+    fadespeed_outwards = 85.f;
     digipen_logo = CP_Image_Load("Assets/DigiPen_BLACK.png");
 }
 
@@ -22,7 +36,7 @@ void InitialSplash_Update(void) {
 
     // Fade out logo after 3 seconds
     if (LogoOpacity > 0) {
-        LogoOpacity -= fadespeed_outwards * CP_System_GetDt();
+        LogoOpacity -= (float)fadespeed_outwards * (float)CP_System_GetDt();
         if (LogoOpacity <= 0) {
             LogoOpacity = 0;
             CP_Engine_SetNextGameState(Main_Menu_Init ,Main_Menu_Update, Main_Menu_Exit);

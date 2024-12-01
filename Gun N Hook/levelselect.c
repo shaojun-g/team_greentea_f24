@@ -1,3 +1,20 @@
+/* file:	levelselect.c
+// author:	Muhamad Amzar Bin Mohamad Zamre
+// email:	muhamadamzar.b@digipen.edu
+// work done: save file calling function, menu buttons
+// and a level call for each level
+// 
+//
+// brief:	This file contains the implementation for 
+// levelselect.c.
+//
+//
+// Copyright @ 2020 DigiPen, All rights reserved.
+//--------------------------------------------------------- */
+
+
+
+
 #include <stdio.h>
 #include <CProcessing.h>
 #include <stdbool.h>
@@ -17,15 +34,6 @@ CP_TEXT_ALIGN_HORIZONTAL horizontal = CP_TEXT_ALIGN_H_CENTER;
 CP_TEXT_ALIGN_VERTICAL vertical = CP_TEXT_ALIGN_V_MIDDLE;
 
 
-
-struct Button
-{
-	float xPos;
-	float yPos;
-	float height;
-	float width;
-	CP_Color color;
-};
 
 float timer;
 int level_1 = 0, level_2 = 0, level_3 = 0, level_4 = 0; 
@@ -76,9 +84,6 @@ void Level_Select_Update(void) {
 		}
 
 	}*/
-	
-	
-
 
 	timer += CP_System_GetDt();
 
@@ -220,11 +225,11 @@ void Level_Select_Update(void) {
 	{
 		CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
 	}
-		//end program
-	if (CP_Input_KeyTriggered(KEY_R))
-		{
-			CP_Engine_Terminate();
-		}
+	//	//end program
+	//if (CP_Input_KeyTriggered(KEY_R))
+	//	{
+	//		CP_Engine_Terminate();
+	//	}
 
 
 }

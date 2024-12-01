@@ -1,3 +1,20 @@
+/* file:	mainmenu.c
+// author:	Muhamad Amzar Bin Mohamad Zamre
+// email:	muhamadamzar.b@digipen.edu
+// work done: wrote a button create function 
+// and a glow hover function. implemented all the button functions
+// and the reset function
+//
+//
+// brief:	This file contains the implementation for
+// levelselect.c.
+//
+//
+// Copyright @ 2020 DigiPen, All rights reserved.
+//--------------------------------------------------------- */
+
+
+
 #include "cprocessing.h"
 
 #include <stdio.h>
@@ -64,7 +81,7 @@ void Main_Menu_Update(void)
     // draw a rectangle for the play button
     CP_Settings_TextSize(50.f);
     buttoncreate(xRect, yRect, rectW, rectH,Blue);
-    textwrite("Play", xRect, yRect, Black);
+    textwrite("Start Game", xRect, yRect, Black);
 
     
     if (CP_Input_MouseClicked()) {
@@ -79,7 +96,7 @@ void Main_Menu_Update(void)
     CP_Settings_TextSize(50.f);
     buttoncreate(xRect1, yRect, rectW, rectH, Blue);
     textwrite("Controls/", xRect1, yRect- 25.f, Black);
-    textwrite("Credit", xRect1, yRect + 25.f, Black);
+    textwrite("Credits", xRect1, yRect + 25.f, Black);
 
 
     if (CP_Input_MouseClicked()) {
