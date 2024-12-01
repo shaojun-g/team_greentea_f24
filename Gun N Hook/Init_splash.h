@@ -1,5 +1,5 @@
 #pragma once
-/* file:	InitialSplash.h
+/* file:	Init_Splash.h
 // author:	Muhamad Amzar Bin Mohamad Zamre
 // email:	muhamadamzar.b@digipen.edu
 //

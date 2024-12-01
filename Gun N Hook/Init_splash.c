@@ -1,4 +1,4 @@
-/* file:	InitialSplash.c
+/* file:	Init_Splash.c
 // author:	Muhamad Amzar Bin Mohamad Zamre
 // email:	muhamadamzar.b@digipen.edu
 // work done: using the alpha value of the image function,
