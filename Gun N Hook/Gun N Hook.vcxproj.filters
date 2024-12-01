@@ -8,8 +8,6 @@
     <ClCompile Include="utils.c" />
     <ClCompile Include="enemy.c" />
     <ClCompile Include="collisionlib.c" />
-    <ClCompile Include="InitialSplash.h" />
-    <ClCompile Include="InitialSplash.c" />
     <ClCompile Include="save.c" />
     <ClCompile Include="levelboss.c" />
     <ClCompile Include="levelone.c" />
@@ -18,6 +16,7 @@
     <ClCompile Include="credit.c" />
     <ClCompile Include="levelselect.c" />
     <ClCompile Include="mainmenu.c" />
+    <ClCompile Include="Init_splash.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="collision_utils.h" />
@@ -35,5 +34,6 @@
     <ClInclude Include="credit.h" />
     <ClInclude Include="levelselect.h" />
     <ClInclude Include="mainmenu.h" />
+    <ClInclude Include="Init_splash.h" />
   </ItemGroup>
 </Project>

@@ -1,3 +1,4 @@
+#pragma once
 /* file:	InitialSplash.h
 // author:	Muhamad Amzar Bin Mohamad Zamre
 // email:	muhamadamzar.b@digipen.edu
@@ -9,10 +10,10 @@
 // Copyright @ 2020 DigiPen, All rights reserved.
 //--------------------------------------------------------- */
 
-#pragma once
 
-void InitialSplash_Init(void);
 
-void InitialSplash_Update(void);
+void InitSplash_Init(void);
 
-void InitialSplash_Exit(void);
+void InitSplash_Update(void);
+
+void InitSplash_Exit(void);
