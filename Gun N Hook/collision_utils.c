@@ -10,7 +10,6 @@
 // Copyright @ 2020 DigiPen, All rights reserved.
 //---------------------------------------------------------
 
-#include <math.h>
 #include "cprocessing.h"
 
 // rect-line	-	DIVIDES LINE IN 5 POINTS: THEN RECT-POINT FOR EACH.
@@ -43,6 +42,10 @@ int c_rect_line(float rect_x, float rect_y, float rect_width, float rect_height,
 	}
 
 	return 0;
+}
+
+float abs_f(float num) {
+	return (num < 0) ? -num : num;
 }
 
 // rect-rect		player collide boss || player collide e_projectile || boss p_projectile		WORKS!!
