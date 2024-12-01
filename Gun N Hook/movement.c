@@ -17,13 +17,23 @@
 #include "movement.h"
 #include "collision_utils.h"
 
+float move_speed = 250;
+float space_jump_time = 0.75;
+float jump_burst_speed = 400;
+float jump_hang_time = 10;
+float hard_limit_x_min = 10;
+float hard_limit_x_max = 1590;
+float hard_limit_y_min = 780;
+float screen_y = 800;
+
+
 void basic_movement(float* player_x, float* player_y, float* speed_x, float* speed_y, int* on_ground) {
 	//	left right movement
 	if (CP_Input_KeyDown(KEY_D)) {
-		*speed_x = 250;
+		*speed_x = move_speed;
 	}
 	else if (CP_Input_KeyDown(KEY_A)) {
-		*speed_x = -250;
+		*speed_x = -move_speed;
 	} else {
 		*speed_x = 0;
 	}
@@ -35,43 +45,46 @@ void basic_movement(float* player_x, float* player_y, float* speed_x, float* spe
 
 		time_elapsed += CP_System_GetDt();
 
-		if (time_elapsed - time_start > 0.75)
+		if (time_elapsed - time_start > space_jump_time)
 			*on_ground = 0;
 	}
 
 	//	initial upward speed when jump.
 	if ((CP_Input_KeyDown(KEY_W) || CP_Input_KeyDown(KEY_SPACE)) && *on_ground == 1) {
-		*speed_y = -400;
+		*speed_y = -jump_burst_speed;
 		*on_ground = 0;
 	}
 	//	hold down key to get hang time.
 	if (CP_Input_KeyDown(KEY_W) || CP_Input_KeyDown(KEY_SPACE) && !(*on_ground)) {
-		*speed_y += -10;
+		*speed_y += -jump_hang_time;
 	}
 	*player_x += *speed_x * CP_System_GetDt();
 	*player_y += *speed_y * CP_System_GetDt();
 
 	//	add hard limits for left and right movement.
-	if (*player_x < 10)
-		*player_x = 10;
-	if (*player_x > 1590)
-		*player_x = 1590;
+	if (*player_x < hard_limit_x_min)
+		*player_x = hard_limit_x_min;
+	if (*player_x > hard_limit_x_max)
+		*player_x = hard_limit_x_max;
 	//	ensure player doesnt fall into the abyss downwards.
-	if (*player_y > 800) {
-		*player_y = 780;
+	if (*player_y > screen_y) {
+		*player_y = hard_limit_y_min;
 		*speed_y = 0;
 	}
 }
 
+float gravity_velocity = 1600;
+float max_falling_speed = 1400;
+
 void gravity(float* speed_y) {
 	//	increase downward speed as time passes.
-	if (*speed_y < 1000 )	{
-		*speed_y += 1600 * CP_System_GetDt(); 
+	if (*speed_y < max_falling_speed )	{
+		*speed_y += gravity_velocity * CP_System_GetDt(); 
 	}
 	//	set max falling speed.
 	else				
 	{ 
-		*speed_y = 1400; 
+		*speed_y = max_falling_speed; 
 	}
 }
 
@@ -86,6 +99,7 @@ float player_pulling = 0;
 float player_grapple_speed = 1000.0;// max grapple pulling speed
 float cd_time = 0.5f; // cooldown tiimer
 float cd_remaining = 0.0f;
+float platform_accel_y = 400;
 
 void drawGrapple(Player *player, float* grapple_x, float* grapple_y, Platform* platforms, int num_of_platforms, float dt) {
 
@@ -164,7 +178,7 @@ void drawGrapple(Player *player, float* grapple_x, float* grapple_y, Platform* p
 			//*grapple_y = 0;
 			grapple_extending = 0;
 			// make player go up platform with some nice accel.
-			player->velocity.y = -400;
+			player->velocity.y = -platform_accel_y;
 
 			cd_remaining = cd_time;
 		}
@@ -180,6 +194,7 @@ void drawGrapple(Player *player, float* grapple_x, float* grapple_y, Platform* p
 	}
 
 	if (cd_remaining > 0.0f) {
+		//initialised here because the cd bar will reset once the cooldown is gone
 		float cd_width = 100.0f;
 		float cd_height = 10.0f;
 		float cd_fraction = 1.0f - (cd_remaining/cd_time);
