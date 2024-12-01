@@ -71,19 +71,6 @@ void Level_Select_Update(void) {
 	
 	
 
-	//Level Clear State
-	/*char str[] = "save_file/level_1.txt";
-	char z = '1';
-	for (int i = 0; i < (LEVELNUM - 1); ++i) {
-		str[16] = (z + i);
-		if (level_progress(str) == '1') {
-			CP_Color temp = levels[i];
-			CP_Color temp2 = colors_clear[i];
-			temp = temp2;
-			i++;
-		}
-
-	}*/
 
 	timer += CP_System_GetDt();
 
@@ -152,7 +139,7 @@ void Level_Select_Update(void) {
 			Levelfour = Green;
 			CP_Graphics_DrawRect(10, 10, 10, 10);
 		}
-	//}
+	
 	
 	
 
@@ -174,9 +161,7 @@ void Level_Select_Update(void) {
 	buttoncreate(xRect4, yRect2, rectW, rectH, Levelfour);
 	textwrite("Level 4", xRect4, yRect2, Black);
 
-	//// draw a rectangle of level_5_select
-	//buttoncreate(xRect5, yRect2, rectW, rectH, Blue);
-	//textwrite("Level 5", xRect5, yRect2, Black);
+
 
 
 	//level select
@@ -206,13 +191,7 @@ void Level_Select_Update(void) {
 			CP_Engine_SetNextGameState(Levelboss_Init, Levelboss_Update, Levelboss_Exit);
 		};
 	};
-		//level 5
-		//if (CP_Input_MouseClicked()) {
-		//	if (IsAreaClicked(xRect5, yRect2, rectW, rectH, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
-		//		//CP_Engine_SetNextGameState(Level_Select_Init, Level_Select_Update, Level_Select_Exit);
-		//	};
-		//};
-
+		
 
 
 		//return to main menu
@@ -225,11 +204,7 @@ void Level_Select_Update(void) {
 	{
 		CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
 	}
-	//	//end program
-	//if (CP_Input_KeyTriggered(KEY_R))
-	//	{
-	//		CP_Engine_Terminate();
-	//	}
+	
 
 
 }

@@ -30,13 +30,10 @@
 #define PLATFORM_SIZE 9
 Platform platform[PLATFORM_SIZE];
 Goal goal_start, goal_end;
-//Healthbar player_health, player_health_background;
 Player player;
 Grapple grapple;
 MELEE_Enemy melee_enemy, melee_enemy2, melee_enemy3, melee_enemy4;
 heart player_healthbar[MAX_HEALTH];
-//RANGE_Enemy range_enemy, range_enemy2, range_enemy3;
-//Projectile enemy_projectile, enemy_projectile2, enemy_projectile3;
 enum{MAX_RANGE_Enemy = 3};
 RANGE_Enemy range_enemies[MAX_RANGE_Enemy];
 Bullet enemy_projectiles[MAX_RANGE_Enemy];
@@ -139,11 +136,6 @@ void Levelthree_Init(void)
 	range_enemies[0].shoot_posX = range_enemies[0].x;
 	range_enemies[0].shoot_posY = range_enemies[0].y;
 	range_enemies[0].dir = RIGHT;
-	//range projectile
-	//enemy_projectiles[0].x = range_enemies[0].shoot_posX;
-	//enemy_projectiles[0].y = range_enemies[0].shoot_posY;
-	//enemy_projectiles[0].diameter = 25;
-	//enemy_projectiles[0].live = 1;
 	// Initialize range enemy 2
 	range_enemies[1].width = platform[6].width;
 	range_enemies[1].height = 40;
@@ -152,11 +144,6 @@ void Levelthree_Init(void)
 	range_enemies[1].shoot_posX = range_enemies[1].x;
 	range_enemies[1].shoot_posY = range_enemies[1].y;
 	range_enemies[1].dir = LEFT;
-	//range projectile
-	//enemy_projectiles[1].x = range_enemies[1].shoot_posX;
-	//enemy_projectiles[1].y = range_enemies[1].shoot_posY;
-	//enemy_projectiles[1].diameter = 25;
-	//enemy_projectiles[1].live = 1;
 	// Initialize range enemy 3
 	range_enemies[2].width = platform[7].width;
 	range_enemies[2].height = 40;
@@ -165,11 +152,6 @@ void Levelthree_Init(void)
 	range_enemies[2].shoot_posX = range_enemies[2].x;
 	range_enemies[2].shoot_posY = range_enemies[2].y;
 	range_enemies[2].dir = LEFT;
-	//range projectile
-	//enemy_projectiles[2].x = range_enemies[2].shoot_posX;
-	//enemy_projectiles[2].y = range_enemies[2].shoot_posY;
-	//enemy_projectiles[2].diameter = 25;
-	//enemy_projectiles[2].live = 1;
 
 	player = (Player){ 100, 785, 30, 30, 5, 1, {0, 0} };
 	grapple = (Grapple){ 0, 0, 0 };

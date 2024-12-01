@@ -58,12 +58,9 @@ void Leveltwo_Init(void)
 		player_healthbar[i].height = 40.0f;  // Adjust as needed
 	}
 
-	CP_Settings_TextSize(25.00f); // set text size to 50.0f
+	CP_Settings_TextSize(25.00f); // set text size to 25.0f
 	//game window size is (1600, 900)
 	//set all platform color as the same(dark red)
-	//set healthbar color 
-	/*player_health.rect_color = CP_Color_Create(255, 0, 0, 255);
-	player_health_background.rect_color = CP_Color_Create(255, 0, 0, 100);*/
 	//platform_base is the ground 
 	platform[0] = (Platform){ CP_System_GetWindowWidth() / 2 , 800.00, CP_System_GetWindowWidth(), 15.00,CP_Color_Create(255, 128, 128, 255) };
 	//platform1 is first platform

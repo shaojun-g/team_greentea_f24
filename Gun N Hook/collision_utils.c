@@ -1,8 +1,6 @@
-// file:	collisionlib.c
+// file:	collision_utils.c
 // author:	Chewn Thing Kwan
 // email:	Kwan.c@digipen.edu
-// co-author: Benjamin Ban
-// email:	k.ban@digipen.edu
 // 
 // brief: definition of intersection functions to be used for
 // collision functions in collisionlib.c.

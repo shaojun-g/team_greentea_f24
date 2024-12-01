@@ -1,7 +1,6 @@
 // file:	leveltwo.h
 // author:	Stanley Lur
 // email:	peihaostanley.lur@digipen.edu
-
 // brief: level two
 // 
 // Copyright @ 2020 DigiPen, All rights reserved.

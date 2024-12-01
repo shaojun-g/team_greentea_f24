@@ -1,8 +1,10 @@
 /* file:	utils.c
 // author:	Stanley Lur
 // email:	peihaostanley.lur@digipen.edu
+//
 // co-author: Amzar
 // email:	muhamadamzar.b@digipen.edu
+//
 // brief:	This c file contains functions definitions
 // used in collision detection, drawing, UI management,
 // and gameplay mechanics for the game.These utilities
@@ -195,8 +197,7 @@ void levelselecthover(float area_center_x, float area_center_y, float area_width
 
 void buttoncreate(float area_center_x, float area_center_y, float area_width, float area_height, CP_Color color) 
 {
-	//CP_Color Blue = CP_Color_Create(0, 200, 255, 255);
-	// set rectangle x & y position 
+	
 	CP_Settings_RectMode(CP_POSITION_CENTER);
 	CP_Settings_Fill(color);
 	CP_Graphics_DrawRect(area_center_x, area_center_y, area_width, area_height);
@@ -389,7 +390,7 @@ void update_boss_healthbar(Healthbar* health_bar, int current_health) {
 	// Update health bar width
 	health_bar->width = BOSS_HEALTHBAR_MAX_WIDTH * health_percentage;
 }
-
+//draw hearts function
 void draw_hearts(heart heart[], int current_hp) {
 	float spacing = 50.f;
 	for (int i = 0; i < MAX_HEALTH; ++i) {

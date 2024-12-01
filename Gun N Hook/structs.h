@@ -1,3 +1,17 @@
+/* file:	structs.h
+// author:	Chewn Thing Kwan
+// email:	kwan.c@digipen.edu
+// 
+// co-author: Everyone else
+// 
+//
+// brief: This file contains all structs implementation for the 
+//	entire solution
+// 
+//
+//
+// Copyright @ 2020 DigiPen, All rights reserved.
+//--------------------------------------------------------- */
 #pragma once
 #include "cprocessing.h"
 
