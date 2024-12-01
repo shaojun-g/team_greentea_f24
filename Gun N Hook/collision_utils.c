@@ -50,7 +50,7 @@ float abs_f(float num) {
 
 // rect-rect		player collide boss || player collide e_projectile || boss p_projectile		WORKS!!
 int c_rect_rect(float rect1_x, float rect1_y, float rect1_width, float rect1_height, float rect2_x, float rect2_y, float rect2_width, float rect2_height) {
-	if (abs(rect1_x - rect2_x) < (rect1_width / 2 + rect2_width / 2) && abs(rect1_y - rect2_y) < (rect1_height / 2 + rect2_height / 2))
+	if (abs_f(rect1_x - rect2_x) < (rect1_width / 2 + rect2_width / 2) && abs_f(rect1_y - rect2_y) < (rect1_height / 2 + rect2_height / 2))
 		return 1;
 	else
 		return 0;
